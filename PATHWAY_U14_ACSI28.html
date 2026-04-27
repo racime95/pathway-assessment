@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PATHWAY · U-14 · MAS-ACSI28</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0C2340;--blue:#185FA5;--blue-l:#E6F1FB;--blue-d:#0c4478;
+  --teal:#1D9E75;--teal-l:#E1F5EE;--coral:#D85A30;--coral-l:#FAECE7;
+  --gold:#B8902A;--gold-l:#FFF8E6;
+  --bg:#f7f7f5;--surface:#ffffff;--border:#e0ddd6;--text:#1a1a18;--muted:#6b6b67;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.app{max-width:780px;margin:0 auto;padding:24px 16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px}
+.hdr{background:var(--navy);padding:18px 24px;display:flex;align-items:center;gap:14px}
+.logo{width:38px;height:38px;background:var(--gold);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.hdr-main{flex:1}
+.hdr-t{font-size:15px;font-weight:600;color:#fff}
+.hdr-s{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px}
+.age-pill{background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.nav-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface)}
+.tab{flex:1;padding:13px 8px;text-align:center;cursor:pointer;font-size:13px;color:var(--muted);border:none;background:transparent;border-bottom:2px solid transparent;transition:all .15s}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--navy);border-bottom-color:var(--blue);font-weight:600}
+.tab-count{display:inline-block;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:5px}
+.list-toolbar{padding:14px 20px;display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--border)}
+.list-toolbar input{flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg)}
+.btn{padding:8px 18px;border-radius:8px;border:1px solid var(--border);background:var(--surface);font-size:13px;cursor:pointer;color:var(--text);white-space:nowrap;transition:all .12s}
+.btn:hover{border-color:var(--navy);color:var(--navy)}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.primary:hover{background:#1a3a5c}
+.btn.accent{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn.accent:hover{background:var(--blue-d)}
+.btn.sm{padding:5px 12px;font-size:12px}
+.btn.danger{color:#A32D2D;border-color:#F09595}
+.btn.danger:hover{background:#FCEBEB}
+.athlete-table{width:100%;border-collapse:collapse}
+.athlete-table th{font-size:11px;color:var(--muted);font-weight:600;text-align:left;padding:10px 20px;border-bottom:1px solid var(--border);background:var(--bg);letter-spacing:.4px;text-transform:uppercase}
+.athlete-table td{padding:11px 20px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+.athlete-table tr:last-child td{border-bottom:none}
+.athlete-table tr:hover td{background:#fafaf8}
+.status-pill{display:inline-block;font-size:10px;font-weight:600;padding:2px 9px;border-radius:20px}
+.status-pill.complete{background:var(--teal-l);color:#0F6E56}
+.status-pill.partial{background:var(--gold-l);color:#854F0B}
+.status-pill.empty{background:#f0f0ee;color:var(--muted)}
+.actions-cell{display:flex;gap:6px;flex-wrap:wrap}
+.empty-state{padding:40px 20px;text-align:center;color:var(--muted);font-size:13px}
+.form-body{padding:22px 24px}
+.form-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.form-sub{font-size:12px;color:var(--muted);margin-bottom:18px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.field label{font-size:11px;color:var(--muted);display:block;margin-bottom:4px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+.field input,.field select{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;background:var(--surface);color:var(--text);outline:none;transition:border-color .12s}
+.field input:focus,.field select:focus{border-color:var(--navy)}
+.field.full{grid-column:1/-1}
+.form-actions{display:flex;gap:10px;padding-top:4px}
+.info-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.info-pill{font-size:10px;padding:3px 10px;border-radius:20px;background:var(--bg);border:1px solid var(--border);color:var(--muted)}
+.prog-bar{padding:14px 24px 12px;background:#fafaf8;border-bottom:1px solid var(--border)}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.prog-label{font-size:12px;color:var(--muted)}
+.prog-pct{font-size:12px;font-weight:600;color:var(--navy)}
+.prog-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:8px}
+.prog-fill{height:100%;background:var(--blue);border-radius:3px;transition:width .3s}
+.sub-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:3px 10px;border-radius:20px;background:var(--blue-l);color:var(--blue);border:1px solid #B5D4F4;font-weight:600}
+.q-body{padding:26px 24px 18px}
+.q-num{font-size:11px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
+.q-text{font-size:16px;line-height:1.7;color:var(--text);margin-bottom:28px;min-height:56px}
+.scale-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:10px;padding:0 2px}
+.likert{display:flex;gap:8px}
+.lb{flex:1;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);cursor:pointer;padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .12s;min-width:0}
+.lb:hover{border-color:var(--blue);background:var(--blue-l)}
+.lb.sel{background:var(--blue-l);border-color:var(--blue);border-width:2px}
+.lb-n{font-size:20px;font-weight:700;color:var(--text)}
+.lb.sel .lb-n{color:var(--blue-d)}
+.lb-w{font-size:9px;color:var(--muted);text-align:center;line-height:1.3}
+.lb.sel .lb-w{color:var(--blue-d);font-weight:600}
+.q-nav{padding:14px 24px;display:flex;align-items:center;gap:10px;border-top:1px solid var(--border);background:var(--surface)}
+.nav-hint{font-size:12px;margin-left:4px}
+.nav-hint.ok{color:var(--teal)}.nav-hint.req{color:var(--coral)}
+.spacer{flex:1}
+/* REPORT */
+.report-body{padding:28px}
+@media print{
+  body{background:#fff}.app{padding:0;max-width:100%}
+  .no-print{display:none!important}.card{border:none;border-radius:0;margin:0}
+  .report-body{padding:20px 24px}.dim-card{page-break-inside:avoid}
+}
+.rep-hdr{border-bottom:2.5px solid var(--navy);padding-bottom:16px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+.rep-logo-row{display:flex;align-items:center;gap:12px}
+.rep-logo{width:36px;height:36px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.rep-org-name{font-size:14px;font-weight:700;color:var(--navy)}
+.rep-org-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.rep-meta{text-align:right;font-size:11px;color:var(--muted);line-height:1.7}
+.rep-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px}
+.rep-subtitle{font-size:12px;color:var(--muted);margin-bottom:20px}
+.athlete-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.ag-cell{background:var(--bg);border-radius:8px;padding:10px 13px;border:1px solid var(--border)}
+.ag-label{font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.3px;text-transform:uppercase;margin-bottom:3px}
+.ag-val{font-size:13px;font-weight:600;color:var(--text)}
+.global-card{background:var(--navy);border-radius:10px;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:16px}
+.gc-score-label{font-size:11px;color:rgba(255,255,255,.6);margin-bottom:3px}
+.gc-score-val{font-size:34px;font-weight:700;color:#fff;line-height:1}
+.gc-score-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:4px}
+.gc-interp{text-align:right;max-width:240px}
+.gc-interp-text{font-size:12px;color:var(--gold);line-height:1.6;font-weight:600}
+.gc-band{font-size:10px;color:rgba(255,255,255,.4);margin-top:4px}
+.section-label{font-size:10px;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;font-weight:700;margin-bottom:12px}
+.score-overview{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+.so-cell{background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border);text-align:center}
+.so-label{font-size:10px;color:var(--muted);font-weight:600;margin-bottom:4px}
+.so-val{font-size:18px;font-weight:700;color:var(--text)}
+.so-val.h{color:#0F6E56}.so-val.m{color:#854F0B}.so-val.l{color:#A32D2D}
+.dim-card{border:1px solid var(--border);border-radius:10px;padding:15px 18px;margin-bottom:10px}
+.dc-row1{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;gap:8px;flex-wrap:wrap}
+.dc-name{font-size:13px;font-weight:700;color:var(--text)}
+.dc-badge{font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px}
+.dc-badge.h{background:var(--teal-l);color:#0F6E56;border:1px solid #5DCAA5}
+.dc-badge.m{background:var(--gold-l);color:#854F0B;border:1px solid var(--gold)}
+.dc-badge.l{background:var(--coral-l);color:#993C1D;border:1px solid #F0997B}
+.bar-labels-row{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:4px}
+.bar-track{height:7px;background:var(--bg);border-radius:4px;overflow:hidden;margin-bottom:6px;border:1px solid var(--border)}
+.bar-fill{height:100%;border-radius:4px}
+.bar-fill.h{background:var(--teal)}.bar-fill.m{background:var(--gold)}.bar-fill.l{background:var(--coral)}
+.dc-count{font-size:10px;color:var(--muted);margin-bottom:8px}
+.dc-interp{font-size:12px;color:var(--text);line-height:1.65;padding:9px 12px;background:var(--bg);border-radius:7px;border-left:3px solid var(--border)}
+.dc-interp.h{border-left-color:var(--teal)}.dc-interp.m{border-left-color:var(--gold)}.dc-interp.l{border-left-color:var(--coral)}
+.rec-block{margin-top:20px;padding:16px 18px;border:1px solid var(--border);border-radius:10px;background:var(--bg)}
+.rec-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px}
+.rec-text{font-size:12px;color:var(--muted);line-height:1.75}
+.disclaimer{margin-top:16px;padding:11px 14px;font-size:10px;color:var(--muted);background:var(--bg);border-radius:8px;line-height:1.7;border:1px solid var(--border)}
+.rep-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="card">
+  <div class="hdr">
+    <div class="logo">MAS</div>
+    <div class="hdr-main">
+      <div class="hdr-t">PATHWAY · Psychological Assessment</div>
+      <div class="hdr-s">MAS Foundation · Qatar Foundation Ecosystem · Female Athlete Talent Detection</div>
+    </div>
+    <div class="age-pill">U-14 · ACSI28</div>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab active" onclick="showTab('list')" id="tab-list">Athlete list <span class="tab-count" id="count-badge">0</span></button>
+    <button class="tab" onclick="showTab('intake')" id="tab-intake">New assessment</button>
+    <button class="tab" onclick="showTab('questionnaire')" id="tab-q" style="display:none">Questionnaire</button>
+    <button class="tab" onclick="showTab('report')" id="tab-report" style="display:none">Report</button>
+  </div>
+</div>
+<div class="card" id="view-list">
+  <div class="list-toolbar">
+    <input type="text" id="search-input" placeholder="Search athlete by name or sport…" oninput="renderList()"/>
+    <button class="btn accent" onclick="showTab('intake')">+ New athlete</button>
+    <button class="btn" onclick="exportAllJSON()">Export all JSON</button>
+  </div>
+  <div id="athlete-list-body"></div>
+</div>
+<div class="card" id="view-intake" style="display:none">
+  <div class="form-body">
+    <div class="form-title">New athlete assessment — U-14</div>
+    <div class="form-sub">Fill in the athlete's details before starting the questionnaire.</div>
+    <div class="form-grid">
+      <div class="field"><label>Athlete full name *</label><input id="f-name" placeholder="e.g. Mariam Al-Thani"/></div>
+      <div class="field"><label>Date of birth *</label><input id="f-dob" type="date"/></div>
+      <div class="field"><label>Sport / Discipline *</label>
+        <select id="f-sport">
+          <option value="">— Select discipline —</option>
+          <option>Athletics</option><option>Basketball</option><option>Volleyball</option><option>Fencing</option><option>Tennis</option>
+        </select>
+      </div>
+      <div class="field"><label>Assessment date</label><input id="f-date" type="date"/></div>
+      <div class="field full"><label>Certified evaluator name</label><input id="f-eval" placeholder="Evaluator name · PATHWAY certification ID"/></div>
+      <div class="field full"><label>Notes (optional)</label><input id="f-notes" placeholder="Session conditions, observations…"/></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn" onclick="showTab('list')">← Cancel</button>
+      <button class="btn primary" onclick="startAssessment()">Start assessment · 28 items</button>
+    </div>
+    <div class="info-pills">
+      <span class="info-pill">7 sub-scales</span>
+      <span class="info-pill">Scale 0 (Never) → 3 (Almost Always)</span>
+      <span class="info-pill">Approx. 10–15 min</span>
+      <span class="info-pill">Answers can be changed at any time</span>
+    </div>
+  </div>
+</div>
+<div class="card" id="view-questionnaire" style="display:none"><div id="q-content"></div></div>
+<div class="card" id="view-report" style="display:none"><div id="report-content"></div></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const SUBS=[
+  {id:1,name:"Coachability",items:[
+    "I listen carefully to my coach's advice, even when I initially disagree.",
+    "When my coach corrects me, I immediately put what they say into practice without resistance.",
+    "I treat corrections from my coaches as useful information rather than personal attacks.",
+    "I ask my coach questions to better understand what is expected of me."
+  ]},
+  {id:2,name:"Peaking Under Pressure",items:[
+    "In decisive moments of a match, I perform at or close to my best level.",
+    "When the stakes are high, I feel more focused and effective than in ordinary situations.",
+    "Important competitions bring out the best in me.",
+    "The greater the pressure, the more capable I am of surpassing myself."
+  ]},
+  {id:3,name:"Goal Setting & Mental Preparation",items:[
+    "Before a competition, I have a precise mental routine that I apply systematically.",
+    "I set specific, measurable goals for each training session.",
+    "I visualise successful performances before important competitions.",
+    "I mentally prepare for the difficult scenarios I might face in competition."
+  ]},
+  {id:4,name:"Concentration",items:[
+    "During a match, I stay focused on the present task without thinking about the overall score.",
+    "I return quickly to concentration after an interruption or distraction.",
+    "Negative thoughts or doubts do not invade my mind while I am playing.",
+    "Even in chaotic situations, I maintain my mental clarity and automatic responses."
+  ]},
+  {id:5,name:"Freedom from Worry",items:[
+    "The night before a competition, I sleep well without being overwhelmed by anxiety.",
+    "During warm-up, my thoughts are oriented toward performance rather than fear of failure.",
+    "I do not let the fear of others' judgement affect my tactical choices in a match.",
+    "After a mistake, I move on immediately without dwelling on what just happened."
+  ]},
+  {id:6,name:"Confidence & Achievement Motivation",items:[
+    "I set ambitious goals and sincerely believe I can achieve them.",
+    "When I encounter a difficulty, my first reaction is to look for how to overcome it.",
+    "I am motivated by difficult challenges — they make me want to work even harder.",
+    "My self-confidence in my sport is stable; it does not fluctuate with every result."
+  ]},
+  {id:7,name:"Coping with Adversity",items:[
+    "When things go very wrong in a match, I actively seek solutions rather than simply enduring.",
+    "Facing an opponent or situation that overwhelms me, I maintain my commitment and effort.",
+    "I do not complain about external conditions — I adapt to what I am given.",
+    "Even in moments of great difficulty, I remain a source of positive energy for my team."
+  ]}
+];
+const SCALE=["Never","Sometimes","Often","Almost Always"];
+const STORAGE_KEY="pathway_u14_athletes";
+let ALL_ITEMS=[];
+SUBS.forEach(s=>s.items.forEach((q,li)=>ALL_ITEMS.push({subId:s.id,subName:s.name,q,li})));
+let athletes=[];
+let curAthleteId=null;
+let curItemIdx=0;
+
+function loadStorage(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)athletes=JSON.parse(r);}catch(e){athletes=[];}}
+function saveStorage(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(athletes));}catch(e){toast("Storage error — export JSON now");}}
+function getAthlete(id){return athletes.find(a=>a.id===id);}
+function curAthlete(){return getAthlete(curAthleteId);}
+
+const VIEWS=["list","intake","questionnaire","report"];
+function showTab(name){
+  VIEWS.forEach(v=>{
+    document.getElementById("view-"+v).style.display=v===name?"block":"none";
+    const t=document.getElementById("tab-"+v);if(t)t.classList.toggle("active",v===name);
+  });
+  if(name==="list")renderList();
+  if(name==="questionnaire")renderQ();
+  if(name==="report")renderReport();
+}
+
+function renderList(){
+  const q=(document.getElementById("search-input")?.value||"").toLowerCase();
+  const filtered=athletes.filter(a=>a.name.toLowerCase().includes(q)||a.sport.toLowerCase().includes(q));
+  document.getElementById("count-badge").textContent=athletes.length;
+  const tbody=document.getElementById("athlete-list-body");
+  if(!athletes.length){tbody.innerHTML=`<div class="empty-state"><div style="font-size:32px;margin-bottom:10px;opacity:.4">📋</div>No athletes yet.<br>Click <strong>New athlete</strong> to begin.</div>`;return;}
+  if(!filtered.length){tbody.innerHTML=`<div class="empty-state">No athletes match your search.</div>`;return;}
+  let html=`<table class="athlete-table"><thead><tr><th>Name</th><th>Sport</th><th>Date</th><th>Progress</th><th>Status</th><th>Actions</th></tr></thead><tbody>`;
+  filtered.forEach(a=>{
+    const ans=Object.keys(a.answers||{}).length;
+    const pct=Math.round(ans/28*100);
+    const status=ans===28?"complete":ans>0?"partial":"empty";
+    const statusLabel=ans===28?"Complete":ans>0?`${pct}% (${ans}/28)`:"Not started";
+    html+=`<tr>
+      <td><strong>${a.name}</strong></td><td>${a.sport||"—"}</td><td>${a.date||"—"}</td>
+      <td><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:4px;background:#e0ddd6;border-radius:2px;overflow:hidden"><div style="width:${pct}%;height:100%;background:${status==="complete"?"#1D9E75":status==="partial"?"#185FA5":"#e0ddd6"};border-radius:2px"></div></div><span style="font-size:11px;color:#6b6b67;white-space:nowrap">${ans}/28</span></div></td>
+      <td><span class="status-pill ${status}">${statusLabel}</span></td>
+      <td><div class="actions-cell">
+        <button class="btn sm" onclick="resumeAthlete('${a.id}')">${ans===28?"View":"Continue"}</button>
+        <button class="btn sm" onclick="viewReport('${a.id}')">Report</button>
+        <button class="btn sm" onclick="exportJSON('${a.id}')">JSON</button>
+        <button class="btn sm danger" onclick="deleteAthlete('${a.id}')">Delete</button>
+      </div></td>
+    </tr>`;
+  });
+  html+=`</tbody></table>`;
+  tbody.innerHTML=html;
+}
+
+function resumeAthlete(id){curAthleteId=id;curItemIdx=findFirstUnanswered();document.getElementById("tab-q").style.display="";showTab("questionnaire");}
+function viewReport(id){curAthleteId=id;document.getElementById("tab-report").style.display="";showTab("report");}
+function deleteAthlete(id){const a=getAthlete(id);if(!confirm(`Delete ${a.name}'s data?`))return;athletes=athletes.filter(x=>x.id!==id);saveStorage();renderList();toast("Athlete deleted");}
+
+function startAssessment(){
+  const name=document.getElementById("f-name").value.trim();
+  const sport=document.getElementById("f-sport").value;
+  if(!name){alert("Please enter the athlete's name.");return;}
+  if(!sport){alert("Please select a sport.");return;}
+  const today=new Date().toISOString().slice(0,10);
+  const id="a_"+Date.now();
+  const athlete={id,name,dob:document.getElementById("f-dob").value,sport,date:document.getElementById("f-date").value||today,evaluator:document.getElementById("f-eval").value.trim(),notes:document.getElementById("f-notes").value.trim(),answers:{},createdAt:new Date().toISOString()};
+  athletes.push(athlete);saveStorage();curAthleteId=id;curItemIdx=0;
+  ["f-name","f-dob","f-eval","f-notes"].forEach(i=>document.getElementById(i).value="");
+  document.getElementById("f-sport").value="";document.getElementById("f-date").value="";
+  document.getElementById("tab-q").style.display="";showTab("questionnaire");toast("Assessment started for "+name);
+}
+
+function findFirstUnanswered(){const a=curAthlete();for(let i=0;i<ALL_ITEMS.length;i++){if(a.answers[i]===undefined)return i;}return ALL_ITEMS.length-1;}
+
+function renderQ(){
+  const a=curAthlete();if(!a){showTab("list");return;}
+  const item=ALL_ITEMS[curItemIdx];
+  const answered=Object.keys(a.answers).length;
+  const pct=Math.round(answered/28*100);
+  const cur=a.answers[curItemIdx];
+  const isLast=curItemIdx===ALL_ITEMS.length-1;
+  document.getElementById("q-content").innerHTML=`
+  <div class="prog-bar">
+    <div class="prog-top"><span class="prog-label">Item ${curItemIdx+1} of 28 · ${a.name}</span><span class="prog-pct">${answered} answered · ${pct}%</span></div>
+    <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
+    <span class="sub-tag">Sub-scale ${item.subId} — ${item.subName}</span>
+  </div>
+  <div class="q-body">
+    <div class="q-num">Item ${curItemIdx+1} of 28</div>
+    <div class="q-text">${item.q}</div>
+    <div class="scale-labels"><span>0 · Never</span><span>1 · Sometimes</span><span>2 · Often</span><span>3 · Almost Always</span></div>
+    <div class="likert">
+      ${[0,1,2,3].map(v=>`<button class="lb${cur===v?" sel":""}" onclick="answer(${v})">
+        <span class="lb-n">${v}</span><span class="lb-w">${SCALE[v]}</span>
+      </button>`).join("")}
+    </div>
+  </div>
+  <div class="q-nav">
+    <button class="btn" onclick="goQ(-1)" ${curItemIdx===0?"disabled":""}>← Back</button>
+    ${cur!==undefined?`<span class="nav-hint ok">✓ Saved · tap to change</span>`:`<span class="nav-hint req">Select a response to continue</span>`}
+    <div class="spacer"></div>
+    <button class="btn" onclick="skipToReport()" style="font-size:12px;color:#6b6b67">Skip to report</button>
+    ${isLast?`<button class="btn primary" onclick="finishQ()" ${cur===undefined?"disabled":""}>Generate report</button>`:`<button class="btn primary" onclick="goQ(1)" ${cur===undefined?"disabled":""}>Next →</button>`}
+  </div>`;
+}
+
+function answer(v){const a=curAthlete();a.answers[curItemIdx]=v;saveStorage();renderQ();}
+function goQ(dir){curItemIdx=Math.max(0,Math.min(ALL_ITEMS.length-1,curItemIdx+dir));renderQ();}
+function skipToReport(){const a=curAthlete();if(Object.keys(a.answers).length===0){alert("Please answer at least one item first.");return;}if(confirm("Generate report now?\nUnanswered items will be excluded from sub-scale scores."))finishQ();}
+function finishQ(){document.getElementById("tab-report").style.display="";showTab("report");}
+
+function calcScores(a){
+  const subScores={};
+  SUBS.forEach((sub,si)=>{
+    const vals=sub.items.map((_,li)=>a.answers[si*4+li]).filter(v=>v!==undefined);
+    const sum=vals.reduce((x,y)=>x+y,0);
+    subScores[sub.id]={sum,count:vals.length,total:4,max:12,avg:vals.length?sum/vals.length:null};
+  });
+  const allVals=Object.values(a.answers);
+  const total=allVals.reduce((x,y)=>x+y,0);
+  return{subScores,total,totalAnswered:allVals.length};
+}
+
+function tier(score,max){if(score===null)return"m";const r=score/max;return r>=0.75?"h":r>=0.5?"m":"l";}
+function tierLabel(t){return t==="h"?"Strong":t==="m"?"Standard":"Attention";}
+function tierGlobal(v){return v>=63?"h":v>=42?"m":"l";}
+
+const SUB_INTERP={
+  1:{h:"Highly coachable — athlete integrates feedback rapidly. Most predictive sub-scale for technical progression speed.",m:"Standard coachability — some resistance to correction. Recommend structured feedback sessions with positive reinforcement.",l:"Coachability requires attention. Priority sub-scale: a coachable athlete at 14 will progress faster than a more talented but feedback-resistant one."},
+  2:{h:"Peaks under pressure — athlete raises performance in decisive moments. Strong competitive profile.",m:"Inconsistent under pressure — sometimes rises, sometimes retreats. Build competitive simulation exercises.",l:"Tends to shrink under pressure. Introduce graduated high-stakes training situations progressively."},
+  3:{h:"Strong mental preparation — systematic pre-competition routines in place. Athlete does not leave performance to chance.",m:"Developing mental preparation — some routines present but inconsistent. Formalise pre-competition protocol.",l:"Limited mental preparation. Introduce visualisation and goal-setting as structured training components."},
+  4:{h:"Strong concentration — maintains task focus under distraction. Predictor of performance consistency.",m:"Variable concentration — external distractors have some impact. Attentional training recommended.",l:"Concentration support needed. Introduce focus cue and distraction management protocols."},
+  5:{h:"Free from worry — low cognitive anxiety, athlete approaches competition with clarity.",m:"Some anticipatory anxiety present. Note: strongly linked to cultural and family context — contextualise for Qatari population.",l:"High worry levels detected. Contextualise for multicultural Qatari environment. Refer to mental skills specialist if persistent."},
+  6:{h:"Strong confidence & achievement motivation — stable self-belief oriented toward competitive achievement.",m:"Developing confidence in achievement context. Reinforce mastery-based goal setting.",l:"Low achievement confidence. Distinguish from general self-worth. Targeted confidence-building programme recommended."},
+  7:{h:"Strong coping with adversity — athlete actively seeks solutions rather than enduring. Decisive moment profile.",m:"Adequate adversity coping — some passivity under extreme difficulty. Introduce problem-solving under pressure exercises.",l:"Adversity coping requires development. Build graduated challenge protocols with debrief after each."}
+};
+
+function globalInterpText14(v){
+  if(v>=63)return"Elite coping profile — athlete demonstrates strong psychological skills across all competitive dimensions.";
+  if(v>=42)return"Standard competitive profile — targeted development on weak sub-scales is recommended.";
+  return"Targeted support recommended — coordinate with the PATHWAY mental skills specialist on priority sub-scales.";
+}
+
+function recText14(subScores){
+  const weak=SUBS.filter(s=>{const sc=subScores[s.id];return sc.sum<6;}).map(s=>s.name);
+  const strong=SUBS.filter(s=>{const sc=subScores[s.id];return sc.sum>=9;}).map(s=>s.name);
+  let r="";
+  if(strong.length)r+=`<strong>Strengths:</strong> ${strong.join(", ")}. `;
+  if(weak.length)r+=`<strong>Priority sub-scales (score < 6/12):</strong> ${weak.join(", ")}. Coordinate with the PATHWAY mental skills specialist. `;
+  r+=`<strong>Note:</strong> Freedom from Worry (Sub-scale 5) is strongly linked to cultural and family context — always contextualise for the Qatari multicultural population. No individual score justifies exclusion.`;
+  return r;
+}
+
+function renderReport(){
+  const a=curAthlete();if(!a){showTab("list");return;}
+  const{subScores,total,totalAnswered}=calcScores(a);
+  const gt=tierGlobal(total);
+  const dobStr=a.dob?new Date(a.dob).toLocaleDateString("en-GB"):"—";
+  const dateStr=a.date?new Date(a.date).toLocaleDateString("en-GB"):"—";
+  document.getElementById("report-content").innerHTML=`
+  <div class="report-body" id="printable">
+    <div class="rep-hdr">
+      <div class="rep-logo-row">
+        <div class="rep-logo">MAS</div>
+        <div>
+          <div class="rep-org-name">MAS Foundation · PATHWAY Programme</div>
+          <div class="rep-org-sub">Qatar Foundation Ecosystem · Female Athlete Talent Detection · U-14 Module</div>
+        </div>
+      </div>
+      <div class="rep-meta">Assessment date: ${dateStr}<br>Report generated: ${new Date().toLocaleDateString("en-GB")}<br><strong>Confidential — Internal use only</strong></div>
+    </div>
+    <div class="rep-title">Psychological Assessment Report — MAS-ACSI28</div>
+    <div class="rep-subtitle">Athletic Coping Skills Inventory · 7 Sub-scales · 28 Items · Scale 0–3</div>
+    <div class="athlete-grid">
+      <div class="ag-cell"><div class="ag-label">Athlete</div><div class="ag-val">${a.name}</div></div>
+      <div class="ag-cell"><div class="ag-label">Date of birth</div><div class="ag-val">${dobStr}</div></div>
+      <div class="ag-cell"><div class="ag-label">Discipline</div><div class="ag-val">${a.sport||"—"}</div></div>
+      <div class="ag-cell"><div class="ag-label">Items answered</div><div class="ag-val">${totalAnswered} / 28</div></div>
+      <div class="ag-cell"><div class="ag-label">Evaluator</div><div class="ag-val">${a.evaluator||"—"}</div></div>
+      <div class="ag-cell"><div class="ag-label">Module</div><div class="ag-val">U-14 · ACSI28</div></div>
+    </div>
+    <div class="global-card">
+      <div>
+        <div class="gc-score-label">Total score</div>
+        <div class="gc-score-val">${total} / 84</div>
+        <div class="gc-score-sub">${totalAnswered} of 28 items answered</div>
+      </div>
+      <div class="gc-interp">
+        <div class="gc-interp-text">${globalInterpText14(total)}</div>
+        <div class="gc-band">${total>=63?"Elite coping (≥ 63)":total>=42?"Standard (42–63)":"Support recommended (< 42)"}</div>
+      </div>
+    </div>
+    <div class="score-overview">
+      <div class="so-cell"><div class="so-label">Total</div><div class="so-val ${tierGlobal(total)}">${total}/84</div></div>
+      <div class="so-cell"><div class="so-label">Attention threshold</div><div class="so-val">≥ 42</div></div>
+      <div class="so-cell"><div class="so-label">Strong threshold</div><div class="so-val">≥ 63</div></div>
+      <div class="so-cell"><div class="so-label">Per sub-scale max</div><div class="so-val">12</div></div>
+    </div>
+    <div class="section-label">Sub-scale breakdown</div>
+    ${SUBS.map(sub=>{
+      const s=subScores[sub.id];
+      const t=tier(s.sum,12);
+      const pct=Math.round((s.sum/12)*100);
+      return `<div class="dim-card">
+        <div class="dc-row1">
+          <span class="dc-name">Sub-scale ${sub.id} — ${sub.name}</span>
+          <span class="dc-badge ${t}">${s.sum} / 12 · ${tierLabel(t)}</span>
+        </div>
+        <div class="bar-labels-row"><span>0</span><span>3</span><span>6</span><span>9</span><span>12</span></div>
+        <div class="bar-track"><div class="bar-fill ${t}" style="width:${pct}%"></div></div>
+        <div class="dc-count">${s.count} of 4 items answered · Attention threshold: 6 · Strong: ≥ 9</div>
+        <div class="dc-interp ${t}">${SUB_INTERP[sub.id][t]}</div>
+      </div>`;
+    }).join("")}
+    <div class="rec-block">
+      <div class="rec-title">Evaluator recommendations</div>
+      <div class="rec-text">${recText14(subScores)}</div>
+    </div>
+    ${a.notes?`<div class="rec-block" style="margin-top:10px"><div class="rec-title">Session notes</div><div class="rec-text">${a.notes}</div></div>`:""}
+    <div class="disclaimer"><strong>Important:</strong> This report is generated from self-reported data and must be interpreted by a PATHWAY-certified evaluator. Coachability (Sub-scale 1) is the most predictive sub-scale for technical progression. Freedom from Worry (Sub-scale 5) must be contextualised for the Qatari multicultural population. No individual score justifies exclusion. Confidential — MAS Foundation / Qatar Foundation internal use only.</div>
+    <div class="rep-actions no-print">
+      <button class="btn" onclick="resumeAthlete('${a.id}')">← Review / edit answers</button>
+      <button class="btn" onclick="exportJSON('${a.id}')">Export JSON</button>
+      <button class="btn primary" onclick="window.print()">Print / Save PDF</button>
+      <button class="btn" onclick="showTab('list')">← Back to list</button>
+    </div>
+  </div>`;
+}
+
+function exportJSON(id){
+  const a=getAthlete(id);
+  const{subScores,total,totalAnswered}=calcScores(a);
+  const payload={meta:{tool:"PATHWAY-U14-ACSI28",version:"1.0",exportedAt:new Date().toISOString(),programme:"MAS Foundation PATHWAY"},athlete:{id:a.id,name:a.name,dob:a.dob,sport:a.sport,date:a.date,evaluator:a.evaluator,notes:a.notes},scores:{total,totalAnswered,totalItems:28,completionPct:Math.round(totalAnswered/28*100)},subScales:Object.fromEntries(SUBS.map(s=>{const sc=subScores[s.id];return[s.id,{name:s.name,score:sc.sum,max:12,count:sc.count}];})),rawAnswers:a.answers};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");link.href=url;link.download=`PATHWAY_U14_${a.name.replace(/\s+/g,"_")}_${a.date||"nodate"}.json`;link.click();URL.revokeObjectURL(url);toast("JSON exported for "+a.name);
+}
+
+function exportAllJSON(){
+  if(!athletes.length){alert("No athletes to export.");return;}
+  const payload={meta:{tool:"PATHWAY-U14-ACSI28",version:"1.0",exportedAt:new Date().toISOString(),totalAthletes:athletes.length},athletes:athletes.map(a=>{const{subScores,total,totalAnswered}=calcScores(a);return{athlete:{id:a.id,name:a.name,dob:a.dob,sport:a.sport,date:a.date,evaluator:a.evaluator},scores:{total,totalAnswered},subScales:Object.fromEntries(SUBS.map(s=>{const sc=subScores[s.id];return[s.id,{name:s.name,score:sc.sum,max:12}];})),rawAnswers:a.answers};})};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);const link=document.createElement("a");link.href=url;link.download=`PATHWAY_U14_ALL_${new Date().toISOString().slice(0,10)}.json`;link.click();URL.revokeObjectURL(url);toast(`Exported ${athletes.length} athletes`);
+}
+
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800);}
+
+loadStorage();
+document.getElementById("f-date").value=new Date().toISOString().slice(0,10);
+renderList();
+</script>
+</body>
+</html>
