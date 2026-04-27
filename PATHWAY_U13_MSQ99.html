@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PATHWAY · U-13 · MAS-MSQ99</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0C2340;--gold:#B8902A;--gold-l:#FFF8E6;--gold-d:#8a6a1a;
+  --teal:#1D9E75;--teal-l:#E1F5EE;--coral:#D85A30;--coral-l:#FAECE7;
+  --bg:#f7f7f5;--surface:#ffffff;--border:#e0ddd6;--text:#1a1a18;--muted:#6b6b67;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* LAYOUT */
+.app{max-width:780px;margin:0 auto;padding:24px 16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px}
+
+/* HEADER */
+.hdr{background:var(--navy);padding:18px 24px;display:flex;align-items:center;gap:14px}
+.logo{width:38px;height:38px;background:var(--gold);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;letter-spacing:.5px;flex-shrink:0}
+.hdr-main{flex:1}
+.hdr-t{font-size:15px;font-weight:600;color:#fff}
+.hdr-s{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px}
+.age-pill{background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+
+/* NAV TABS */
+.nav-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface)}
+.tab{flex:1;padding:13px 8px;text-align:center;cursor:pointer;font-size:13px;color:var(--muted);border:none;background:transparent;border-bottom:2px solid transparent;transition:all .15s}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--navy);border-bottom-color:var(--gold);font-weight:600}
+.tab-count{display:inline-block;background:var(--gold);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:5px}
+
+/* ATHLETE LIST */
+.list-toolbar{padding:14px 20px;display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--border)}
+.list-toolbar input{flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg)}
+.btn{padding:8px 18px;border-radius:8px;border:1px solid var(--border);background:var(--surface);font-size:13px;cursor:pointer;color:var(--text);white-space:nowrap;transition:all .12s}
+.btn:hover{border-color:var(--navy);color:var(--navy)}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.primary:hover{background:#1a3a5c}
+.btn.gold{background:var(--gold);color:#fff;border-color:var(--gold)}
+.btn.gold:hover{background:var(--gold-d)}
+.btn.sm{padding:5px 12px;font-size:12px}
+.btn.danger{color:#A32D2D;border-color:#F09595}
+.btn.danger:hover{background:#FCEBEB}
+
+.athlete-table{width:100%;border-collapse:collapse}
+.athlete-table th{font-size:11px;color:var(--muted);font-weight:600;text-align:left;padding:10px 20px;border-bottom:1px solid var(--border);background:var(--bg);letter-spacing:.4px;text-transform:uppercase}
+.athlete-table td{padding:11px 20px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+.athlete-table tr:last-child td{border-bottom:none}
+.athlete-table tr:hover td{background:#fafaf8}
+.status-pill{display:inline-block;font-size:10px;font-weight:600;padding:2px 9px;border-radius:20px}
+.status-pill.complete{background:var(--teal-l);color:#0F6E56}
+.status-pill.partial{background:var(--gold-l);color:#854F0B}
+.status-pill.empty{background:#f0f0ee;color:var(--muted)}
+.actions-cell{display:flex;gap:6px;flex-wrap:wrap}
+.empty-state{padding:40px 20px;text-align:center;color:var(--muted);font-size:13px}
+.empty-icon{font-size:32px;margin-bottom:10px;opacity:.4}
+
+/* INTAKE FORM */
+.form-body{padding:22px 24px}
+.form-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.form-sub{font-size:12px;color:var(--muted);margin-bottom:18px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.form-grid.single{grid-template-columns:1fr}
+.field label{font-size:11px;color:var(--muted);display:block;margin-bottom:4px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+.field input,.field select{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;background:var(--surface);color:var(--text);outline:none;transition:border-color .12s}
+.field input:focus,.field select:focus{border-color:var(--navy)}
+.field.full{grid-column:1/-1}
+.form-actions{display:flex;gap:10px;padding-top:4px}
+.info-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.info-pill{font-size:10px;padding:3px 10px;border-radius:20px;background:var(--bg);border:1px solid var(--border);color:var(--muted)}
+
+/* QUESTIONNAIRE */
+.prog-bar{padding:14px 24px 12px;background:#fafaf8;border-bottom:1px solid var(--border)}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.prog-label{font-size:12px;color:var(--muted)}
+.prog-pct{font-size:12px;font-weight:600;color:var(--navy)}
+.prog-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:8px}
+.prog-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .3s}
+.dim-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:3px 10px;border-radius:20px;background:var(--teal-l);color:#0F6E56;border:1px solid #9FE1CB;font-weight:600}
+
+.q-body{padding:26px 24px 18px}
+.q-num{font-size:11px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
+.q-text{font-size:16px;line-height:1.7;color:var(--text);margin-bottom:28px;min-height:56px}
+.scale-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:10px;padding:0 2px}
+
+.likert{display:flex;gap:8px}
+.lb{flex:1;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);cursor:pointer;padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .12s;min-width:0}
+.lb:hover{border-color:var(--gold);background:var(--gold-l)}
+.lb.sel{background:var(--gold-l);border-color:var(--gold);border-width:2px}
+.lb-n{font-size:20px;font-weight:700;color:var(--text)}
+.lb.sel .lb-n{color:var(--gold-d)}
+.lb-w{font-size:9px;color:var(--muted);text-align:center;line-height:1.3}
+.lb.sel .lb-w{color:#7a5a10;font-weight:600}
+
+.q-nav{padding:14px 24px;display:flex;align-items:center;gap:10px;border-top:1px solid var(--border);background:var(--surface)}
+.nav-hint{font-size:12px;margin-left:4px}
+.nav-hint.ok{color:var(--teal)}
+.nav-hint.req{color:var(--coral)}
+.spacer{flex:1}
+
+/* REPORT */
+.report-body{padding:28px 28px}
+@media print{
+  body{background:#fff}
+  .app{padding:0;max-width:100%}
+  .no-print{display:none!important}
+  .card{border:none;box-shadow:none;margin:0;border-radius:0}
+  .report-body{padding:20px 24px}
+  .dim-card{page-break-inside:avoid}
+  .rec-block{page-break-inside:avoid}
+}
+.rep-hdr{border-bottom:2.5px solid var(--navy);padding-bottom:16px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+.rep-logo-row{display:flex;align-items:center;gap:12px}
+.rep-logo{width:36px;height:36px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.rep-org-name{font-size:14px;font-weight:700;color:var(--navy)}
+.rep-org-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.rep-meta{text-align:right;font-size:11px;color:var(--muted);line-height:1.7}
+.rep-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px}
+.rep-subtitle{font-size:12px;color:var(--muted);margin-bottom:20px}
+
+.athlete-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.ag-cell{background:var(--bg);border-radius:8px;padding:10px 13px;border:1px solid var(--border)}
+.ag-label{font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.3px;text-transform:uppercase;margin-bottom:3px}
+.ag-val{font-size:13px;font-weight:600;color:var(--text)}
+
+.global-card{background:var(--navy);border-radius:10px;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:16px}
+.gc-score-label{font-size:11px;color:rgba(255,255,255,.6);margin-bottom:3px}
+.gc-score-val{font-size:34px;font-weight:700;color:#fff;line-height:1}
+.gc-score-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:4px}
+.gc-interp{text-align:right;max-width:240px}
+.gc-interp-text{font-size:12px;color:var(--gold);line-height:1.6;font-weight:600}
+.gc-band{font-size:10px;color:rgba(255,255,255,.4);margin-top:4px}
+
+.section-label{font-size:10px;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;font-weight:700;margin-bottom:12px}
+
+.dim-card{border:1px solid var(--border);border-radius:10px;padding:15px 18px;margin-bottom:10px}
+.dc-row1{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;gap:8px;flex-wrap:wrap}
+.dc-name{font-size:13px;font-weight:700;color:var(--text)}
+.dc-badge{font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px}
+.dc-badge.h{background:var(--teal-l);color:#0F6E56;border:1px solid #5DCAA5}
+.dc-badge.m{background:var(--gold-l);color:#854F0B;border:1px solid var(--gold)}
+.dc-badge.l{background:var(--coral-l);color:#993C1D;border:1px solid #F0997B}
+.bar-labels-row{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:4px}
+.bar-track{height:7px;background:var(--bg);border-radius:4px;overflow:hidden;margin-bottom:6px;border:1px solid var(--border)}
+.bar-fill{height:100%;border-radius:4px}
+.bar-fill.h{background:var(--teal)}.bar-fill.m{background:var(--gold)}.bar-fill.l{background:var(--coral)}
+.dc-count{font-size:10px;color:var(--muted);margin-bottom:8px}
+.dc-interp{font-size:12px;color:var(--text);line-height:1.65;padding:9px 12px;background:var(--bg);border-radius:7px;border-left:3px solid var(--border)}
+.dc-interp.h{border-left-color:var(--teal)}.dc-interp.m{border-left-color:var(--gold)}.dc-interp.l{border-left-color:var(--coral)}
+
+.rec-block{margin-top:20px;padding:16px 18px;border:1px solid var(--border);border-radius:10px;background:var(--bg)}
+.rec-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px}
+.rec-text{font-size:12px;color:var(--muted);line-height:1.75}
+
+.disclaimer{margin-top:16px;padding:11px 14px;font-size:10px;color:var(--muted);background:var(--bg);border-radius:8px;line-height:1.7;border:1px solid var(--border)}
+
+.rep-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- HEADER -->
+<div class="card">
+  <div class="hdr">
+    <div class="logo">MAS</div>
+    <div class="hdr-main">
+      <div class="hdr-t">PATHWAY · Psychological Assessment</div>
+      <div class="hdr-s">MAS Foundation · Qatar Foundation Ecosystem · Female Athlete Talent Detection</div>
+    </div>
+    <div class="age-pill">U-13 · MSQ99</div>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab active" onclick="showTab('list')" id="tab-list">Athlete list <span class="tab-count" id="count-badge">0</span></button>
+    <button class="tab" onclick="showTab('intake')" id="tab-intake">New assessment</button>
+    <button class="tab" onclick="showTab('questionnaire')" id="tab-q" style="display:none">Questionnaire</button>
+    <button class="tab" onclick="showTab('report')" id="tab-report" style="display:none">Report</button>
+  </div>
+</div>
+
+<!-- ATHLETE LIST -->
+<div class="card" id="view-list">
+  <div class="list-toolbar">
+    <input type="text" id="search-input" placeholder="Search athlete by name or sport…" oninput="renderList()"/>
+    <button class="btn gold" onclick="showTab('intake')">+ New athlete</button>
+    <button class="btn" onclick="exportAllJSON()">Export all JSON</button>
+  </div>
+  <div id="athlete-list-body"></div>
+</div>
+
+<!-- INTAKE FORM -->
+<div class="card" id="view-intake" style="display:none">
+  <div class="form-body">
+    <div class="form-title">New athlete assessment</div>
+    <div class="form-sub">Fill in the athlete's details before starting the questionnaire.</div>
+    <div class="form-grid">
+      <div class="field"><label>Athlete full name *</label><input id="f-name" placeholder="e.g. Fatima Al-Kuwari"/></div>
+      <div class="field"><label>Date of birth *</label><input id="f-dob" type="date"/></div>
+      <div class="field"><label>Sport / Discipline *</label>
+        <select id="f-sport">
+          <option value="">— Select discipline —</option>
+          <option>Athletics</option><option>Basketball</option><option>Volleyball</option><option>Fencing</option><option>Tennis</option>
+        </select>
+      </div>
+      <div class="field"><label>Assessment date</label><input id="f-date" type="date"/></div>
+      <div class="field full"><label>Certified evaluator name</label><input id="f-eval" placeholder="Evaluator name · PATHWAY certification ID"/></div>
+      <div class="field full"><label>Notes (optional)</label><input id="f-notes" placeholder="Session conditions, observations…"/></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn" onclick="showTab('list')">← Cancel</button>
+      <button class="btn primary" onclick="startAssessment()">Start assessment · 99 items</button>
+    </div>
+    <div class="info-pills">
+      <span class="info-pill">5 dimensions</span>
+      <span class="info-pill">Scale 1 (Never) → 5 (Always)</span>
+      <span class="info-pill">No right or wrong answers</span>
+      <span class="info-pill">Answers can be changed at any time</span>
+      <span class="info-pill">Approx. 25–35 min</span>
+    </div>
+  </div>
+</div>
+
+<!-- QUESTIONNAIRE -->
+<div class="card" id="view-questionnaire" style="display:none">
+  <div id="q-content"></div>
+</div>
+
+<!-- REPORT -->
+<div class="card" id="view-report" style="display:none">
+  <div id="report-content"></div>
+</div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const DIMS=[
+  {id:"A",name:"Self-Awareness",items:[
+    "I can identify when I am stressed before a competition.",
+    "I notice when my concentration drops during training.",
+    "I can precisely name what I feel after a defeat.",
+    "I know which situations make me lose my composure.",
+    "I recognise my strengths in my sport.",
+    "I know which aspects of my game still need improvement.",
+    "I can describe my style as an athlete to someone who does not know me.",
+    "I notice when my body is sending signals of excessive fatigue.",
+    "I can distinguish between a bad session and a genuine regression.",
+    "I recognise when my emotions are influencing my decisions during play.",
+    "I am able to evaluate my performance realistically after a match.",
+    "I know when I need support from my coach without waiting to be prompted.",
+    "I notice the moments when I perform better than usual and understand why.",
+    "I am aware of how my behaviour impacts my teammates.",
+    "I can distinguish between positive nerves (which boost me) and negative anxiety (which blocks me).",
+    "I can identify what triggers my best performance.",
+    "I recognise when I am comparing myself too much to others instead of focusing on myself.",
+    "I know when I am playing for myself and when I am playing to please others.",
+    "I recognise my repetitive error patterns in pressure situations.",
+    "I can identify my progress even when results have not yet improved visibly."
+  ]},
+  {id:"B",name:"Emotional Regulation",items:[
+    "After a mistake, I can refocus quickly on the next action.",
+    "When I am frustrated, I find a way to calm that emotion before it affects my game.",
+    "I do not let a poor officiating decision disturb the rest of my performance.",
+    "I can handle the pressure of a hostile crowd without losing my level.",
+    "When I feel angry on the field, I know how to channel that energy positively.",
+    "I recover quickly after a lost point or set.",
+    "I do not dwell on my mistakes for long after a competition.",
+    "I can set aside difficult personal news to focus on training.",
+    "When things go wrong in a match, I stay calm and look for solutions.",
+    "I handle the disappointment of underperforming in front of my parents or coach well.",
+    "I can shift from a negative emotional state to a neutral one in under a minute.",
+    "I do not let the fear of losing prevent me from taking necessary risks.",
+    "When I am physically exhausted, I maintain control of my emotions.",
+    "I resist the urge to give up when the situation is very unfavourable.",
+    "I can smile or remain neutral after an error even if I am deeply disappointed inside.",
+    "Pre-competition nerves do not prevent me from performing at my best level.",
+    "I do not let myself be distracted by opponent provocation or behaviour.",
+    "After a win, I stay focused on what comes next without excessive relaxation.",
+    "I am able to mentally reset between sets, halves or rounds.",
+    "I manage long periods without competition without losing my motivation."
+  ]},
+  {id:"C",name:"Self-Confidence",items:[
+    "I approach difficult competitions convinced that I can perform well.",
+    "Against a stronger opponent on paper, I still believe in my chances.",
+    "I am not intimidated by an opponent's reputation or track record.",
+    "Even after a series of defeats, I maintain the conviction that I am progressing.",
+    "I take tactical risks because I trust my own capabilities.",
+    "I do not need constant validation from my coach to feel competent.",
+    "I feel I belong in groups of athletes at a higher level than my current one.",
+    "I believe that my training work will enable me to reach my goals.",
+    "I do not abandon a playing style that suits me due to external pressure.",
+    "When I miss a technical move in a match, I remain convinced I can execute it next time.",
+    "I consider myself capable of learning and mastering the most difficult skills in my sport.",
+    "I can defend my tactical choices to my coach when I have sound reasons.",
+    "I do not apologise for performing well or for being ambitious.",
+    "I approach new situations with curiosity rather than apprehension.",
+    "My confidence does not depend solely on my most recent results.",
+    "I believe in my ability to recover and progress even after a lengthy injury.",
+    "I do not constantly compare my level to the best athletes in my group.",
+    "I can perform in front of important observers without it affecting my level.",
+    "I step onto the field or court intending to win, not merely to participate.",
+    "I trust myself in decisive moments — match point, final action, championship final."
+  ]},
+  {id:"D",name:"Resilience & Recovery",items:[
+    "After a major setback, I return to training with the same intensity as usual.",
+    "A difficult injury does not call into question my long-term commitment to my sport.",
+    "When a plan fails, I immediately look for another rather than becoming discouraged.",
+    "I perceive obstacles as normal parts of the athletic journey, not as injustices.",
+    "I continue to work hard even when I do not receive the recognition I hoped for.",
+    "After a painful elimination, I return to training with new objectives.",
+    "I can go through a difficult period without questioning my decision to practise this sport.",
+    "When I miss a goal I set for myself, I analyse what did not work without devaluing myself.",
+    "I resist plateaus where progress is not yet visible.",
+    "The accumulated fatigue of long training periods does not destroy my motivation.",
+    "When my environment changes (new coach, new group), I adapt without losing my footing.",
+    "I can handle the disappointment of not being selected without it breaking my confidence.",
+    "I bounce back faster from failures each time I experience one.",
+    "I draw concrete lessons from every underperformance.",
+    "In the face of criticism, I look for what is useful in it rather than rejecting or enduring it.",
+    "I maintain my training habits even in periods of personal doubt.",
+    "I can find motivation in my sport even when results are disappointing.",
+    "After a conflict with my coach or teammates, I return quickly to a collaborative state.",
+    "I maintain a long-term perspective even in moments of short-term discouragement.",
+    "I regard every difficulty I face as a resource for the rest of my career."
+  ]},
+  {id:"E",name:"Intrinsic Motivation",items:[
+    "I practise my sport because I love it, not primarily for results or rewards.",
+    "I seek to improve even in aspects of my sport that will not be assessed in competition.",
+    "I continue to train with intensity even when no one is watching.",
+    "The enjoyment I get from my sport does not depend on winning or losing.",
+    "I set my own progression goals independently of those my coach gives me.",
+    "I am stimulated by technically difficult challenges, even when I cannot do them immediately.",
+    "I seek to understand the why behind exercises and tactical decisions, not just to execute them.",
+    "I enjoy analysing my sport outside of training sessions.",
+    "My passion for my sport survives periods when I am not in form or not succeeding.",
+    "I engage fully in training sessions even those I find less interesting.",
+    "I set personal challenges that go beyond what is asked of me.",
+    "I feel pride when I master a difficult skill, regardless of the result.",
+    "I practise elements of my sport outside official sessions because I want to.",
+    "My commitment to my sport is not conditional on approval from my family or friends.",
+    "I feel alive and in my element when I practise my sport.",
+    "I seek to improve for my own sake before seeking to beat others.",
+    "Competition interests me as a means of measuring my progress, not as an end in itself.",
+    "I would remain committed to my sport even if external conditions became less favourable.",
+    "If I had to start over, I would choose exactly the same sport for exactly the same reasons."
+  ]}
+];
+
+const SCALE=["Never","Rarely","Sometimes","Often","Always"];
+const STORAGE_KEY="pathway_u13_athletes";
+
+// Build flat item list
+let ALL_ITEMS=[];
+DIMS.forEach(d=>d.items.forEach((q,li)=>ALL_ITEMS.push({dimId:d.id,dimName:d.name,q,li})));
+
+// ─── STATE ──────────────────────────────────────────────────────────────────
+let athletes=[];
+let curAthleteId=null;
+let curItemIdx=0;
+
+function loadStorage(){
+  try{const raw=localStorage.getItem(STORAGE_KEY);if(raw)athletes=JSON.parse(raw);}catch(e){athletes=[];}
+}
+function saveStorage(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(athletes));}catch(e){toast("Storage error — please export JSON now");}
+}
+function getAthlete(id){return athletes.find(a=>a.id===id);}
+function curAthlete(){return getAthlete(curAthleteId);}
+
+// ─── TABS ────────────────────────────────────────────────────────────────────
+const VIEWS=["list","intake","questionnaire","report"];
+function showTab(name){
+  VIEWS.forEach(v=>{
+    document.getElementById("view-"+v).style.display=v===name?"block":"none";
+    const t=document.getElementById("tab-"+v);
+    if(t)t.classList.toggle("active",v===name);
+  });
+  if(name==="list")renderList();
+  if(name==="questionnaire")renderQ();
+  if(name==="report")renderReport();
+}
+
+// ─── LIST ────────────────────────────────────────────────────────────────────
+function renderList(){
+  const q=(document.getElementById("search-input")?.value||"").toLowerCase();
+  const filtered=athletes.filter(a=>a.name.toLowerCase().includes(q)||a.sport.toLowerCase().includes(q));
+  document.getElementById("count-badge").textContent=athletes.length;
+  const tbody=document.getElementById("athlete-list-body");
+  if(!athletes.length){
+    tbody.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div>No athletes yet.<br>Click <strong>New athlete</strong> to begin.</div>`;
+    return;
+  }
+  if(!filtered.length){tbody.innerHTML=`<div class="empty-state">No athletes match your search.</div>`;return;}
+  let html=`<table class="athlete-table"><thead><tr>
+    <th>Name</th><th>Sport</th><th>Date</th><th>Progress</th><th>Status</th><th>Actions</th>
+  </tr></thead><tbody>`;
+  filtered.forEach(a=>{
+    const ans=Object.keys(a.answers||{}).length;
+    const pct=Math.round(ans/99*100);
+    const status=ans===99?"complete":ans>0?"partial":"empty";
+    const statusLabel=ans===99?"Complete":ans>0?`${pct}% (${ans}/99)`:"Not started";
+    html+=`<tr>
+      <td><strong>${a.name}</strong></td>
+      <td>${a.sport||"—"}</td>
+      <td>${a.date||"—"}</td>
+      <td><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:4px;background:#e0ddd6;border-radius:2px;overflow:hidden"><div style="width:${pct}%;height:100%;background:${status==="complete"?"#1D9E75":status==="partial"?"#B8902A":"#e0ddd6"};border-radius:2px"></div></div><span style="font-size:11px;color:#6b6b67;white-space:nowrap">${ans}/99</span></div></td>
+      <td><span class="status-pill ${status}">${statusLabel}</span></td>
+      <td><div class="actions-cell">
+        <button class="btn sm" onclick="resumeAthlete('${a.id}')">${ans===99?"View":"Continue"}</button>
+        <button class="btn sm" onclick="viewReport('${a.id}')">Report</button>
+        <button class="btn sm" onclick="exportJSON('${a.id}')">JSON</button>
+        <button class="btn sm danger" onclick="deleteAthlete('${a.id}')">Delete</button>
+      </div></td>
+    </tr>`;
+  });
+  html+=`</tbody></table>`;
+  tbody.innerHTML=html;
+}
+
+function resumeAthlete(id){
+  curAthleteId=id;
+  curItemIdx=findFirstUnanswered();
+  document.getElementById("tab-q").style.display="";
+  showTab("questionnaire");
+}
+
+function viewReport(id){
+  curAthleteId=id;
+  document.getElementById("tab-report").style.display="";
+  showTab("report");
+}
+
+function deleteAthlete(id){
+  const a=getAthlete(id);
+  if(!confirm(`Delete ${a.name}'s data? This cannot be undone.`))return;
+  athletes=athletes.filter(x=>x.id!==id);
+  saveStorage();
+  renderList();
+  toast("Athlete deleted");
+}
+
+// ─── INTAKE ──────────────────────────────────────────────────────────────────
+function startAssessment(){
+  const name=document.getElementById("f-name").value.trim();
+  const dob=document.getElementById("f-dob").value;
+  const sport=document.getElementById("f-sport").value;
+  if(!name){alert("Please enter the athlete's name.");return;}
+  if(!sport){alert("Please select a sport.");return;}
+  const today=new Date().toISOString().slice(0,10);
+  const id="a_"+Date.now();
+  const athlete={
+    id,name,dob,sport,
+    date:document.getElementById("f-date").value||today,
+    evaluator:document.getElementById("f-eval").value.trim(),
+    notes:document.getElementById("f-notes").value.trim(),
+    answers:{},
+    createdAt:new Date().toISOString()
+  };
+  athletes.push(athlete);
+  saveStorage();
+  curAthleteId=id;
+  curItemIdx=0;
+  // reset form
+  ["f-name","f-dob","f-eval","f-notes"].forEach(i=>document.getElementById(i).value="");
+  document.getElementById("f-sport").value="";
+  document.getElementById("f-date").value="";
+  document.getElementById("tab-q").style.display="";
+  showTab("questionnaire");
+  toast("Assessment started for "+name);
+}
+
+// ─── QUESTIONNAIRE ───────────────────────────────────────────────────────────
+function findFirstUnanswered(){
+  const a=curAthlete();
+  for(let i=0;i<ALL_ITEMS.length;i++){if(a.answers[i]===undefined)return i;}
+  return ALL_ITEMS.length-1;
+}
+
+function renderQ(){
+  const a=curAthlete();
+  if(!a){showTab("list");return;}
+  const item=ALL_ITEMS[curItemIdx];
+  const answered=Object.keys(a.answers).length;
+  const pct=Math.round(answered/99*100);
+  const cur=a.answers[curItemIdx];
+  const isLast=curItemIdx===ALL_ITEMS.length-1;
+
+  document.getElementById("q-content").innerHTML=`
+  <div class="prog-bar">
+    <div class="prog-top">
+      <span class="prog-label">Item ${curItemIdx+1} of 99 &nbsp;·&nbsp; ${a.name}</span>
+      <span class="prog-pct">${answered} answered · ${pct}%</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
+    <span class="dim-tag">Dim. ${item.dimId} — ${item.dimName}</span>
+  </div>
+  <div class="q-body">
+    <div class="q-num">Item ${curItemIdx+1} of 99</div>
+    <div class="q-text">${item.q}</div>
+    <div class="scale-labels"><span>1 · Never</span><span>2 · Rarely</span><span>3 · Sometimes</span><span>4 · Often</span><span>5 · Always</span></div>
+    <div class="likert">
+      ${[1,2,3,4,5].map(v=>`<button class="lb${cur===v?" sel":""}" onclick="answer(${v})">
+        <span class="lb-n">${v}</span><span class="lb-w">${SCALE[v-1]}</span>
+      </button>`).join("")}
+    </div>
+  </div>
+  <div class="q-nav">
+    <button class="btn" onclick="goQ(-1)" ${curItemIdx===0?"disabled":""}>← Back</button>
+    ${cur!==undefined
+      ?`<span class="nav-hint ok">✓ Saved · tap to change</span>`
+      :`<span class="nav-hint req">Select a response to continue</span>`}
+    <div class="spacer"></div>
+    <button class="btn" onclick="skipToReport()" style="font-size:12px;color:#6b6b67">Skip to report</button>
+    ${isLast
+      ?`<button class="btn primary" onclick="finishQ()" ${cur===undefined?"disabled":""}>Generate report</button>`
+      :`<button class="btn primary" onclick="goQ(1)" ${cur===undefined?"disabled":""}>Next →</button>`}
+  </div>`;
+}
+
+function answer(v){
+  const a=curAthlete();
+  a.answers[curItemIdx]=v;
+  saveStorage();
+  renderQ();
+}
+
+function goQ(dir){
+  curItemIdx=Math.max(0,Math.min(ALL_ITEMS.length-1,curItemIdx+dir));
+  renderQ();
+}
+
+function skipToReport(){
+  const a=curAthlete();
+  if(Object.keys(a.answers).length===0){alert("Please answer at least one item first.");return;}
+  if(confirm("Generate report now?\nUnanswered items will be excluded from dimension scores."))finishQ();
+}
+
+function finishQ(){
+  document.getElementById("tab-report").style.display="";
+  showTab("report");
+}
+
+// ─── SCORES ──────────────────────────────────────────────────────────────────
+function calcScores(a){
+  const dimScores={};
+  let startIdx=0;
+  DIMS.forEach(d=>{
+    const vals=d.items.map((_,li)=>a.answers[startIdx+li]).filter(v=>v!==undefined);
+    const sum=vals.reduce((x,y)=>x+y,0);
+    dimScores[d.id]={sum,count:vals.length,total:d.items.length,avg:vals.length?sum/vals.length:null};
+    startIdx+=d.items.length;
+  });
+  const allVals=Object.values(a.answers);
+  const globalAvg=allVals.length?allVals.reduce((x,y)=>x+y,0)/allVals.length:0;
+  return{dimScores,globalAvg,totalAnswered:allVals.length};
+}
+
+function tier(avg){if(avg===null)return"m";return avg>=4?"h":avg>=3?"m":"l";}
+function tierLabel(t){return t==="h"?"Favourable profile":t==="m"?"Standard profile":"Priority attention";}
+
+const DIM_INTERP={
+  A:{h:"Strong self-awareness — athlete accurately identifies internal states, stress triggers and performance patterns. Asset for technical coaching.",
+     m:"Developing self-awareness — some blind spots remain. Recommend journaling exercises and structured post-session debriefs.",
+     l:"Limited self-awareness at this stage. Priority: structured reflection protocol. Not eliminatory at U-13."},
+  B:{h:"Effective emotional regulation — athlete recovers quickly from errors and manages competitive stress well.",
+     m:"Partial regulation — inconsistencies under high pressure. Recommend breathing and reset routines in training.",
+     l:"Emotional regulation requires targeted support. Refer to PATHWAY mental skills track before next assessment."},
+  C:{h:"Stable self-confidence — not destabilised by opposition or results. Strong predictive profile.",
+     m:"Developing confidence — context-dependent. Confidence is the most malleable dimension at this age through targeted mental training.",
+     l:"Low confidence score. Not eliminatory at U-13. Confidence responds strongly to structured mental training intervention."},
+  D:{h:"Strong resilience — athlete capitalises on failures and sustains effort under adversity. Long-term predictor of elite persistence.",
+     m:"Developing resilience — some regression in extended difficulty periods. Build progressive challenge protocols.",
+     l:"Resilience support recommended. Structure graduated adversity training with coach monitoring."},
+  E:{h:"Strong intrinsic motivation — athlete practises for mastery and enjoyment. Most robust predictor of long-term persistence in elite sport.",
+     m:"Mixed motivation profile — some external dependency. Reinforce autonomy and self-directed goal setting.",
+     l:"External motivation dominance detected. Explore underlying drivers. Sustainability risk if external conditions change."}
+};
+
+function globalInterpText(avg){
+  if(avg>=4)return"Highly favourable mental profile — strong psychological foundations across assessed dimensions.";
+  if(avg>=3)return"Standard profile — targeted developmental work on weak dimensions recommended before next evaluation cycle.";
+  return"Mental support recommended as priority — coordinate with the PATHWAY mental skills specialist before advancing this athlete.";
+}
+
+function recText(dimScores){
+  const weak=DIMS.filter(d=>{const s=dimScores[d.id];return s.avg!==null&&s.avg<3;}).map(d=>d.name);
+  const strong=DIMS.filter(d=>{const s=dimScores[d.id];return s.avg!==null&&s.avg>=4;}).map(d=>d.name);
+  let r="";
+  if(strong.length)r+=`<strong>Strengths to build on:</strong> ${strong.join(", ")}. `;
+  if(weak.length)r+=`<strong>Priority development areas:</strong> ${weak.join(", ")}. Coordinate with the PATHWAY mental skills specialist for targeted intervention. `;
+  r+=`<strong>Next evaluation:</strong> Reassessment recommended after minimum 6 months of structured mental skills training. No individual dimension score justifies exclusion before age 14.`;
+  return r;
+}
+
+// ─── REPORT ──────────────────────────────────────────────────────────────────
+function renderReport(){
+  const a=curAthlete();
+  if(!a){showTab("list");return;}
+  const {dimScores,globalAvg,totalAnswered}=calcScores(a);
+  const gt=tier(globalAvg);
+  const dobStr=a.dob?new Date(a.dob).toLocaleDateString("en-GB"):"—";
+  const dateStr=a.date?new Date(a.date).toLocaleDateString("en-GB"):"—";
+
+  document.getElementById("report-content").innerHTML=`
+  <div class="report-body" id="printable">
+    <div class="rep-hdr">
+      <div class="rep-logo-row">
+        <div class="rep-logo">MAS</div>
+        <div>
+          <div class="rep-org-name">MAS Foundation · PATHWAY Programme</div>
+          <div class="rep-org-sub">Qatar Foundation Ecosystem · Female Athlete Talent Detection · U-13 Module</div>
+        </div>
+      </div>
+      <div class="rep-meta">
+        Assessment date: ${dateStr}<br>
+        Report generated: ${new Date().toLocaleDateString("en-GB")}<br>
+        <strong>Confidential — Internal use only</strong>
+      </div>
+    </div>
+
+    <div class="rep-title">Psychological Assessment Report — MAS-MSQ99</div>
+    <div class="rep-subtitle">Mental Skills Questionnaire · 5 Dimensions · 99 Items · Likert Scale 1–5</div>
+
+    <div class="athlete-grid">
+      <div class="ag-cell"><div class="ag-label">Athlete</div><div class="ag-val">${a.name}</div></div>
+      <div class="ag-cell"><div class="ag-label">Date of birth</div><div class="ag-val">${dobStr}</div></div>
+      <div class="ag-cell"><div class="ag-label">Discipline</div><div class="ag-val">${a.sport||"—"}</div></div>
+      <div class="ag-cell"><div class="ag-label">Items answered</div><div class="ag-val">${totalAnswered} / 99 (${Math.round(totalAnswered/99*100)}%)</div></div>
+      <div class="ag-cell"><div class="ag-label">Evaluator</div><div class="ag-val">${a.evaluator||"—"}</div></div>
+      <div class="ag-cell"><div class="ag-label">Module</div><div class="ag-val">U-13 · MSQ99</div></div>
+    </div>
+
+    <div class="global-card">
+      <div>
+        <div class="gc-score-label">Global score</div>
+        <div class="gc-score-val">${globalAvg.toFixed(2)} / 5.00</div>
+        <div class="gc-score-sub">${totalAnswered} of 99 items answered</div>
+      </div>
+      <div class="gc-interp">
+        <div class="gc-interp-text">${globalInterpText(globalAvg)}</div>
+        <div class="gc-band">${globalAvg>=4?"Band: > 4.0 — Highly favourable":globalAvg>=3?"Band: 3.0–4.0 — Standard":"Band: < 3.0 — Priority support"}</div>
+      </div>
+    </div>
+
+    <div class="section-label">Dimension breakdown</div>
+    ${DIMS.map(d=>{
+      const s=dimScores[d.id];
+      const t=tier(s.avg);
+      const pct=s.avg!==null?Math.round((s.avg/5)*100):0;
+      return `<div class="dim-card">
+        <div class="dc-row1">
+          <span class="dc-name">Dimension ${d.id} — ${d.name}</span>
+          <span class="dc-badge ${t}">${s.avg!==null?s.avg.toFixed(2)+" / 5.00":"No data"} · ${tierLabel(t)}</span>
+        </div>
+        <div class="bar-labels-row"><span>1.0</span><span>2.0</span><span>3.0</span><span>4.0</span><span>5.0</span></div>
+        <div class="bar-track"><div class="bar-fill ${t}" style="width:${pct}%"></div></div>
+        <div class="dc-count">${s.count} of ${s.total} items answered</div>
+        <div class="dc-interp ${t}">${DIM_INTERP[d.id][t]}</div>
+      </div>`;
+    }).join("")}
+
+    <div class="rec-block">
+      <div class="rec-title">Evaluator recommendations</div>
+      <div class="rec-text">${recText(dimScores)}</div>
+    </div>
+    ${a.notes?`<div class="rec-block" style="margin-top:10px"><div class="rec-title">Session notes</div><div class="rec-text">${a.notes}</div></div>`:""}
+
+    <div class="disclaimer">
+      <strong>Important:</strong> This report is generated from self-reported data and must be interpreted by a PATHWAY-certified evaluator. No score on any single dimension justifies exclusion before the age of 14. Self-Confidence (Dimension C) is the most malleable dimension through targeted mental training. Intrinsic Motivation (Dimension E) is the strongest long-term predictor of elite persistence. This document is confidential — MAS Foundation / Qatar Foundation internal use only.
+    </div>
+
+    <div class="rep-actions no-print">
+      <button class="btn" onclick="resumeAthlete('${a.id}')">← Review / edit answers</button>
+      <button class="btn" onclick="exportJSON('${a.id}')">Export JSON</button>
+      <button class="btn primary" onclick="printReport()">Print / Save PDF</button>
+      <button class="btn" onclick="showTab('list')">← Back to list</button>
+    </div>
+  </div>`;
+}
+
+// ─── EXPORT / PRINT ──────────────────────────────────────────────────────────
+function exportJSON(id){
+  const a=getAthlete(id);
+  const{dimScores,globalAvg,totalAnswered}=calcScores(a);
+  const payload={
+    meta:{tool:"PATHWAY-U13-MSQ99",version:"1.0",exportedAt:new Date().toISOString(),programme:"MAS Foundation PATHWAY"},
+    athlete:{id:a.id,name:a.name,dob:a.dob,sport:a.sport,date:a.date,evaluator:a.evaluator,notes:a.notes},
+    scores:{globalAvg:parseFloat(globalAvg.toFixed(4)),totalAnswered,totalItems:99,completionPct:Math.round(totalAnswered/99*100)},
+    dimensions:Object.fromEntries(DIMS.map(d=>{const s=dimScores[d.id];return[d.id,{name:d.name,avg:s.avg!==null?parseFloat(s.avg.toFixed(4)):null,count:s.count,total:s.total}];})),
+    rawAnswers:a.answers
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+  link.href=url;
+  link.download=`PATHWAY_U13_${a.name.replace(/\s+/g,"_")}_${a.date||"nodate"}.json`;
+  link.click();
+  URL.revokeObjectURL(url);
+  toast("JSON exported for "+a.name);
+}
+
+function exportAllJSON(){
+  if(!athletes.length){alert("No athletes to export.");return;}
+  const payload={
+    meta:{tool:"PATHWAY-U13-MSQ99",version:"1.0",exportedAt:new Date().toISOString(),totalAthletes:athletes.length},
+    athletes:athletes.map(a=>{
+      const{dimScores,globalAvg,totalAnswered}=calcScores(a);
+      return{
+        athlete:{id:a.id,name:a.name,dob:a.dob,sport:a.sport,date:a.date,evaluator:a.evaluator,notes:a.notes},
+        scores:{globalAvg:parseFloat(globalAvg.toFixed(4)),totalAnswered,completionPct:Math.round(totalAnswered/99*100)},
+        dimensions:Object.fromEntries(DIMS.map(d=>{const s=dimScores[d.id];return[d.id,{name:d.name,avg:s.avg!==null?parseFloat(s.avg.toFixed(4)):null,count:s.count}];})),
+        rawAnswers:a.answers
+      };
+    })
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+  link.href=url;
+  link.download=`PATHWAY_U13_ALL_${new Date().toISOString().slice(0,10)}.json`;
+  link.click();
+  URL.revokeObjectURL(url);
+  toast(`Exported ${athletes.length} athletes`);
+}
+
+function printReport(){window.print();}
+
+// ─── TOAST ───────────────────────────────────────────────────────────────────
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2800);
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+loadStorage();
+document.getElementById("f-date").value=new Date().toISOString().slice(0,10);
+renderList();
+</script>
+</body>
+</html>
