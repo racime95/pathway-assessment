@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PATHWAY · Assessment Hub · MAS Foundation</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0C2340;--gold:#B8902A;--gold-l:#FFF8E6;--gold-d:#8a6a1a;
+  --teal:#1D9E75;--teal-l:#E1F5EE;--coral:#D85A30;--coral-l:#FAECE7;
+  --purple:#5C3A8A;--purple-l:#F0EAF8;
+  --bg:#f7f7f5;--surface:#fff;--border:#e0ddd6;--text:#1a1a18;--muted:#6b6b67;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.app{max-width:820px;margin:0 auto;padding:20px 14px}
+
+/* HEADER */
+.hdr{background:var(--navy);border-radius:12px 12px 0 0;padding:16px 22px;display:flex;align-items:center;gap:14px}
+.logo{width:40px;height:40px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.hdr-main{flex:1}
+.hdr-t{font-size:15px;font-weight:600;color:#fff}
+.hdr-s{font-size:11px;color:rgba(255,255,255,.5);margin-top:1px}
+.hub-badge{background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;flex-shrink:0}
+
+/* NAV TABS */
+.nav-tabs{display:flex;background:var(--surface);border-left:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.tab{flex:1;padding:11px 6px;text-align:center;cursor:pointer;font-size:12px;color:var(--muted);border:none;background:transparent;border-bottom:2px solid transparent;transition:all .15s}
+.tab.active{color:var(--navy);border-bottom-color:var(--gold);font-weight:600}
+.tab-count{display:inline-block;background:var(--gold);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;margin-left:4px}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:0 0 12px 12px;overflow:hidden;margin-bottom:20px}
+
+/* BUTTONS */
+.btn{padding:8px 18px;border-radius:8px;border:1px solid var(--border);background:var(--surface);font-size:13px;cursor:pointer;color:var(--text);white-space:nowrap;transition:all .12s}
+.btn:hover{border-color:var(--navy);color:var(--navy)}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.primary:hover{background:#1a3a5c}
+.btn.gold{background:var(--gold);color:#fff;border-color:var(--gold)}
+.btn.gold:hover{background:var(--gold-d)}
+.btn.teal{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn.sm{padding:5px 11px;font-size:11px}
+.btn.danger{color:#A32D2D;border-color:#F09595}
+.btn.danger:hover{background:#FCEBEB}
+
+/* TOOL BADGE */
+.tool-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:700;margin-right:6px}
+.tool-badge.msq{background:var(--navy);color:#fff}
+.tool-badge.acsi{background:var(--teal);color:#fff}
+.tool-badge.mtq{background:var(--purple);color:#fff}
+.tool-badge.psyj{background:var(--gold);color:#fff}
+
+/* INTAKE */
+.form-body{padding:20px 22px}
+.form-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.form-sub{font-size:12px;color:var(--muted);margin-bottom:16px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px}
+.field label{font-size:10px;color:var(--muted);display:block;margin-bottom:3px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+.field input,.field select{width:100%;padding:9px 11px;border:1px solid var(--border);border-radius:8px;font-size:14px;background:var(--surface);color:var(--text);outline:none;transition:border-color .12s}
+.field input:focus,.field select:focus{border-color:var(--navy)}
+.field.full{grid-column:1/-1}
+
+/* AGE ROUTER CARD */
+.router-card{margin:14px 22px 18px;border-radius:10px;overflow:hidden;border:1.5px solid var(--border)}
+.router-hdr{padding:10px 16px;font-size:12px;font-weight:700;letter-spacing:.5px}
+.router-body{padding:12px 16px;font-size:12px;color:var(--muted);line-height:1.7}
+.router-card.msq .router-hdr{background:var(--navy);color:#fff}
+.router-card.acsi .router-hdr{background:var(--teal);color:#fff}
+.router-card.mtq .router-hdr{background:var(--purple);color:#fff}
+.router-card.psyj .router-hdr{background:var(--gold);color:#fff}
+.router-card.none .router-hdr{background:#ccc;color:#fff}
+
+/* LIST */
+.list-toolbar{padding:12px 18px;display:flex;gap:8px;align-items:center;border-bottom:1px solid var(--border)}
+.list-toolbar input{flex:1;padding:7px 11px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg)}
+.ath-tbl{width:100%;border-collapse:collapse}
+.ath-tbl th{font-size:10px;color:var(--muted);font-weight:600;text-align:left;padding:9px 18px;border-bottom:1px solid var(--border);background:var(--bg);letter-spacing:.3px;text-transform:uppercase}
+.ath-tbl td{padding:10px 18px;border-bottom:1px solid var(--border);font-size:12px;vertical-align:middle}
+.ath-tbl tr:last-child td{border-bottom:none}
+.ath-tbl tr:hover td{background:#fafaf8}
+.spill{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:12px}
+.spill.done{background:var(--teal-l);color:#0F6E56}
+.spill.part{background:var(--gold-l);color:#7a5010}
+.spill.none{background:#f0f0ee;color:var(--muted)}
+.acts{display:flex;gap:5px;flex-wrap:wrap}
+.empty-s{padding:36px 18px;text-align:center;color:var(--muted);font-size:13px}
+.empty-i{font-size:28px;margin-bottom:8px;opacity:.4}
+
+/* QUESTIONNAIRE */
+.prog-bar{padding:12px 22px 10px;background:#fafaf8;border-bottom:1px solid var(--border)}
+.prog-top{display:flex;justify-content:space-between;margin-bottom:5px}
+.prog-lbl{font-size:11px;color:var(--muted)}
+.prog-pct{font-size:11px;font-weight:600;color:var(--navy)}
+.prog-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:7px}
+.prog-fill{height:100%;border-radius:3px;transition:width .3s}
+.prog-fill.msq{background:var(--gold)}
+.prog-fill.acsi{background:var(--teal)}
+.prog-fill.mtq{background:var(--purple)}
+.prog-fill.psyj{background:var(--gold)}
+
+.dim-chip{display:inline-flex;align-items:center;font-size:10px;padding:2px 9px;border-radius:12px;font-weight:600;margin-right:6px}
+.dim-chip.B{background:var(--gold-l);color:#7a5010;border:1px solid var(--gold)}
+.dim-chip.C{background:var(--teal-l);color:#0F6E56;border:1px solid #9FE1CB}
+.dim-chip.E{background:#FEF5E6;color:#7a5010;border:1px solid #D4A843}
+.dim-chip.ACSI{background:var(--teal-l);color:#0F6E56;border:1px solid #9FE1CB}
+.dim-chip.MTQ{background:var(--purple-l);color:var(--purple);border:1px solid #C4A8E8}
+.dim-chip.ATH{background:var(--teal-l);color:#0F6E56;border:1px solid #9FE1CB}
+
+.q-body{padding:22px 22px 14px}
+.q-num{font-size:10px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.q-text{font-size:15px;line-height:1.7;color:var(--text);margin-bottom:22px;min-height:48px}
+
+/* 3-LEVEL SCALE (MSQ) */
+.scale-3{display:flex;gap:10px}
+.lb3{flex:1;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);cursor:pointer;padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .14s;min-width:0}
+.lb3:hover{border-color:var(--gold);background:var(--gold-l);transform:translateY(-1px)}
+.lb3.sel{border-width:2px;transform:translateY(-2px)}
+.lb3.sel-0{background:#f0f0ee;border-color:#999}
+.lb3.sel-1{background:var(--gold-l);border-color:var(--gold)}
+.lb3.sel-2{background:var(--teal-l);border-color:var(--teal)}
+.lb3-icon{font-size:24px}
+.lb3-label{font-size:11px;font-weight:700;text-align:center}
+.lb3-sub{font-size:9px;color:var(--muted);text-align:center;line-height:1.3}
+
+/* 5-LEVEL SCALE (ACSI / MTQ) */
+.scale-5{display:flex;gap:6px}
+.lb5{flex:1;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);cursor:pointer;padding:12px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .13s;min-width:0}
+.lb5:hover{border-color:var(--teal);background:var(--teal-l)}
+.lb5.sel{border-width:2px;border-color:var(--teal);background:var(--teal-l)}
+.lb5.mtq-sel{border-color:var(--purple);background:var(--purple-l)}
+.lb5-n{font-size:16px;font-weight:700;color:var(--text)}
+.lb5.sel .lb5-n{color:var(--teal)}
+.lb5.mtq-sel .lb5-n{color:var(--purple)}
+.lb5-w{font-size:8px;color:var(--muted);text-align:center;line-height:1.2}
+
+/* PSYJ evaluator form */
+.psyj-grid{display:grid;gap:10px;padding:0 22px 18px}
+.psyj-item{border:1px solid var(--border);border-radius:9px;overflow:hidden}
+.psyj-item-hdr{background:var(--gold-l);padding:9px 14px;font-size:12px;font-weight:600;color:var(--gold-d);display:flex;justify-content:space-between;align-items:center}
+.psyj-scale{display:flex;gap:5px;padding:10px 14px}
+.psyj-btn{flex:1;border:1.5px solid var(--border);border-radius:6px;background:var(--bg);cursor:pointer;padding:8px 3px;text-align:center;font-size:11px;font-weight:600;color:var(--muted);transition:all .12s}
+.psyj-btn:hover{border-color:var(--gold);background:var(--gold-l);color:var(--gold-d)}
+.psyj-btn.sel{background:var(--gold);border-color:var(--gold);color:#fff}
+.psyj-notes{padding:0 14px 12px}
+.psyj-notes textarea{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:7px;font-size:12px;resize:vertical;min-height:52px;background:var(--bg);color:var(--text)}
+
+.q-nav{padding:12px 22px;display:flex;align-items:center;gap:8px;border-top:1px solid var(--border)}
+.nav-hint{font-size:11px}
+.nav-hint.ok{color:var(--teal)}
+.nav-hint.req{color:var(--coral)}
+.spc{flex:1}
+
+/* REPORT */
+.rep-body{padding:24px 24px}
+.rep-hdr{border-bottom:2px solid var(--navy);padding-bottom:14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.rep-logo-row{display:flex;align-items:center;gap:10px}
+.rep-logo{width:32px;height:32px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+.rep-org{font-size:13px;font-weight:700;color:var(--navy)}
+.rep-sub{font-size:10px;color:var(--muted)}
+.rep-meta{text-align:right;font-size:10px;color:var(--muted);line-height:1.7}
+.rep-title{font-size:16px;font-weight:700;margin-bottom:3px}
+.rep-subtitle{font-size:11px;color:var(--muted);margin-bottom:16px}
+.ath-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:16px}
+.ag-c{background:var(--bg);border-radius:7px;padding:9px 12px;border:1px solid var(--border)}
+.ag-l{font-size:9px;color:var(--muted);font-weight:600;letter-spacing:.3px;text-transform:uppercase;margin-bottom:2px}
+.ag-v{font-size:12px;font-weight:600}
+.score-blk{border-radius:9px;padding:15px 18px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:12px}
+.score-blk.msq{background:var(--navy)}
+.score-blk.acsi{background:var(--teal)}
+.score-blk.mtq{background:var(--purple)}
+.score-blk.psyj{background:var(--gold)}
+.sc-label{font-size:10px;color:rgba(255,255,255,.6);margin-bottom:2px}
+.sc-val{font-size:28px;font-weight:700;color:#fff}
+.sc-sub{font-size:9px;color:rgba(255,255,255,.4);margin-top:2px}
+.sc-interp{text-align:right;max-width:220px;font-size:11px;color:rgba(255,255,255,.85);font-weight:600;line-height:1.5}
+.sec-label{font-size:9px;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;font-weight:700;margin:16px 0 10px}
+.dim-card{border:1px solid var(--border);border-radius:9px;padding:12px 15px;margin-bottom:8px}
+.dc-row1{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;flex-wrap:wrap;gap:6px}
+.dc-name{font-size:12px;font-weight:700}
+.dc-badge{font-size:10px;font-weight:700;padding:2px 10px;border-radius:12px}
+.dc-badge.h{background:var(--teal-l);color:#0F6E56;border:1px solid #5DCAA5}
+.dc-badge.m{background:var(--gold-l);color:#854F0B;border:1px solid var(--gold)}
+.dc-badge.l{background:var(--coral-l);color:#993C1D;border:1px solid #F0997B}
+.bar-track{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;margin-bottom:5px;border:1px solid var(--border)}
+.bar-fill{height:100%;border-radius:3px}
+.bar-fill.h{background:var(--teal)}.bar-fill.m{background:var(--gold)}.bar-fill.l{background:var(--coral)}
+.dc-interp{font-size:11px;color:var(--text);line-height:1.6;padding:7px 10px;background:var(--bg);border-radius:6px;border-left:3px solid var(--border)}
+.dc-interp.h{border-left-color:var(--teal)}.dc-interp.m{border-left-color:var(--gold)}.dc-interp.l{border-left-color:var(--coral)}
+.rec-blk{margin-top:14px;padding:13px 15px;border:1px solid var(--border);border-radius:9px;background:var(--bg)}
+.rec-title{font-size:11px;font-weight:700;margin-bottom:6px}
+.rec-text{font-size:11px;color:var(--muted);line-height:1.7}
+.disclaimer{margin-top:12px;padding:9px 12px;font-size:9px;color:var(--muted);background:var(--bg);border-radius:7px;line-height:1.6;border:1px solid var(--border)}
+.rep-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+
+/* PSYJ REPORT */
+.psyj-rep-grid{display:grid;gap:8px;margin-bottom:12px}
+.psyj-dim-card{border:1px solid var(--border);border-radius:9px;overflow:hidden}
+.psyj-dim-hdr{background:var(--gold-l);padding:9px 14px;display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--gold-d)}
+.psyj-dim-body{padding:9px 14px;font-size:11px;color:var(--muted)}
+
+@media print{
+  body{background:#fff}.app{padding:0}.no-print{display:none!important}
+  .card{border:none;border-radius:0}.rep-body{padding:16px 20px}
+  .dim-card{page-break-inside:avoid}
+}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#fff;padding:10px 18px;border-radius:9px;font-size:12px;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="card">
+  <div class="hdr">
+    <div class="logo">MAS</div>
+    <div class="hdr-main">
+      <div class="hdr-t">PATHWAY · Assessment Hub</div>
+      <div class="hdr-s">MAS Foundation · Qatar Foundation · Female Athlete Talent Detection</div>
+    </div>
+    <div class="hub-badge">HUB · 3 Tools</div>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab active" onclick="showTab('list')" id="tab-list">Athletes <span class="tab-count" id="count-badge">0</span></button>
+    <button class="tab" onclick="showTab('intake')" id="tab-intake">+ New</button>
+    <button class="tab" onclick="showTab('questionnaire')" id="tab-q" style="display:none">Assessment</button>
+    <button class="tab" onclick="showTab('report')" id="tab-rep" style="display:none">Report</button>
+  </div>
+</div>
+
+<!-- LIST -->
+<div class="card" id="view-list">
+  <div class="list-toolbar">
+    <input type="text" id="search-input" placeholder="Search athlete…" oninput="renderList()"/>
+    <button class="btn gold" onclick="showTab('intake')">+ New athlete</button>
+    <button class="btn" onclick="exportAll()">Export all JSON</button>
+  </div>
+  <div id="list-body"></div>
+</div>
+
+<!-- INTAKE -->
+<div class="card" id="view-intake" style="display:none">
+  <div class="form-body">
+    <div class="form-title">New Athlete Profile</div>
+    <div class="form-sub">The assessment tool is selected automatically based on the athlete's age.</div>
+    <div class="form-grid">
+      <div class="field"><label>Full name *</label><input type="text" id="f-name" placeholder="Athlete full name"/></div>
+      <div class="field"><label>Date of birth *</label><input type="date" id="f-dob" oninput="updateRouter()"/></div>
+      <div class="field"><label>Sport *</label>
+        <select id="f-sport" oninput="updateRouter()">
+          <option value="">Select discipline…</option>
+          <option value="Athletics">Athletics</option>
+          <option value="Basketball">Basketball</option>
+          <option value="Fencing">Fencing</option>
+          <option value="Tennis">Tennis</option>
+          <option value="Volleyball">Volleyball</option>
+        </select>
+      </div>
+      <div class="field"><label>Assessment date</label><input type="date" id="f-date"/></div>
+      <div class="field"><label>Evaluator *</label><input type="text" id="f-eval" placeholder="Level 2 certified evaluator"/></div>
+      <div class="field"><label>Location</label><input type="text" id="f-loc" placeholder="Venue / school"/></div>
+      <div class="field full"><label>Session notes</label><input type="text" id="f-notes" placeholder="Optional context…"/></div>
+    </div>
+
+    <div id="router-display"></div>
+
+    <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+      <button class="btn primary" onclick="startAssessment()" id="start-btn">Start assessment</button>
+      <button class="btn" onclick="showTab('list')">← Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUESTIONNAIRE -->
+<div class="card" id="view-questionnaire" style="display:none">
+  <div id="q-content"></div>
+</div>
+
+<!-- REPORT -->
+<div class="card" id="view-report" style="display:none">
+  <div id="rep-content"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// DATA — ALL THREE INSTRUMENTS
+// ═══════════════════════════════════════════════════════════
+
+// ── TOOL 1: MAS-MSQ-U13 (age 10–13, scale 0–2) ──────────
+const MSQ_DIMS = [
+  {id:"B",name:"Emotional Regulation",items:[
+    "After a mistake, I can quickly focus on what comes next",
+    "When I feel angry in training, I find a way to calm down",
+    "Before a competition, I'm nervous but I still perform well",
+    "When something unfair happens, I stay focused",
+    "After losing, I feel sad for a while — then I'm ready to try again",
+    "I can stop thinking about a bad session when it's over"
+  ]},
+  {id:"C",name:"Self-Confidence",items:[
+    "I believe I can do well even against stronger athletes",
+    "After bad results, I still believe I can improve",
+    "I know my strengths and use them when things get hard",
+    "When I try something hard, I believe I will eventually do it",
+    "I feel I belong in my group, even if others seem better",
+    "In key moments, I trust myself to do what I have trained"
+  ]},
+  {id:"E",name:"Intrinsic Motivation",items:[
+    "I love my sport even on tired days when training is hard",
+    "I enjoy training even when nobody is watching",
+    "Learning something new excites me even when I get it wrong at first",
+    "I would still do my sport without trophies or praise",
+    "When I improve even a small thing, I feel really proud",
+    "I think about my sport outside of training"
+  ]}
+];
+const ATH_DIMS = [
+  {id:"ATH-A",name:"Motivation for Volume Training",items:[
+    "When my coach announces a long session, I feel ready — not tired",
+    "Even repetitive drills don't make me want to stop",
+    "After a hard session, I feel proud — not just relieved",
+    "I push through every repetition — even the last and hardest",
+    "I still enjoy training even on very long, tiring days",
+    "When my coach increases training load, I accept it and try my best"
+  ]},
+  {id:"ATH-B",name:"Response to Time / Distance Outcomes",items:[
+    "After seeing my time or distance, I think: how can I improve next time?",
+    "A disappointing result still motivates me to keep training",
+    "I compare my times to my own personal best — not to other athletes",
+    "On the start line, I feel focused — not scared of my result",
+    "After a personal best, I am already thinking about doing even better",
+    "After a bad competition result, I come back to training motivated"
+  ]},
+  {id:"ATH-C",name:"Effort & Fatigue",items:[
+    "When my legs feel heavy, I try to keep my pace — not slow down",
+    "When I underperform, I first ask myself: did I really give everything?",
+    "In the last part of a race, I try to finish as strong as I started",
+    "I know the difference: tired from hard work vs. tired from low effort",
+    "After giving absolutely everything — even a bad result feels good",
+    "How hard I try is my decision — not dependent on how I feel"
+  ]}
+];
+const SCALE3 = [{val:0,icon:"😐",label:"Not me",sub:"Doesn't describe me"},{val:1,icon:"🙂",label:"A little me",sub:"Sometimes"},{val:2,icon:"⭐",label:"That's me",sub:"Describes me well"}];
+
+// ── TOOL 2: MAS-ACSI28 (age 14–15, scale 0–3) ───────────
+const ACSI_DIMS = [
+  {id:"CS",name:"Coping with Adversity",items:[
+    "I remain positive and enthusiastic during competition, even when things go wrong",
+    "I maintain emotional control when competing, regardless of the situation",
+    "I can handle pressure in competition",
+    "When things are going badly, I tell myself to keep calm"
+  ]},
+  {id:"PB",name:"Peaking Under Pressure",items:[
+    "I feel challenged by pressure situations rather than threatened",
+    "Under pressure, I perform my best",
+    "Competition energises me rather than making me feel nervous",
+    "I find that competition brings out the best in me"
+  ]},
+  {id:"GS",name:"Goal Setting & Mental Preparation",items:[
+    "I mentally rehearse what I am going to do before I compete",
+    "I set my own performance goals for practice",
+    "I set my own performance goals for competition",
+    "I set realistic but challenging goals for myself during competition"
+  ]},
+  {id:"TR",name:"Time Management & Prioritisation",items:[
+    "When I make a mistake, I bounce back quickly",
+    "I don't let one bad performance affect my attitude towards my next competition",
+    "I can turn a negative competition around quickly",
+    "I think about and imagine what will happen if I make mistakes during competition"
+  ]},
+  {id:"FO",name:"Freedom from Worry",items:[
+    "I worry about performing poorly",
+    "I think about how others will react to mistakes I might make",
+    "I worry about making mistakes during competition",
+    "I think about making mistakes and not performing well"
+  ]},
+  {id:"CL",name:"Concentration",items:[
+    "I am able to concentrate during competition when I need to",
+    "It is easy for me to maintain my focus during competition",
+    "When I am competing, I can focus my attention and block out distractions",
+    "When I lose my focus during competition, I can quickly regain it"
+  ]},
+  {id:"CF",name:"Confidence & Achievement Motivation",items:[
+    "I am confident that I will perform well",
+    "I maintain a strong sense of confidence even when competing against more experienced athletes",
+    "I believe in myself as an athlete",
+    "I know I can perform well despite the pressure of competition"
+  ]}
+];
+const SCALE_ACSI = ["Almost never","Sometimes","Often","Almost always"];
+
+// ── TOOL 3: MAS-MTQ48 (age 15+, scale 1–5) ──────────────
+const MTQ_DIMS = [
+  {id:"CC",name:"Control — Emotional",items:[
+    "I am able to keep anxiety under control in pressure situations",
+    "I can keep my emotions under control during difficult situations",
+    "I am composed and do not get rattled by adversity",
+    "I accept anxiety as part of competing and do not let it hold me back",
+    "I can manage my feelings so that they don't interfere with my performance",
+    "I stay calm under pressure",
+    "I accept that emotions are part of performance and do not let them overwhelm me",
+    "Even when I make mistakes I maintain control of my emotions",
+    "I keep negative thoughts from interfering with performance",
+    "I remain calm even when the situation is not going my way",
+    "I manage stress effectively even in highly competitive situations",
+    "I can detach emotionally from performance and move on quickly"
+  ]},
+  {id:"CL",name:"Control — Life",items:[
+    "I believe I have significant influence over the events in my life",
+    "I feel I am in control of the things that matter to me",
+    "I do not let other people's actions affect my mental approach",
+    "I take responsibility for the way things are in my life",
+    "I feel that I generally have control over what happens to me",
+    "I can adapt my behaviour to meet the needs of a situation"
+  ]},
+  {id:"CH",name:"Commitment",items:[
+    "I set myself goals and am focused on achieving them",
+    "I work hard to achieve goals and do not give up easily",
+    "I do not give up when training or competition becomes difficult",
+    "I work effectively toward long-term goals without losing focus",
+    "I can keep motivated even when things are going badly",
+    "I am committed and motivated throughout a training programme"
+  ]},
+  {id:"CA",name:"Challenge",items:[
+    "I welcome new and difficult challenges",
+    "I look for opportunities to test myself",
+    "I believe that difficult and testing situations will help me develop",
+    "I seek out difficult challenges because I believe they are good for me",
+    "I am attracted to challenges rather than threatened by them",
+    "I see change as an opportunity rather than a threat"
+  ]},
+  {id:"CF",name:"Confidence — In Abilities",items:[
+    "I am confident in my own abilities",
+    "I believe in my ability to perform well",
+    "I have the confidence to perform well even in difficult situations",
+    "I believe I can perform well under pressure",
+    "I have a strong sense of belief in my abilities",
+    "I believe I can meet all challenges successfully",
+    "I remain confident even when I face setbacks",
+    "I know how to perform at my best when it matters most",
+    "I believe that I can achieve what I set out to do",
+    "I know what I want to achieve and I am confident about achieving it",
+    "I believe my skills are sufficient to achieve my goals",
+    "I remain confident under pressure",
+    "I am confident I will cope well with any situation I face"
+  ]},
+  {id:"CI",name:"Confidence — Interpersonal",items:[
+    "I am assertive and can stand my ground in social situations",
+    "I can present myself confidently in public situations",
+    "I can stand up for myself when I need to",
+    "I am confident in interactions with others",
+    "I am assertive and comfortable expressing my views",
+    "I am not afraid to say what I think",
+    "I can speak confidently in a group",
+    "I am comfortable dealing with other people in unfamiliar situations",
+    "I feel comfortable in social situations even when I am the new person",
+    "I have the confidence to approach people when I need help",
+    "I am comfortable drawing attention to myself"
+  ]}
+];
+const SCALE_MTQ = ["Strongly disagree","Disagree","Neutral","Agree","Strongly agree"];
+
+// ── TOOL 4: MAS-PSY-J (age 8–12, evaluator observation) ──
+const PSYJ_DIMS = [
+  {id:"ENG",name:"Engagement Level",desc:"Does she initiate, persist, or withdraw when the activity becomes challenging?",indicators:["Stops when it gets difficult","Needs encouragement to continue","Continues with minimal encouragement","Persists independently","Seeks additional challenge actively"]},
+  {id:"COM",name:"Competitive Response",desc:"How does she respond when compared to peers or when her performance is visible?",indicators:["Withdraws from comparison","Avoids competitive situations","Neutral — neither energised nor distressed","Slightly energised by competition","Highly energised — competition brings out best performance"]},
+  {id:"ERR",name:"Error Response",desc:"Does she seek to retry or avoid repetition after a mistake?",indicators:["Gives up after error","Shows distress — reluctant to retry","Retries after encouragement","Retries independently","Immediately seeks to correct and improve — treats errors as information"]},
+  {id:"COA",name:"Coaching Receptivity",desc:"Does she apply corrections immediately or resist / partially comply?",indicators:["Ignores correction","Acknowledges but does not apply","Applies partially after delay","Applies immediately on next attempt","Applies and asks for further detail — actively processes correction"]},
+  {id:"ENJ",name:"Enjoyment Signal",desc:"Are there visible signs of intrinsic pleasure during activity — independent of results?",indicators:["No enjoyment signals visible","Occasional smile or positive reaction","Moderate enjoyment — participates willingly","Clear enjoyment — smiles, enthusiasm, positive body language","Exceptional — joy is the dominant signal throughout the session"]}
+];
+
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+const SK = "pathway_hub_v1";
+let athletes = [];
+let curId = null;
+let curIdx = 0;
+
+function load(){ try{const r=localStorage.getItem(SK);if(r)athletes=JSON.parse(r);}catch(e){athletes=[];} }
+function save(){ try{localStorage.setItem(SK,JSON.stringify(athletes));}catch(e){toast("Storage error — export JSON now!");} }
+function getA(id){ return athletes.find(a=>a.id===id); }
+function cur(){ return getA(curId); }
+
+// ═══════════════════════════════════════════════════════════
+// AGE ROUTER
+// ═══════════════════════════════════════════════════════════
+function calcAge(dob, refDate){
+  if(!dob) return null;
+  const ref = refDate ? new Date(refDate) : new Date();
+  const b = new Date(dob);
+  let age = ref.getFullYear() - b.getFullYear();
+  if(ref.getMonth() < b.getMonth() || (ref.getMonth()===b.getMonth() && ref.getDate()<b.getDate())) age--;
+  return age;
+}
+
+function routeTool(age, sport){
+  if(age===null) return null;
+  if(age<=12) return "PSYJ";
+  if(age<=13) return "MSQ";
+  if(age<=15) return "ACSI";
+  return "MTQ";
+}
+
+function toolLabel(tool){
+  const map={MSQ:"MAS-MSQ-U13 · 18 items · 3 dimensions · Scale 0–2",ACSI:"MAS-ACSI28 · 28 items · 7 sub-scales · Scale 0–3",MTQ:"MAS-MTQ48 · 48 items · 6 dimensions · Scale 1–5",PSYJ:"MAS-PSY-J · Evaluator observation grid · 5 dimensions"};
+  return map[tool]||"";
+}
+function toolColor(tool){ return {MSQ:"msq",ACSI:"acsi",MTQ:"mtq",PSYJ:"psyj"}[tool]||"none"; }
+
+function updateRouter(){
+  const dob=document.getElementById("f-dob").value;
+  const sport=document.getElementById("f-sport").value;
+  const refDate=document.getElementById("f-date").value;
+  const age=calcAge(dob, refDate||null);
+  const tool=routeTool(age,sport);
+  const el=document.getElementById("router-display");
+  const btn=document.getElementById("start-btn");
+  if(!dob||age===null){ el.innerHTML=""; btn.textContent="Start assessment"; return; }
+  const col=toolColor(tool);
+  const totalItems={MSQ:sport==="Athletics"?36:18,ACSI:28,MTQ:48,PSYJ:5}[tool]||"?";
+  el.innerHTML=`<div class="router-card ${col}" style="margin:14px 0 0">
+    <div class="router-hdr">Age ${age} → ${toolLabel(tool)}</div>
+    <div class="router-body">
+      ${tool==="PSYJ"?"Evaluator-completed observation grid. The athlete does NOT self-report. You will score 5 behavioural dimensions based on your observation during the session.":`Self-report questionnaire · ${totalItems} items · Administered during T7 rest period.`}
+      ${tool==="MSQ"&&sport==="Athletics"?" <strong>+ Athletics module (18 extra items)</strong> activated automatically.":""}
+    </div>
+  </div>`;
+  btn.textContent = `Start assessment · ${totalItems} item${totalItems>1?"s":""}`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════════════
+const VIEWS=["list","intake","questionnaire","report"];
+function showTab(name){
+  VIEWS.forEach(v=>{
+    document.getElementById("view-"+v).style.display=v===name?"block":"none";
+    const t=document.getElementById("tab-"+(v==="questionnaire"?"q":v==="report"?"rep":v));
+    if(t) t.classList.toggle("active",v===name);
+  });
+  if(name==="list") renderList();
+  if(name==="questionnaire") renderQ();
+  if(name==="report") renderReport();
+}
+
+// ═══════════════════════════════════════════════════════════
+// LIST
+// ═══════════════════════════════════════════════════════════
+function renderList(){
+  const q=(document.getElementById("search-input")?.value||"").toLowerCase();
+  const filt=athletes.filter(a=>a.name.toLowerCase().includes(q)||a.sport.toLowerCase().includes(q));
+  document.getElementById("count-badge").textContent=athletes.length;
+  const body=document.getElementById("list-body");
+  if(!athletes.length){ body.innerHTML=`<div class="empty-s"><div class="empty-i">📋</div>No athletes yet. Click <strong>+ New athlete</strong> to begin.</div>`; return; }
+  if(!filt.length){ body.innerHTML=`<div class="empty-s">No athletes match your search.</div>`; return; }
+  let html=`<table class="ath-tbl"><thead><tr><th>Name</th><th>Age / Sport</th><th>Tool</th><th>Progress</th><th>Status</th><th>Actions</th></tr></thead><tbody>`;
+  filt.forEach(a=>{
+    const total=totalItemsFor(a);
+    const ans=Object.keys(a.answers||{}).length;
+    const pct=Math.round(ans/total*100);
+    const st=ans===total?"done":ans>0?"part":"none";
+    const stl=ans===total?"Complete":ans>0?`${pct}% (${ans}/${total})`:"Not started";
+    html+=`<tr>
+      <td><strong>${a.name}</strong></td>
+      <td style="font-size:11px">${a.age} y · ${a.sport}</td>
+      <td><span class="tool-badge ${toolColor(a.tool)}">${a.tool}</span></td>
+      <td><div style="display:flex;align-items:center;gap:7px"><div style="flex:1;height:4px;background:#e0ddd6;border-radius:2px;overflow:hidden"><div style="width:${pct}%;height:100%;background:${st==="done"?"#1D9E75":st==="part"?"#B8902A":"#e0ddd6"};border-radius:2px"></div></div><span style="font-size:10px;color:#6b6b67">${ans}/${total}</span></div></td>
+      <td><span class="spill ${st}">${stl}</span></td>
+      <td><div class="acts">
+        <button class="btn sm" onclick="resume('${a.id}')">${ans===total?"View":"Continue"}</button>
+        <button class="btn sm" onclick="viewRep('${a.id}')">Report</button>
+        <button class="btn sm" onclick="exportOne('${a.id}')">JSON</button>
+        <button class="btn sm danger" onclick="delAth('${a.id}')">Delete</button>
+      </div></td>
+    </tr>`;
+  });
+  html+=`</tbody></table>`;
+  body.innerHTML=html;
+}
+function resume(id){ curId=id; curIdx=findFirst(); document.getElementById("tab-q").style.display=""; showTab("questionnaire"); }
+function viewRep(id){ curId=id; document.getElementById("tab-rep").style.display=""; showTab("report"); }
+function delAth(id){ const a=getA(id); if(!confirm(`Delete ${a.name}?`))return; athletes=athletes.filter(x=>x.id!==id); save(); renderList(); toast("Deleted"); }
+
+function totalItemsFor(a){
+  if(a.tool==="MSQ") return a.hasAthletics?36:18;
+  if(a.tool==="ACSI") return 28;
+  if(a.tool==="MTQ") return 48;
+  if(a.tool==="PSYJ") return 5;
+  return 0;
+}
+
+function allItemsFor(a){
+  if(a.tool==="MSQ"){
+    let items=[];
+    MSQ_DIMS.forEach(d=>d.items.forEach((q,li)=>items.push({dimId:d.id,dimName:d.name,q,module:"msq"})));
+    if(a.hasAthletics) ATH_DIMS.forEach(d=>d.items.forEach((q,li)=>items.push({dimId:d.id,dimName:d.name,q,module:"ath"})));
+    return items;
+  }
+  if(a.tool==="ACSI"){
+    let items=[];
+    ACSI_DIMS.forEach(d=>d.items.forEach(q=>items.push({dimId:d.id,dimName:d.name,q,module:"acsi"})));
+    return items;
+  }
+  if(a.tool==="MTQ"){
+    let items=[];
+    MTQ_DIMS.forEach(d=>d.items.forEach(q=>items.push({dimId:d.id,dimName:d.name,q,module:"mtq"})));
+    return items;
+  }
+  if(a.tool==="PSYJ") return PSYJ_DIMS.map(d=>({dimId:d.id,dimName:d.name,q:d.desc,module:"psyj"}));
+  return [];
+}
+
+// ═══════════════════════════════════════════════════════════
+// INTAKE
+// ═══════════════════════════════════════════════════════════
+function startAssessment(){
+  const name=document.getElementById("f-name").value.trim();
+  const dob=document.getElementById("f-dob").value;
+  const sport=document.getElementById("f-sport").value;
+  const refDate=document.getElementById("f-date").value;
+  if(!name){ alert("Please enter athlete name."); return; }
+  if(!dob){ alert("Please enter date of birth."); return; }
+  if(!sport){ alert("Please select a sport."); return; }
+  const age=calcAge(dob, refDate||null);
+  const tool=routeTool(age,sport);
+  if(!tool){ alert("Age is outside the assessment range."); return; }
+  const today=new Date().toISOString().slice(0,10);
+  const id="a_"+Date.now();
+  const ath={id,name,dob,age,sport,tool,hasAthletics:(tool==="MSQ"&&sport==="Athletics"),
+    date:refDate||today,evaluator:document.getElementById("f-eval").value.trim(),
+    location:document.getElementById("f-loc").value.trim(),
+    notes:document.getElementById("f-notes").value.trim(),
+    answers:{},psyjScores:{},createdAt:new Date().toISOString()};
+  athletes.push(ath); save();
+  curId=id; curIdx=0;
+  ["f-name","f-dob","f-eval","f-loc","f-notes"].forEach(i=>document.getElementById(i).value="");
+  document.getElementById("f-sport").value="";
+  document.getElementById("f-date").value="";
+  document.getElementById("router-display").innerHTML="";
+  document.getElementById("tab-q").style.display="";
+  showTab("questionnaire");
+  toast("Assessment started — "+name+" · "+tool);
+}
+
+// ═══════════════════════════════════════════════════════════
+// QUESTIONNAIRE RENDER
+// ═══════════════════════════════════════════════════════════
+function findFirst(){ const a=cur(); const items=allItemsFor(a); for(let i=0;i<items.length;i++){if(a.answers[i]===undefined)return i;} return items.length-1; }
+
+function renderQ(){
+  const a=cur(); if(!a){showTab("list");return;}
+  if(a.tool==="PSYJ"){ renderPSYJ(); return; }
+  const items=allItemsFor(a);
+  const total=items.length;
+  const item=items[curIdx];
+  const answered=Object.keys(a.answers).length;
+  const pct=Math.round(answered/total*100);
+  const curAns=a.answers[curIdx];
+  const isLast=curIdx===total-1;
+  const tc=toolColor(a.tool);
+
+  let moduleBanner="";
+  if(a.tool==="MSQ"&&curIdx===18&&a.hasAthletics){
+    moduleBanner=`<div style="padding:10px 18px;background:var(--teal-l);border-bottom:1px solid #9FE1CB;font-size:11px;color:#0F6E56;font-weight:600">✓ MAS-MSQ-U13 complete — Athletics module (MAS-PSY-ATH-U13) starting now · 18 more items</div>`;
+  }
+
+  let scaleHtml="";
+  if(a.tool==="MSQ"){
+    scaleHtml=`<div class="scale-3">${SCALE3.map(s=>`<button class="lb3${curAns===s.val?" sel sel-"+s.val:""}" onclick="answer(${s.val})"><span class="lb3-icon">${s.icon}</span><span class="lb3-label">${s.label}</span><span class="lb3-sub">${s.sub}</span></button>`).join("")}</div>`;
+  } else if(a.tool==="ACSI"){
+    scaleHtml=`<div class="scale-5">${SCALE_ACSI.map((lbl,v)=>`<button class="lb5${curAns===v?" sel":""}" onclick="answer(${v})"><span class="lb5-n">${v}</span><span class="lb5-w">${lbl}</span></button>`).join("")}</div>`;
+  } else if(a.tool==="MTQ"){
+    scaleHtml=`<div class="scale-5">${SCALE_MTQ.map((lbl,i)=>`<button class="lb5${curAns===(i+1)?" sel mtq-sel":""}" onclick="answer(${i+1})"><span class="lb5-n">${i+1}</span><span class="lb5-w">${lbl}</span></button>`).join("")}</div>`;
+  }
+
+  document.getElementById("q-content").innerHTML=`
+  ${moduleBanner}
+  <div class="prog-bar">
+    <div class="prog-top"><span class="prog-lbl">Item ${curIdx+1} of ${total} · ${a.name}</span><span class="prog-pct">${answered} answered · ${pct}%</span></div>
+    <div class="prog-track"><div class="prog-fill ${tc}" style="width:${pct}%"></div></div>
+    <span class="dim-chip ${item.module==="ath"?"ATH":a.tool==="ACSI"?"ACSI":"MTQ"}">${item.dimId} — ${item.dimName}</span>
+    <span class="tool-badge ${tc}" style="font-size:9px;padding:2px 8px">${a.tool}</span>
+  </div>
+  <div class="q-body">
+    <div class="q-num">Item ${curIdx+1} of ${total}</div>
+    <div class="q-text">${item.q}</div>
+    ${scaleHtml}
+  </div>
+  <div class="q-nav">
+    <button class="btn" onclick="goQ(-1)" ${curIdx===0?"disabled":""}>← Back</button>
+    ${curAns!==undefined?`<span class="nav-hint ok">✓ Saved</span>`:`<span class="nav-hint req">Select to continue</span>`}
+    <div class="spc"></div>
+    <button class="btn" onclick="skipRep()" style="font-size:11px;color:var(--muted)">Skip to report</button>
+    ${isLast?`<button class="btn primary" onclick="finishQ()" ${curAns===undefined?"disabled":""}>Generate report</button>`:`<button class="btn primary" onclick="goQ(1)" ${curAns===undefined?"disabled":""}>Next →</button>`}
+  </div>`;
+}
+
+function answer(v){ const a=cur(); a.answers[curIdx]=v; save(); renderQ(); }
+function goQ(dir){ const a=cur(); curIdx=Math.max(0,Math.min(allItemsFor(a).length-1,curIdx+dir)); renderQ(); }
+function skipRep(){ if(Object.keys(cur().answers).length===0){alert("Answer at least one item.");return;} if(confirm("Generate report with partial data?"))finishQ(); }
+function finishQ(){ document.getElementById("tab-rep").style.display=""; showTab("report"); }
+
+// ─── PSY-J EVALUATOR FORM ────────────────────────────────
+function renderPSYJ(){
+  const a=cur(); if(!a){showTab("list");return;}
+  const total=PSYJ_DIMS.length;
+  const answered=Object.keys(a.psyjScores||{}).length;
+  const pct=Math.round(answered/total*100);
+
+  let dimsHtml=PSYJ_DIMS.map((d,di)=>{
+    const cur=a.psyjScores?.[d.id];
+    return `<div class="psyj-item">
+      <div class="psyj-item-hdr">
+        <span>${d.name}</span>
+        ${cur!==undefined?`<span style="font-size:10px;background:var(--gold);color:#fff;padding:2px 8px;border-radius:8px">${cur+1}/5</span>`:`<span style="font-size:10px;color:var(--muted)">Not scored</span>`}
+      </div>
+      <div style="font-size:11px;color:var(--muted);padding:8px 14px 4px">${d.desc}</div>
+      <div class="psyj-scale">
+        ${d.indicators.map((ind,i)=>`<button class="psyj-btn${cur===i?" sel":""}" onclick="psyjScore('${d.id}',${i})" title="${ind}">${i+1}</button>`).join("")}
+      </div>
+      <div style="font-size:9px;color:var(--muted);padding:0 14px 8px;line-height:1.6">
+        ${d.indicators.map((ind,i)=>`<span style="font-weight:600">${i+1}:</span> ${ind}`).join(" &nbsp;·&nbsp; ")}
+      </div>
+      <div class="psyj-notes">
+        <textarea placeholder="Evaluator notes for ${d.name} (optional)…" onchange="psyjNote('${d.id}',this.value)">${a.psyjNotes?.[d.id]||""}</textarea>
+      </div>
+    </div>`;
+  }).join("");
+
+  document.getElementById("q-content").innerHTML=`
+  <div class="prog-bar">
+    <div class="prog-top"><span class="prog-lbl">Evaluator observation form · ${a.name} · Age ${a.age}</span><span class="prog-pct">${answered}/${total} scored</span></div>
+    <div class="prog-track"><div class="prog-fill psyj" style="width:${pct}%"></div></div>
+    <span class="tool-badge psyj">MAS-PSY-J · Age 8–12 · Evaluator completed</span>
+  </div>
+  <div style="padding:14px 22px;background:var(--gold-l);border-bottom:1px solid var(--border);font-size:11px;color:var(--gold-d)">
+    <strong>Important:</strong> This form is completed by you, the evaluator — not the athlete. Score each dimension based on your observation during the session. 1 = lowest · 5 = highest.
+  </div>
+  <div class="psyj-grid" style="margin-top:14px">
+    ${dimsHtml}
+  </div>
+  <div class="q-nav" style="margin-top:4px">
+    <div class="spc"></div>
+    ${answered===total?`<button class="btn primary" onclick="finishQ()">Generate report ✓</button>`:`<span class="nav-hint req">${total-answered} dimension(s) remaining</span><button class="btn" onclick="finishQ()" style="margin-left:8px">Generate partial report</button>`}
+  </div>`;
+}
+
+function psyjScore(dimId,val){ const a=cur(); if(!a.psyjScores)a.psyjScores={}; a.psyjScores[dimId]=val; save(); renderPSYJ(); }
+function psyjNote(dimId,val){ const a=cur(); if(!a.psyjNotes)a.psyjNotes={}; a.psyjNotes[dimId]=val; save(); }
+
+// ═══════════════════════════════════════════════════════════
+// SCORES
+// ═══════════════════════════════════════════════════════════
+function calcMSQ(a){
+  const ds={};let idx=0;
+  MSQ_DIMS.forEach(d=>{
+    const vals=d.items.map((_,li)=>a.answers[idx+li]).filter(v=>v!==undefined);
+    ds[d.id]={avg:vals.length?vals.reduce((x,y)=>x+y,0)/vals.length:null,count:vals.length,total:d.items.length};
+    idx+=d.items.length;
+  });
+  const athDs={};
+  if(a.hasAthletics){
+    ATH_DIMS.forEach(d=>{
+      const vals=d.items.map((_,li)=>a.answers[idx+li]).filter(v=>v!==undefined);
+      athDs[d.id]={avg:vals.length?vals.reduce((x,y)=>x+y,0)/vals.length:null,count:vals.length,total:d.items.length};
+      idx+=d.items.length;
+    });
+  }
+  const msqVals=Object.entries(a.answers).filter(([k])=>parseInt(k)<18).map(([,v])=>v);
+  const athVals=Object.entries(a.answers).filter(([k])=>parseInt(k)>=18).map(([,v])=>v);
+  return{dims:ds,athDims:athDs,global:msqVals.length?msqVals.reduce((x,y)=>x+y,0)/msqVals.length:0,athGlobal:athVals.length?athVals.reduce((x,y)=>x+y,0)/athVals.length:0,max:2};
+}
+
+function calcACSI(a){
+  const ds={};let idx=0;
+  ACSI_DIMS.forEach(d=>{
+    const vals=d.items.map((_,li)=>a.answers[idx+li]).filter(v=>v!==undefined);
+    ds[d.id]={avg:vals.length?vals.reduce((x,y)=>x+y,0)/vals.length:null,count:vals.length,total:d.items.length,name:d.name};
+    idx+=d.items.length;
+  });
+  const all=Object.values(a.answers);
+  return{dims:ds,global:all.length?all.reduce((x,y)=>x+y,0)/all.length:0,max:3};
+}
+
+function calcMTQ(a){
+  const ds={};let idx=0;
+  MTQ_DIMS.forEach(d=>{
+    const vals=d.items.map((_,li)=>a.answers[idx+li]).filter(v=>v!==undefined);
+    ds[d.id]={avg:vals.length?vals.reduce((x,y)=>x+y,0)/vals.length:null,count:vals.length,total:d.items.length,name:d.name};
+    idx+=d.items.length;
+  });
+  const all=Object.values(a.answers);
+  return{dims:ds,global:all.length?all.reduce((x,y)=>x+y,0)/all.length:0,max:5};
+}
+
+function calcPSYJ(a){
+  const scores=a.psyjScores||{};
+  const vals=Object.values(scores);
+  const global=vals.length?vals.reduce((x,y)=>x+y,0)/vals.length:0;
+  return{scores,global,max:4};
+}
+
+function tier3(avg,max){ const p=avg/max; return p>=0.75?"h":p>=0.4?"m":"l"; }
+function tierL(t){ return{h:"Favourable",m:"Standard",l:"Priority attention"}[t]; }
+
+function globalInterp(avg,max){
+  const p=avg/max;
+  if(p>=0.75) return "Highly favourable psychological profile — strong foundations across all assessed dimensions.";
+  if(p>=0.4) return "Standard developing profile — targeted work on flagged dimensions recommended.";
+  return "Priority support recommended — coordinate with PATHWAY mental skills specialist.";
+}
+
+// ═══════════════════════════════════════════════════════════
+// REPORT
+// ═══════════════════════════════════════════════════════════
+function renderReport(){
+  const a=cur(); if(!a){showTab("list");return;}
+  const dobStr=a.dob?new Date(a.dob).toLocaleDateString("en-GB"):"—";
+  const dateStr=a.date?new Date(a.date).toLocaleDateString("en-GB"):"—";
+  const tc=toolColor(a.tool);
+  const answered=Object.keys(a.answers||{}).length;
+
+  let scoreHtml="", dimHtml="";
+
+  if(a.tool==="MSQ"){
+    const s=calcMSQ(a);
+    const gt=tier3(s.global,s.max);
+    scoreHtml=`<div class="score-blk msq">
+      <div><div class="sc-label">MSQ Global</div><div class="sc-val">${s.global.toFixed(2)} / 2.00</div><div class="sc-sub">${Math.min(answered,18)} of 18 items</div></div>
+      <div class="sc-interp">${globalInterp(s.global,s.max)}</div>
+    </div>`;
+    const msqInterp={
+      B:{h:"Effective emotional regulation — recovers quickly, manages competitive stress well.",m:"Developing — some inconsistency under pressure. Recommend reset routines.",l:"Requires support. Not eliminatory. Refer to mental skills track."},
+      C:{h:"Stable self-confidence — not destabilised by results. Strong predictive profile.",m:"Developing confidence — context-dependent. Highly malleable at this age.",l:"Low confidence. Not eliminatory. Responds well to structured intervention."},
+      E:{h:"Strong intrinsic motivation — best predictor of long-term persistence in elite sport.",m:"Mixed — some external dependency. Reinforce autonomy and self-directed goals.",l:"External motivation dominance. Sustainability risk if conditions change."}
+    };
+    dimHtml=`<div class="sec-label">MSQ-U13 — Dimensions</div>`+MSQ_DIMS.map(d=>{
+      const ds=s.dims[d.id];const t=tier3(ds.avg??0,s.max);const pct=ds.avg!==null?Math.round((ds.avg/s.max)*100):0;
+      return `<div class="dim-card"><div class="dc-row1"><span class="dc-name">Dim. ${d.id} — ${d.name}</span><span class="dc-badge ${t}">${ds.avg!==null?ds.avg.toFixed(2)+" / 2.00":"No data"} · ${tierL(t)}</span></div><div class="bar-track"><div class="bar-fill ${t}" style="width:${pct}%"></div></div><div class="dc-interp ${t}">${msqInterp[d.id][t]}</div></div>`;
+    }).join("");
+    if(a.hasAthletics){
+      const athInterp={
+        "ATH-A":{h:"Strong volume motivation — embraces load increase, pride in effort.",m:"Moderate tolerance — some resistance to long sessions. Gradual progression recommended.",l:"Low volume motivation. Progressive load introduction required."},
+        "ATH-B":{h:"Excellent competitive response — uses results as fuel. Key athletics predictor.",m:"Developing — some sensitivity to disappointing performances.",l:"Result sensitivity flagged. Attribution retraining priority."},
+        "ATH-C":{h:"Strong effort attribution under fatigue — maintains internal locus in final race stages.",m:"Partial regulation — some external attribution. Introduce race pacing protocols.",l:"Effort attribution under fatigue requires attention. Race finish focus needed."}
+      };
+      const athVals=Object.entries(a.answers).filter(([k])=>parseInt(k)>=18).map(([,v])=>v);
+      const athGlobal=athVals.length?athVals.reduce((x,y)=>x+y,0)/athVals.length:0;
+      dimHtml+=`<div class="score-blk acsi" style="margin-top:14px">
+        <div><div class="sc-label">Athletics Module</div><div class="sc-val">${athGlobal.toFixed(2)} / 2.00</div><div class="sc-sub">${athVals.length} of 18 items</div></div>
+        <div class="sc-interp">${globalInterp(athGlobal,2)}</div>
+      </div>`;
+      dimHtml+=`<div class="sec-label">MAS-PSY-ATH-U13 — Constructs</div>`+ATH_DIMS.map(d=>{
+        const ds=s.athDims[d.id];const t=tier3(ds?.avg??0,s.max);const pct=ds?.avg!==null?Math.round(((ds?.avg??0)/s.max)*100):0;
+        return `<div class="dim-card"><div class="dc-row1"><span class="dc-name">${d.id} — ${d.name}</span><span class="dc-badge ${t}">${ds?.avg!==null?ds.avg.toFixed(2)+" / 2.00":"No data"} · ${tierL(t)}</span></div><div class="bar-track"><div class="bar-fill ${t}" style="width:${pct}%"></div></div><div class="dc-interp ${t}">${athInterp[d.id]?.[t]||""}</div></div>`;
+      }).join("");
+    }
+  }
+
+  else if(a.tool==="ACSI"){
+    const s=calcACSI(a);
+    const gt=tier3(s.global,s.max);
+    scoreHtml=`<div class="score-blk acsi"><div><div class="sc-label">ACSI-28 Global</div><div class="sc-val">${s.global.toFixed(2)} / 3.00</div><div class="sc-sub">${answered} of 28 items</div></div><div class="sc-interp">${globalInterp(s.global,s.max)}</div></div>`;
+    const interp={
+      CS:{h:"Excellent coping under adversity — stays positive, maintains control in pressure situations.",m:"Developing coping — some inconsistency in high-stress moments. Introduce controlled exposure.",l:"Low adversity coping. Priority area. Structured stress-inoculation training recommended."},
+      PB:{h:"Strong pressure performance — competition brings out best performance. Elite predictor.",m:"Moderate pressure response — performance is context-dependent. Build confidence protocols.",l:"Performance under pressure flagged. Identify specific triggers. Desensitisation protocol."},
+      GS:{h:"Excellent mental preparation — sets goals, visualises, mentally rehearses. Process-oriented.",m:"Partial goal-setting — some reliance on external direction. Introduce self-directed goal tools.",l:"Low mental preparation. Introduce basic goal-setting framework immediately."},
+      TR:{h:"Strong resilience — bounces back quickly, does not dwell on errors.",m:"Moderate resilience — some regression after setbacks. Error-processing routines needed.",l:"Low resilience. Structured bounce-back protocol. Monitor closely."},
+      FO:{h:"Low worry — competition anxiety does not affect performance. Very favourable.",m:"Some performance anxiety — manageable but present. Relaxation and reframing tools.",l:"High performance worry. Priority. Introduce pre-competition anxiety management protocol."},
+      CL:{h:"Excellent concentration — maintains focus under pressure, recovers focus quickly.",m:"Developing concentration — some distractibility. Attention-focus training.",l:"Low concentration. Fundamental area. Structured attention-focus intervention required."},
+      CF:{h:"High confidence — believes in abilities, performs under pressure. Strong athlete identity.",m:"Developing confidence — results-dependent. Build identity-based confidence protocols.",l:"Low confidence. Not eliminatory. Respond-ability training and structured success experiences."}
+    };
+    dimHtml=`<div class="sec-label">ACSI-28 — Sub-scales</div>`+ACSI_DIMS.map(d=>{
+      const ds=s.dims[d.id];const t=tier3(ds.avg??0,s.max);const pct=ds.avg!==null?Math.round((ds.avg/s.max)*100):0;
+      return `<div class="dim-card"><div class="dc-row1"><span class="dc-name">${d.id} — ${d.name}</span><span class="dc-badge ${t}">${ds.avg!==null?ds.avg.toFixed(2)+" / 3.00":"No data"} · ${tierL(t)}</span></div><div class="bar-track"><div class="bar-fill ${t}" style="width:${pct}%"></div></div><div class="dc-interp ${t}">${interp[d.id]?.[t]||""}</div></div>`;
+    }).join("");
+  }
+
+  else if(a.tool==="MTQ"){
+    const s=calcMTQ(a);
+    scoreHtml=`<div class="score-blk mtq"><div><div class="sc-label">MTQ48 Global</div><div class="sc-val">${s.global.toFixed(2)} / 5.00</div><div class="sc-sub">${answered} of 48 items</div></div><div class="sc-interp">${globalInterp(s.global,s.max)}</div></div>`;
+    const interp={
+      CC:{h:"Strong emotional control — manages anxiety effectively under pressure. Composure is a key asset.",m:"Developing emotional control — some volatility in high-pressure moments.",l:"Emotional control requires attention. Anxiety management protocols recommended."},
+      CL:{h:"Strong life control — feels empowered, takes responsibility. Foundation of athlete resilience.",m:"Developing sense of control — some external locus in unfamiliar situations.",l:"Low sense of control. Autonomy-building and responsibility frameworks needed."},
+      CH:{h:"High commitment — sets goals, works hard, persists through difficulty. Elite training predictor.",m:"Moderate commitment — can lose focus in extended difficulty periods.",l:"Low commitment. Motivation and goal-setting framework needed."},
+      CA:{h:"Embraces challenge — seeks difficult situations as development opportunities. Optimal mindset.",m:"Moderate challenge appetite — accepts challenges but does not seek them.",l:"Avoidance of challenge. Graduated challenge exposure protocol."},
+      CF:{h:"Strong confidence in abilities — performs under pressure, believes in self. High-performance predictor.",m:"Developing confidence — results-dependent. Build identity-based confidence.",l:"Low ability confidence. Structured success experience programme."},
+      CI:{h:"Strong interpersonal confidence — assertive, comfortable in group and pressure social contexts.",m:"Developing — some hesitancy in unfamiliar social situations.",l:"Low interpersonal confidence. Exposure to social athletic contexts recommended."}
+    };
+    dimHtml=`<div class="sec-label">MTQ48 — 4C Dimensions</div>`+MTQ_DIMS.map(d=>{
+      const ds=s.dims[d.id];const t=tier3(ds.avg??0,s.max);const pct=ds.avg!==null?Math.round((ds.avg/s.max)*100):0;
+      return `<div class="dim-card"><div class="dc-row1"><span class="dc-name">${d.id} — ${d.name}</span><span class="dc-badge ${t}">${ds.avg!==null?ds.avg.toFixed(2)+" / 5.00":"No data"} · ${tierL(t)}</span></div><div class="bar-track"><div class="bar-fill ${t}" style="width:${pct}%"></div></div><div class="dc-interp ${t}">${interp[d.id]?.[t]||""}</div></div>`;
+    }).join("");
+  }
+
+  else if(a.tool==="PSYJ"){
+    const s=calcPSYJ(a);
+    scoreHtml=`<div class="score-blk psyj"><div><div class="sc-label">PSY-J Global</div><div class="sc-val">${(s.global+1).toFixed(2)} / 5.00</div><div class="sc-sub">${Object.keys(s.scores).length} of 5 dimensions</div></div><div class="sc-interp">${globalInterp(s.global,s.max)}</div></div>`;
+    const interp={
+      ENG:{h:"High engagement — initiates independently, seeks additional challenge. Exceptional drive.",m:"Moderate engagement — participates willingly but needs some encouragement.",l:"Low engagement — stops when challenged. Needs motivational approach."},
+      COM:{h:"Highly energised by competition — brings out best performance. Excellent competitive profile.",m:"Neutral to mild competitive response. Some activation but not dominant.",l:"Competition withdrawal — avoidance or distress in competitive contexts."},
+      ERR:{h:"Error as information — immediately seeks to correct, self-directed improvement.",m:"Retries with encouragement or independently after short delay.",l:"Error avoidance — gives up or shows distress after mistakes."},
+      COA:{h:"Active coaching receptivity — applies immediately, seeks detail. Excellent coachability signal.",m:"Applies corrections but with delay or partial compliance.",l:"Low receptivity — ignores or struggles to apply corrections."},
+      ENJ:{h:"Exceptional enjoyment — joy is the dominant signal. Intrinsic motivation clearly visible.",m:"Clear enjoyment signals present — participates willingly.",l:"No or minimal enjoyment signals. Monitor for sustained engagement."}
+    };
+    dimHtml=`<div class="sec-label">MAS-PSY-J — Observation Dimensions</div>`+PSYJ_DIMS.map(d=>{
+      const sc=s.scores[d.id]; const t=tier3(sc??0,s.max); const pct=sc!==undefined?Math.round(((sc)/s.max)*100):0;
+      return `<div class="dim-card"><div class="dc-row1"><span class="dc-name">${d.id} — ${d.name}</span><span class="dc-badge ${t}">${sc!==undefined?(sc+1)+" / 5":"No data"} · ${tierL(t)}</span></div><div class="bar-track"><div class="bar-fill ${t}" style="width:${pct}%"></div></div><div class="dc-interp ${t}">${interp[d.id]?.[t]||""}</div>${a.psyjNotes?.[d.id]?`<div style="font-size:10px;color:var(--muted);margin-top:6px;font-style:italic">Note: ${a.psyjNotes[d.id]}</div>`:""}</div>`;
+    }).join("");
+  }
+
+  document.getElementById("rep-content").innerHTML=`
+  <div class="rep-body" id="printable">
+    <div class="rep-hdr">
+      <div class="rep-logo-row"><div class="rep-logo">MAS</div><div><div class="rep-org">MAS Foundation · PATHWAY Programme</div><div class="rep-sub">Qatar Foundation · Female Athlete Talent Detection</div></div></div>
+      <div class="rep-meta">Assessment: ${dateStr}<br>Generated: ${new Date().toLocaleDateString("en-GB")}<br><strong>Confidential</strong></div>
+    </div>
+    <div class="rep-title">Psychological Assessment — ${a.tool}</div>
+    <div class="rep-subtitle">${toolLabel(a.tool)} · Age ${a.age} · ${a.sport}</div>
+    <div class="ath-grid">
+      <div class="ag-c"><div class="ag-l">Athlete</div><div class="ag-v">${a.name}</div></div>
+      <div class="ag-c"><div class="ag-l">Date of birth</div><div class="ag-v">${dobStr}</div></div>
+      <div class="ag-c"><div class="ag-l">Discipline</div><div class="ag-v">${a.sport}</div></div>
+      <div class="ag-c"><div class="ag-l">Age at assessment</div><div class="ag-v">${a.age} years</div></div>
+      <div class="ag-c"><div class="ag-l">Evaluator</div><div class="ag-v">${a.evaluator||"—"}</div></div>
+      <div class="ag-c"><div class="ag-l">Location</div><div class="ag-v">${a.location||"—"}</div></div>
+    </div>
+    ${scoreHtml}
+    ${dimHtml}
+    ${a.notes?`<div class="rec-blk"><div class="rec-title">Session notes</div><div class="rec-text">${a.notes}</div></div>`:""}
+    <div class="disclaimer"><strong>Important:</strong> No score justifies exclusion before age 14. PSY data is contextual information for the RC narrative — never a standalone decision criterion. Confidential — MAS Foundation internal use only.</div>
+    <div class="rep-actions no-print">
+      <button class="btn" onclick="resume('${a.id}')">← Edit answers</button>
+      <button class="btn" onclick="exportOne('${a.id}')">Export JSON</button>
+      <button class="btn primary" onclick="window.print()">Print / PDF</button>
+      <button class="btn" onclick="showTab('list')">← Back to list</button>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// EXPORT
+// ═══════════════════════════════════════════════════════════
+function exportOne(id){
+  const a=getA(id);
+  let scores={};
+  if(a.tool==="MSQ"){ const s=calcMSQ(a); scores={msq:{global:+s.global.toFixed(4),dims:Object.fromEntries(Object.entries(s.dims).map(([k,v])=>[k,{avg:v.avg!==null?+v.avg.toFixed(4):null,count:v.count}]))},athletics:a.hasAthletics?{global:+s.athGlobal.toFixed(4),dims:Object.fromEntries(Object.entries(s.athDims).map(([k,v])=>[k,{avg:v.avg!==null?+v.avg.toFixed(4):null,count:v.count}]))}:null}; }
+  else if(a.tool==="ACSI"){ const s=calcACSI(a); scores={global:+s.global.toFixed(4),dims:Object.fromEntries(Object.entries(s.dims).map(([k,v])=>[k,{avg:v.avg!==null?+v.avg.toFixed(4):null,count:v.count}]))}; }
+  else if(a.tool==="MTQ"){ const s=calcMTQ(a); scores={global:+s.global.toFixed(4),dims:Object.fromEntries(Object.entries(s.dims).map(([k,v])=>[k,{avg:v.avg!==null?+v.avg.toFixed(4):null,count:v.count}]))}; }
+  else if(a.tool==="PSYJ"){ const s=calcPSYJ(a); scores={global:+(s.global+1).toFixed(4),dims:s.scores,notes:a.psyjNotes||{}}; }
+  const payload={meta:{tool:"PATHWAY-HUB-V1",instrument:a.tool,version:"1.0",exportedAt:new Date().toISOString()},athlete:{id:a.id,name:a.name,dob:a.dob,age:a.age,sport:a.sport,date:a.date,evaluator:a.evaluator,location:a.location,notes:a.notes},scores,rawAnswers:a.answers};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const lnk=document.createElement("a"); lnk.href=url; lnk.download=`PATHWAY_${a.tool}_${a.name.replace(/\s+/g,"_")}_${a.date||"nodate"}.json`; lnk.click();
+  URL.revokeObjectURL(url); toast("JSON exported — "+a.name);
+}
+
+function exportAll(){
+  if(!athletes.length){alert("No athletes.");return;}
+  const payload={meta:{tool:"PATHWAY-HUB-V1",version:"1.0",exportedAt:new Date().toISOString(),total:athletes.length},athletes:athletes.map(a=>({athlete:{id:a.id,name:a.name,dob:a.dob,age:a.age,sport:a.sport,tool:a.tool,date:a.date,evaluator:a.evaluator},answers:a.answers,psyjScores:a.psyjScores||{}}))};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const lnk=document.createElement("a"); lnk.href=url; lnk.download=`PATHWAY_HUB_ALL_${new Date().toISOString().slice(0,10)}.json`; lnk.click();
+  URL.revokeObjectURL(url); toast(`Exported ${athletes.length} athletes`);
+}
+
+// ═══════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════
+function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2800); }
+
+// ─── INIT ───────────────────────────────────────────────
+load();
+document.getElementById("f-date").value=new Date().toISOString().slice(0,10);
+renderList();
+</script>
+</body>
+</html>
