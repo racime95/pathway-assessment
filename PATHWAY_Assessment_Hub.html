@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PATHWAY · Assessment Hub · MAS Foundation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0C2340;--navy2:#1A3A5C;
+  --gold:#B8902A;--gold-l:#FFF8E6;--gold-d:#8a6a1a;--gold-pale:#FFF3D6;
+  --teal:#1A7A6E;--teal-l:#E4F4F2;--teal-m:#2AA090;
+  --blue:#1A56A0;--blue-l:#E8F0FB;
+  --amber:#C07820;--amber-l:#FEF5E6;
+  --coral:#D85A30;--coral-l:#FAECE7;
+  --bg:#F4F3F0;--surface:#FFFFFF;--surface2:#FAFAF8;
+  --border:#E4E0D8;--border2:#D0CCC4;
+  --text:#1A1A18;--text2:#4A4844;--muted:#8A8680;
+  --shadow:0 2px 8px rgba(12,35,64,.08);
+  --shadow-md:0 4px 16px rgba(12,35,64,.12);
+  --shadow-lg:0 8px 32px rgba(12,35,64,.16);
+}
+
+body{
+  font-family:'DM Sans',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  font-size:15px;
+  line-height:1.55;
+}
+
+/* ── LAYOUT ── */
+.shell{max-width:860px;margin:0 auto;padding:28px 16px 60px}
+
+/* ── HEADER ── */
+.site-header{
+  display:flex;align-items:center;gap:16px;
+  padding:0 0 24px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:24px;
+}
+.mas-logo{
+  width:48px;height:48px;
+  background:var(--navy);
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  box-shadow:var(--shadow);
+}
+.mas-logo span{
+  font-family:'DM Serif Display',serif;
+  font-size:14px;color:var(--gold);letter-spacing:.5px;
+}
+.site-title h1{
+  font-family:'DM Serif Display',serif;
+  font-size:22px;font-weight:400;color:var(--navy);
+  line-height:1.2;
+}
+.site-title p{font-size:12px;color:var(--muted);margin-top:2px;}
+.site-tools{display:flex;gap:8px;align-items:center;margin-left:auto;}
+
+/* ── NAV ── */
+.main-nav{
+  display:flex;gap:4px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:5px;
+  margin-bottom:24px;
+  box-shadow:var(--shadow);
+}
+.nav-tab{
+  flex:1;padding:10px 8px;
+  border:none;background:transparent;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+  color:var(--muted);cursor:pointer;
+  border-radius:10px;
+  transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.nav-tab:hover{background:var(--bg);color:var(--text);}
+.nav-tab.active{background:var(--navy);color:#fff;box-shadow:0 2px 8px rgba(12,35,64,.25);}
+.nav-tab.active .tab-count{background:rgba(255,255,255,.2);}
+.tab-count{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--gold);color:#fff;
+  font-size:10px;font-weight:700;
+  min-width:20px;height:20px;padding:0 6px;
+  border-radius:10px;
+}
+
+/* ── CARD ── */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.card+.card{margin-top:16px;}
+
+/* ── SECTION LABEL ── */
+.section-label{
+  font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  color:var(--muted);margin:20px 0 10px;
+}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 18px;
+  border-radius:10px;border:1.5px solid var(--border);
+  background:var(--surface);
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+  cursor:pointer;color:var(--text);
+  transition:all .18s;white-space:nowrap;
+}
+.btn:hover{border-color:var(--navy2);color:var(--navy);background:var(--bg);}
+.btn-primary{background:var(--navy);color:#fff;border-color:var(--navy);}
+.btn-primary:hover{background:var(--navy2);border-color:var(--navy2);color:#fff;}
+.btn-gold{background:var(--gold);color:#fff;border-color:var(--gold);}
+.btn-gold:hover{background:var(--gold-d);border-color:var(--gold-d);color:#fff;}
+.btn-teal{background:var(--teal);color:#fff;border-color:var(--teal);}
+.btn-danger{color:#A32D2D;border-color:#F09595;}
+.btn-danger:hover{background:#FCEBEB;}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:8px;}
+.btn-icon{width:36px;height:36px;padding:0;justify-content:center;}
+
+/* ── TOOL BADGE ── */
+.tool-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:10px;font-weight:700;letter-spacing:.3px;
+  padding:3px 10px;border-radius:20px;color:#fff;
+}
+.tool-badge.MSQ{background:var(--navy);}
+.tool-badge.ACSI{background:var(--blue);}
+.tool-badge.MTQ{background:var(--amber);}
+.tool-badge.PSYJ{background:var(--gold);}
+
+/* ── LIST VIEW ── */
+.list-toolbar{
+  padding:16px 20px;
+  display:flex;gap:10px;align-items:center;
+  border-bottom:1px solid var(--border);
+  background:var(--surface2);
+}
+.search-input{
+  flex:1;padding:9px 14px;
+  border:1.5px solid var(--border);border-radius:10px;
+  font-family:'DM Sans',sans-serif;font-size:13px;
+  background:var(--surface);color:var(--text);
+  outline:none;transition:border-color .18s;
+}
+.search-input:focus{border-color:var(--navy);}
+.athlete-table{width:100%;border-collapse:collapse;}
+.athlete-table th{
+  font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--muted);text-align:left;
+  padding:10px 20px;
+  border-bottom:1px solid var(--border);
+  background:var(--surface2);
+}
+.athlete-table td{
+  padding:13px 20px;
+  border-bottom:1px solid var(--border);
+  font-size:13px;vertical-align:middle;
+}
+.athlete-table tr:last-child td{border-bottom:none;}
+.athlete-table tbody tr{transition:background .12s;}
+.athlete-table tbody tr:hover td{background:var(--surface2);}
+.athlete-name{font-weight:600;color:var(--navy);}
+.athlete-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.status-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;
+}
+.status-chip.done{background:var(--teal-l);color:var(--teal);}
+.status-chip.part{background:var(--gold-pale);color:var(--gold-d);}
+.status-chip.none{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
+.prog-mini{width:80px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:6px;}
+.prog-mini-fill{height:100%;border-radius:2px;}
+.prog-mini-fill.done{background:var(--teal);}
+.prog-mini-fill.part{background:var(--gold);}
+.actions-row{display:flex;gap:5px;flex-wrap:wrap;}
+.empty-state{padding:56px 24px;text-align:center;}
+.empty-icon{
+  width:72px;height:72px;border-radius:20px;
+  background:var(--bg);border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;margin:0 auto 16px;
+}
+.empty-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--navy);margin-bottom:6px;}
+.empty-sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
+
+/* ── INTAKE FORM ── */
+.intake-header{
+  padding:24px 28px 20px;
+  border-bottom:1px solid var(--border);
+}
+.intake-header h2{
+  font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;
+  color:var(--navy);margin-bottom:4px;
+}
+.intake-header p{font-size:13px;color:var(--muted);}
+.form-body{padding:24px 28px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.form-grid .full{grid-column:1/-1;}
+.field-label{
+  font-size:11px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;
+  color:var(--muted);display:block;margin-bottom:6px;
+}
+.field-input{
+  width:100%;padding:10px 14px;
+  border:1.5px solid var(--border);border-radius:10px;
+  font-family:'DM Sans',sans-serif;font-size:14px;
+  background:var(--surface);color:var(--text);
+  outline:none;transition:border-color .18s;
+}
+.field-input:focus{border-color:var(--navy);}
+.field-input::placeholder{color:var(--muted);}
+
+/* router card */
+.router-reveal{margin-bottom:20px;animation:slideDown .25s ease;}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.router-card{
+  border-radius:12px;overflow:hidden;
+  border:1.5px solid var(--border);
+}
+.router-top{
+  padding:12px 18px;
+  display:flex;align-items:center;gap:12px;
+}
+.router-dot{
+  width:10px;height:10px;border-radius:50%;flex-shrink:0;
+}
+.router-label{font-size:13px;font-weight:600;color:#fff;flex:1;}
+.router-items{font-size:11px;color:rgba(255,255,255,.7);}
+.router-detail{
+  padding:12px 18px;
+  background:var(--surface);
+  font-size:12px;color:var(--text2);line-height:1.6;
+}
+.router-detail strong{color:var(--navy);}
+
+/* ── QUESTIONNAIRE ── */
+.q-shell{display:flex;flex-direction:column;min-height:500px;}
+
+/* progress header */
+.q-progress-hdr{
+  padding:16px 24px 14px;
+  background:var(--surface2);
+  border-bottom:1px solid var(--border);
+}
+.q-progress-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:8px;
+}
+.q-athlete-name{
+  font-family:'DM Serif Display',serif;font-size:17px;
+  font-weight:400;color:var(--navy);
+}
+.q-count{font-size:12px;color:var(--muted);}
+.q-bar-outer{
+  height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:10px;
+}
+.q-bar-inner{height:100%;border-radius:3px;transition:width .4s cubic-bezier(.4,0,.2,1);}
+.q-bar-inner.MSQ{background:linear-gradient(90deg,var(--navy),var(--navy2));}
+.q-bar-inner.ACSI{background:linear-gradient(90deg,var(--blue),#2268B8);}
+.q-bar-inner.MTQ{background:linear-gradient(90deg,var(--amber),#D08830);}
+.q-bar-inner.PSYJ{background:linear-gradient(90deg,var(--gold),#C8982A);}
+.q-bar-inner.ath{background:linear-gradient(90deg,var(--teal),var(--teal-m));}
+.q-chips{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.q-dim-chip{
+  font-size:11px;font-weight:600;padding:3px 10px;
+  border-radius:20px;
+}
+.q-dim-chip.navy{background:#EAF0F6;color:var(--navy);border:1px solid #C5D5E8;}
+.q-dim-chip.blue{background:var(--blue-l);color:var(--blue);border:1px solid #A8C0E8;}
+.q-dim-chip.amber{background:var(--amber-l);color:var(--amber-d,#7a5010);border:1px solid #D4A843;}
+.q-dim-chip.teal{background:var(--teal-l);color:var(--teal);border:1px solid #9FE1CB;}
+.q-dim-chip.gold{background:var(--gold-pale);color:var(--gold-d);border:1px solid var(--gold);}
+.rev-tag{
+  font-size:10px;padding:2px 8px;border-radius:20px;
+  background:#FAECEA;color:#A32D2D;border:1px solid #F09595;
+}
+.module-transition{
+  padding:10px 20px;
+  background:var(--teal-l);border-bottom:1px solid #9FE1CB;
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;font-weight:600;color:var(--teal);
+}
+
+/* question body */
+.q-body{
+  flex:1;padding:32px 28px 20px;
+}
+.q-number{
+  font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:12px;
+}
+.q-text{
+  font-family:'DM Serif Display',serif;
+  font-size:22px;font-weight:400;line-height:1.5;
+  color:var(--navy);margin-bottom:36px;min-height:64px;
+}
+
+/* 3-level scale */
+.scale-3{display:flex;gap:12px;}
+.lb3{
+  flex:1;border:2px solid var(--border);border-radius:16px;
+  background:var(--surface);cursor:pointer;
+  padding:20px 10px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+}
+.lb3:hover{border-color:var(--border2);background:var(--bg);transform:translateY(-2px);box-shadow:var(--shadow);}
+.lb3.sel{transform:translateY(-3px);box-shadow:var(--shadow-md);}
+.lb3.sel-0{background:#F5F4F2;border-color:#A0A09C;}
+.lb3.sel-1{background:var(--gold-pale);border-color:var(--gold);}
+.lb3.sel-2{background:var(--teal-l);border-color:var(--teal);}
+.lb3-em{font-size:30px;line-height:1;}
+.lb3-label{font-size:12px;font-weight:600;color:var(--text);}
+.lb3.sel-2 .lb3-label{color:var(--teal);}
+.lb3.sel-1 .lb3-label{color:var(--gold-d);}
+.lb3-sub{font-size:10px;color:var(--muted);text-align:center;line-height:1.3;}
+
+/* 4-level scale (ACSI) */
+.scale-4{display:flex;gap:10px;}
+.lb4{
+  flex:1;border:2px solid var(--border);border-radius:14px;
+  background:var(--surface);cursor:pointer;
+  padding:18px 8px;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  transition:all .18s;
+}
+.lb4:hover{border-color:var(--blue);background:var(--blue-l);transform:translateY(-2px);}
+.lb4.sel{border-color:var(--blue);background:var(--blue-l);transform:translateY(-3px);box-shadow:var(--shadow-md);}
+.lb4-n{font-size:22px;font-weight:600;color:var(--text);}
+.lb4.sel .lb4-n{color:var(--blue);}
+.lb4-w{font-size:9px;color:var(--muted);text-align:center;line-height:1.3;}
+.lb4.sel .lb4-w{color:var(--blue);font-weight:600;}
+
+/* 5-level scale (MTQ) */
+.scale-5{display:flex;gap:8px;}
+.lb5{
+  flex:1;border:2px solid var(--border);border-radius:12px;
+  background:var(--surface);cursor:pointer;
+  padding:16px 4px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  transition:all .18s;
+}
+.lb5:hover{border-color:var(--amber);background:var(--amber-l);transform:translateY(-2px);}
+.lb5.sel{border-color:var(--amber);background:var(--amber-l);transform:translateY(-3px);box-shadow:var(--shadow-md);}
+.lb5-n{font-size:18px;font-weight:600;color:var(--text);}
+.lb5.sel .lb5-n{color:var(--amber);}
+.lb5-w{font-size:8px;color:var(--muted);text-align:center;line-height:1.2;}
+.lb5.sel .lb5-w{color:var(--amber-d,#7a5010);}
+
+/* navigation bar */
+.q-nav{
+  padding:14px 24px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+  background:var(--surface2);
+}
+.nav-hint{font-size:12px;}
+.nav-hint.ok{color:var(--teal);}
+.nav-hint.req{color:var(--coral);}
+.spc{flex:1;}
+.skip-link{font-size:11px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:inherit;padding:4px 8px;border-radius:6px;}
+.skip-link:hover{background:var(--bg);color:var(--text);}
+
+/* PSY-J evaluator */
+.psyj-intro{
+  padding:14px 24px;
+  background:var(--gold-pale);
+  border-bottom:1px solid #DEC898;
+  display:flex;gap:10px;align-items:flex-start;
+  font-size:12px;color:var(--gold-d);
+}
+.psyj-intro-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.psyj-dims-list{display:flex;flex-direction:column;gap:12px;padding:20px 24px;}
+.psyj-dim{
+  border:1.5px solid var(--border);border-radius:14px;overflow:hidden;
+  transition:border-color .18s;
+}
+.psyj-dim:focus-within{border-color:var(--gold);}
+.psyj-dim-hdr{
+  padding:12px 18px;
+  background:var(--surface2);
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--border);
+}
+.psyj-dim-title{font-weight:600;font-size:13px;color:var(--navy);}
+.psyj-score-pill{
+  font-size:10px;font-weight:700;padding:2px 10px;
+  border-radius:20px;background:var(--gold);color:#fff;
+}
+.psyj-dim-desc{font-size:11px;color:var(--muted);padding:10px 18px 6px;}
+.psyj-scale{display:flex;gap:6px;padding:8px 18px 14px;}
+.psyj-btn{
+  flex:1;border:1.5px solid var(--border);border-radius:10px;
+  background:var(--surface);cursor:pointer;
+  padding:10px 4px;text-align:center;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+  color:var(--muted);transition:all .15s;
+}
+.psyj-btn:hover{border-color:var(--gold);background:var(--gold-pale);color:var(--gold-d);}
+.psyj-btn.sel{background:var(--gold);border-color:var(--gold);color:#fff;}
+.psyj-indicators{font-size:10px;color:var(--muted);padding:0 18px 10px;line-height:1.8;}
+.psyj-note{padding:0 18px 14px;}
+.psyj-note textarea{
+  width:100%;padding:8px 12px;
+  border:1.5px solid var(--border);border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:12px;
+  resize:vertical;min-height:44px;background:var(--bg);
+  color:var(--text);outline:none;transition:border-color .18s;
+}
+.psyj-note textarea:focus{border-color:var(--gold);}
+
+/* ── REPORT ── */
+.rep-wrapper{padding:28px 32px;}
+@media print{body{background:#fff}.shell{padding:0}.card{border:none;box-shadow:none;border-radius:0}.rep-wrapper{padding:20px 24px}.no-print{display:none!important}.dim-block{page-break-inside:avoid}}
+.rep-masthead{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+  padding-bottom:18px;margin-bottom:18px;
+  border-bottom:2px solid var(--navy);
+}
+.rep-brand{display:flex;align-items:center;gap:12px;}
+.rep-brand-logo{
+  width:40px;height:40px;background:var(--navy);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+}
+.rep-brand-logo span{font-family:'DM Serif Display',serif;font-size:12px;color:var(--gold);}
+.rep-brand-name{font-size:14px;font-weight:600;color:var(--navy);}
+.rep-brand-sub{font-size:10px;color:var(--muted);margin-top:1px;}
+.rep-date-block{text-align:right;font-size:10px;color:var(--muted);line-height:1.7;}
+.rep-title{
+  font-family:'DM Serif Display',serif;
+  font-size:26px;font-weight:400;color:var(--navy);margin-bottom:4px;
+}
+.rep-subtitle{font-size:12px;color:var(--muted);margin-bottom:18px;}
+
+.athlete-info-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;
+}
+.info-cell{
+  background:var(--surface2);border:1px solid var(--border);border-radius:10px;
+  padding:10px 14px;
+}
+.info-label{font-size:9px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.info-value{font-size:13px;font-weight:600;color:var(--text);}
+
+/* global score */
+.global-score-card{
+  border-radius:14px;padding:20px 24px;
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:14px;gap:16px;
+  position:relative;overflow:hidden;
+}
+.global-score-card::after{
+  content:'';position:absolute;right:-20px;top:-20px;
+  width:100px;height:100px;border-radius:50%;
+  background:rgba(255,255,255,.05);
+}
+.global-score-card.MSQ{background:linear-gradient(135deg,var(--navy),var(--navy2));}
+.global-score-card.ACSI{background:linear-gradient(135deg,var(--blue),#2268B8);}
+.global-score-card.MTQ{background:linear-gradient(135deg,var(--amber),#D08830);}
+.global-score-card.PSYJ{background:linear-gradient(135deg,var(--gold),#C8982A);}
+.global-score-card.ATH{background:linear-gradient(135deg,var(--teal),var(--teal-m));}
+.gs-left{}
+.gs-label{font-size:11px;color:rgba(255,255,255,.65);margin-bottom:4px;}
+.gs-value{font-size:40px;font-weight:300;color:#fff;line-height:1;font-family:'DM Serif Display',serif;}
+.gs-of{font-size:18px;color:rgba(255,255,255,.5);}
+.gs-sub{font-size:10px;color:rgba(255,255,255,.45);margin-top:5px;}
+.gs-right{text-align:right;max-width:260px;}
+.gs-interp{font-size:12px;color:rgba(255,255,255,.9);font-weight:500;line-height:1.55;}
+.gs-band{
+  display:inline-block;margin-top:6px;
+  font-size:10px;padding:2px 10px;border-radius:20px;
+  background:rgba(255,255,255,.15);color:rgba(255,255,255,.8);
+}
+
+/* 4C grid */
+.four-c-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+.fc-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;}
+.fc-name{font-size:9px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.fc-score{font-size:24px;font-weight:300;font-family:'DM Serif Display',serif;}
+.fc-score.h{color:var(--teal)}.fc-score.m{color:var(--amber)}.fc-score.l{color:var(--coral)}
+.fc-max{font-size:10px;color:var(--muted);}
+
+/* sub-score overview */
+.score-summary-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;}
+.ss-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center;}
+.ss-label{font-size:9px;color:var(--muted);font-weight:600;letter-spacing:.3px;text-transform:uppercase;margin-bottom:4px;}
+.ss-val{font-size:18px;font-weight:600;color:var(--navy);}
+
+/* dim blocks */
+.dim-block{
+  border:1.5px solid var(--border);border-radius:12px;
+  padding:14px 18px;margin-bottom:8px;
+  transition:border-color .18s;
+}
+.dim-block:hover{border-color:var(--border2);}
+.dim-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;flex-wrap:wrap;gap:6px;}
+.dim-name{font-size:13px;font-weight:600;color:var(--text);}
+.dim-score-badge{font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;}
+.dim-score-badge.h{background:var(--teal-l);color:var(--teal);border:1px solid #9FE1CB;}
+.dim-score-badge.m{background:var(--gold-pale);color:var(--gold-d);border:1px solid var(--gold);}
+.dim-score-badge.l{background:var(--coral-l);color:#993C1D;border:1px solid #F0997B;}
+.bar-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:5px;}
+.bar-outer{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;border:1px solid var(--border);margin-bottom:7px;}
+.bar-inner{height:100%;border-radius:3px;transition:width .5s ease;}
+.bar-inner.h{background:var(--teal)}.bar-inner.m{background:var(--gold)}.bar-inner.l{background:var(--coral)}
+.dim-answered{font-size:10px;color:var(--muted);margin-bottom:7px;}
+.dim-interp{
+  font-size:12px;color:var(--text2);line-height:1.6;
+  padding:9px 12px;background:var(--surface2);
+  border-radius:8px;border-left:3px solid var(--border);
+}
+.dim-interp.h{border-left-color:var(--teal);}
+.dim-interp.m{border-left-color:var(--gold);}
+.dim-interp.l{border-left-color:var(--coral);}
+
+/* rec block */
+.rec-card{
+  margin-top:14px;padding:16px 20px;
+  border:1.5px solid var(--border);border-radius:12px;
+  background:var(--surface2);
+}
+.rec-title{font-size:12px;font-weight:600;color:var(--navy);margin-bottom:7px;}
+.rec-text{font-size:12px;color:var(--text2);line-height:1.75;}
+.disclaimer{
+  margin-top:12px;padding:10px 14px;
+  font-size:10px;color:var(--muted);background:var(--bg);
+  border-radius:8px;line-height:1.65;border:1px solid var(--border);
+}
+.rep-actions{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--navy);color:#fff;
+  padding:11px 20px;border-radius:12px;
+  font-size:13px;font-weight:500;
+  box-shadow:var(--shadow-lg);
+  z-index:9999;opacity:0;transition:all .3s;pointer-events:none;
+  display:flex;align-items:center;gap:8px;
+}
+.toast.show{opacity:1;}
+
+/* responsive */
+@media(max-width:600px){
+  .form-grid{grid-template-columns:1fr;}
+  .athlete-info-grid{grid-template-columns:1fr 1fr;}
+  .four-c-grid,.score-summary-row{grid-template-columns:1fr 1fr;}
+  .scale-3{flex-direction:column;gap:8px;}
+  .lb3{flex-direction:row;padding:14px 16px;text-align:left;gap:12px;}
+  .lb3-em{font-size:22px;}
+  .q-text{font-size:18px;}
+  .rep-wrapper{padding:18px 16px;}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- SITE HEADER -->
+  <header class="site-header">
+    <div class="mas-logo"><span>MAS</span></div>
+    <div class="site-title">
+      <h1>PATHWAY Assessment Hub</h1>
+      <p>MAS Foundation · Qatar Foundation · Female Athlete Talent Detection</p>
+    </div>
+    <div class="site-tools no-print">
+      <button class="btn btn-sm" onclick="exportAll()">Export all JSON</button>
+    </div>
+  </header>
+
+  <!-- MAIN NAV -->
+  <nav class="main-nav" id="main-nav">
+    <button class="nav-tab active" onclick="showTab('list')" id="tab-list">
+      Athletes <span class="tab-count" id="count-badge">0</span>
+    </button>
+    <button class="nav-tab" onclick="showTab('intake')" id="tab-intake">
+      + New assessment
+    </button>
+    <button class="nav-tab" onclick="showTab('questionnaire')" id="tab-q" style="display:none">
+      Questionnaire
+    </button>
+    <button class="nav-tab" onclick="showTab('report')" id="tab-rep" style="display:none">
+      Report
+    </button>
+  </nav>
+
+  <!-- ══ LIST ══ -->
+  <div id="view-list">
+    <div class="card">
+      <div class="list-toolbar">
+        <input class="search-input" type="text" id="search-input" placeholder="Search athlete by name or sport…" oninput="renderList()"/>
+        <button class="btn btn-gold" onclick="showTab('intake')">+ New athlete</button>
+      </div>
+      <div id="list-body"></div>
+    </div>
+  </div>
+
+  <!-- ══ INTAKE ══ -->
+  <div id="view-intake" style="display:none">
+    <div class="card">
+      <div class="intake-header">
+        <h2>New Athlete Assessment</h2>
+        <p>Enter the athlete's date of birth — the correct questionnaire is selected automatically based on age.</p>
+      </div>
+      <div class="form-body">
+        <div class="form-grid">
+          <div>
+            <label class="field-label">Full name *</label>
+            <input class="field-input" type="text" id="f-name" placeholder="Athlete full name"/>
+          </div>
+          <div>
+            <label class="field-label">Date of birth *</label>
+            <input class="field-input" type="date" id="f-dob" oninput="updateRouter()"/>
+          </div>
+          <div>
+            <label class="field-label">Sport *</label>
+            <select class="field-input" id="f-sport" oninput="updateRouter()">
+              <option value="">Select discipline…</option>
+              <option value="Athletics">Athletics</option>
+              <option value="Basketball">Basketball</option>
+              <option value="Fencing">Fencing</option>
+              <option value="Tennis">Tennis</option>
+              <option value="Volleyball">Volleyball</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Assessment date</label>
+            <input class="field-input" type="date" id="f-date" oninput="updateRouter()"/>
+          </div>
+          <div>
+            <label class="field-label">Evaluator *</label>
+            <input class="field-input" type="text" id="f-eval" placeholder="Level 2 certified evaluator"/>
+          </div>
+          <div>
+            <label class="field-label">Location</label>
+            <input class="field-input" type="text" id="f-loc" placeholder="Venue / school name"/>
+          </div>
+          <div class="full">
+            <label class="field-label">Session notes</label>
+            <input class="field-input" type="text" id="f-notes" placeholder="Optional — context, observations…"/>
+          </div>
+        </div>
+
+        <div id="router-display"></div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="startAssessment()" id="start-btn">Start assessment</button>
+          <button class="btn" onclick="showTab('list')">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ QUESTIONNAIRE ══ -->
+  <div id="view-questionnaire" style="display:none">
+    <div class="card">
+      <div id="q-content"></div>
+    </div>
+  </div>
+
+  <!-- ══ REPORT ══ -->
+  <div id="view-report" style="display:none">
+    <div class="card">
+      <div id="rep-content"></div>
+    </div>
+  </div>
+
+</div><!-- /shell -->
+<div class="toast" id="toast">✓ <span id="toast-msg"></span></div>
+
+<script>
+// ═══════════ DATA — EXACT FROM UPLOADED FILES ═══════════
+
+const MSQ_DIMS=[
+  {id:"B",name:"Emotional Regulation",items:["After a mistake, I can quickly focus on what comes next","When I feel angry in training, I find a way to calm down","Before a competition, I'm nervous but I still perform well","When something unfair happens, I stay focused","After losing, I feel sad for a while — then I'm ready to try again","I can stop thinking about a bad session when it's over"]},
+  {id:"C",name:"Self-Confidence",items:["I believe I can do well even against stronger athletes","After bad results, I still believe I can improve","I know my strengths and use them when things get hard","When I try something hard, I believe I will eventually do it","I feel I belong in my group, even if others seem better","In key moments, I trust myself to do what I have trained"]},
+  {id:"E",name:"Intrinsic Motivation",items:["I love my sport even on tired days when training is hard","I enjoy training even when nobody is watching","Learning something new excites me even when I get it wrong at first","I would still do my sport without trophies or praise","When I improve even a small thing, I feel really proud","I think about my sport outside of training"]}
+];
+const ATH_DIMS=[
+  {id:"ATH-A",name:"Motivation for Volume Training",items:["When my coach announces a long session, I feel ready — not tired","Even repetitive drills don't make me want to stop","After a hard session, I feel proud — not just relieved","I push through every repetition — even the last and hardest","I still enjoy training even on very long, tiring days","When my coach increases training load, I accept it and try my best"]},
+  {id:"ATH-B",name:"Response to Time / Distance Outcomes",items:["After seeing my time or distance, I think: how can I improve next time?","A disappointing result still motivates me to keep training","I compare my times to my own personal best — not to other athletes","On the start line, I feel focused — not scared of my result","After a personal best, I am already thinking about doing even better","After a bad competition result, I come back to training motivated"]},
+  {id:"ATH-C",name:"Effort & Fatigue",items:["When my legs feel heavy, I try to keep my pace — not slow down","When I underperform, I first ask myself: did I really give everything?","In the last part of a race, I try to finish as strong as I started","I know the difference: tired from hard work vs. tired from low effort","After giving absolutely everything — even a bad result feels good","How hard I try is my decision — not dependent on how I feel"]}
+];
+const SCALE3=[{val:0,icon:"😐",label:"Not me",sub:"This does not describe me"},{val:1,icon:"🙂",label:"A little me",sub:"This describes me sometimes"},{val:2,icon:"⭐",label:"That's me",sub:"This describes me well"}];
+
+const SUBS=[
+  {id:1,name:"Coachability",items:["I listen carefully to my coach's advice, even when I initially disagree.","When my coach corrects me, I immediately put what they say into practice without resistance.","I treat corrections from my coaches as useful information rather than personal attacks.","I ask my coach questions to better understand what is expected of me."]},
+  {id:2,name:"Peaking Under Pressure",items:["In decisive moments of a match, I perform at or close to my best level.","When the stakes are high, I feel more focused and effective than in ordinary situations.","Important competitions bring out the best in me.","The greater the pressure, the more capable I am of surpassing myself."]},
+  {id:3,name:"Goal Setting & Mental Preparation",items:["Before a competition, I have a precise mental routine that I apply systematically.","I set specific, measurable goals for each training session.","I visualise successful performances before important competitions.","I mentally prepare for the difficult scenarios I might face in competition."]},
+  {id:4,name:"Concentration",items:["During a match, I stay focused on the present task without thinking about the overall score.","I return quickly to concentration after an interruption or distraction.","Negative thoughts or doubts do not invade my mind while I am playing.","Even in chaotic situations, I maintain my mental clarity and automatic responses."]},
+  {id:5,name:"Freedom from Worry",items:["The night before a competition, I sleep well without being overwhelmed by anxiety.","During warm-up, my thoughts are oriented toward performance rather than fear of failure.","I do not let the fear of others' judgement affect my tactical choices in a match.","After a mistake, I move on immediately without dwelling on what just happened."]},
+  {id:6,name:"Confidence & Achievement Motivation",items:["I set ambitious goals and sincerely believe I can achieve them.","When I encounter a difficulty, my first reaction is to look for how to overcome it.","I am motivated by difficult challenges — they make me want to work even harder.","My self-confidence in my sport is stable; it does not fluctuate with every result."]},
+  {id:7,name:"Coping with Adversity",items:["When things go very wrong in a match, I actively seek solutions rather than simply enduring.","Facing an opponent or situation that overwhelms me, I maintain my commitment and effort.","I do not complain about external conditions — I adapt to what I am given.","Even in moments of great difficulty, I remain a source of positive energy for my team."]}
+];
+const SCALE_ACSI=["Never","Sometimes","Often","Almost Always"];
+const SUB_INTERP={1:{h:"Highly coachable — integrates feedback rapidly. Most predictive sub-scale for technical progression speed.",m:"Standard coachability — some resistance. Recommend structured feedback with positive reinforcement.",l:"Coachability requires attention. A coachable athlete at 14 will progress faster than a more talented but feedback-resistant one."},2:{h:"Peaks under pressure — raises performance in decisive moments. Strong competitive profile.",m:"Inconsistent under pressure. Build competitive simulation exercises.",l:"Tends to shrink under pressure. Introduce graduated high-stakes training situations."},3:{h:"Strong mental preparation — systematic pre-competition routines in place.",m:"Developing — some routines but inconsistent. Formalise pre-competition protocol.",l:"Limited mental preparation. Introduce visualisation and goal-setting as structured components."},4:{h:"Strong concentration — maintains task focus under distraction. Predictor of performance consistency.",m:"Variable concentration — external distractors have some impact. Attentional training recommended.",l:"Concentration support needed. Introduce focus cue and distraction management protocols."},5:{h:"Free from worry — low cognitive anxiety, approaches competition with clarity.",m:"Some anticipatory anxiety. Strongly linked to cultural and family context — contextualise for Qatari population.",l:"High worry levels. Contextualise for multicultural Qatari environment. Refer to mental skills specialist if persistent."},6:{h:"Strong confidence & achievement motivation — stable self-belief oriented toward competitive achievement.",m:"Developing confidence in achievement context. Reinforce mastery-based goal setting.",l:"Low achievement confidence. Distinguish from general self-worth. Targeted confidence-building programme."},7:{h:"Strong coping with adversity — actively seeks solutions rather than enduring. Decisive moment profile.",m:"Adequate adversity coping — some passivity under extreme difficulty. Introduce problem-solving under pressure.",l:"Adversity coping requires development. Build graduated challenge protocols with debrief."}};
+
+const DIMS=[
+  {id:"C1",c:"Challenge",items:[{q:"I see difficult situations as opportunities to show what I am capable of.",rev:false},{q:"Obstacles in my path motivate me rather than discourage me.",rev:false},{q:"When something is very difficult to master, I dedicate even more energy to it.",rev:false},{q:"I actively seek situations that will push me outside my comfort zone.",rev:false},{q:"When a task becomes too difficult, I tend to fall back on what I already know how to do.",rev:true},{q:"New competitive situations worry me more than they energise me.",rev:true},{q:"I perceive changes in my programme or environment as opportunities to learn.",rev:false},{q:"Even when I doubt myself, I take on difficult challenges rather than avoid them.",rev:false}]},
+  {id:"C2a",c:"Life Control",items:[{q:"I believe my actions have a direct impact on my sporting results.",rev:false},{q:"When something is not working in my training, I immediately look for what I can change.",rev:false},{q:"I do not let myself be overwhelmed by the feeling that things are beyond my control.",rev:false},{q:"Faced with an unfair situation, I stay focused on what I can do rather than what I cannot change.",rev:false},{q:"I sometimes feel that no matter what I do, results will not change.",rev:true},{q:"When circumstances are unfavourable, I tend to think it is pointless to keep trying.",rev:true},{q:"I take responsibility for my progression without waiting for conditions to be perfect.",rev:false},{q:"I believe the quality of my work today determines the quality of my performance tomorrow.",rev:false}]},
+  {id:"C2b",c:"Emotional Control",items:[{q:"I can choose not to let a negative emotion drive my behaviour in competition.",rev:false},{q:"When I am stressed, I have concrete strategies to regain my calm quickly.",rev:false},{q:"I do not allow pre-competition anxiety to exceed a level that would be useful to me.",rev:false},{q:"During a match, my emotions stay within a range that allows me to perform effectively.",rev:false},{q:"When I lose control of my emotions, it is difficult to regain it within the same match.",rev:true},{q:"My moods vary so much that my teammates never know what state they will find me in.",rev:true},{q:"I can reset emotionally between phases of a match or competition.",rev:false},{q:"My emotional stability is an asset recognised by my opponents and teammates.",rev:false}]},
+  {id:"C3a",c:"Confidence in Ability",items:[{q:"I believe I possess the qualities needed to achieve my sporting goals.",rev:false},{q:"Even against higher-level athletes, I am convinced I have real strengths.",rev:false},{q:"My confidence in my abilities does not collapse after a series of poor results.",rev:false},{q:"I know precisely what I do well and I rely on it in difficult moments.",rev:false},{q:"I often doubt my abilities when I compare my level to the best athletes.",rev:true},{q:"One bad competition is enough to destroy my self-confidence.",rev:true},{q:"I am convinced I can continue to progress regardless of my current level.",rev:false},{q:"My confidence comes from knowing what I have done in training, not only from past results.",rev:false}]},
+  {id:"C3b",c:"Interpersonal Confidence",items:[{q:"I can express my point of view clearly even when it differs from my coach's.",rev:false},{q:"I am comfortable asking for help or explanations without feeling vulnerable.",rev:false},{q:"In a group, I can take my place and assert myself without dominating or disappearing.",rev:false},{q:"I can give constructive feedback to a teammate without fearing it will damage the relationship.",rev:false},{q:"I avoid speaking up in group situations out of fear of others' judgement.",rev:true},{q:"I prefer not to share my opinions to avoid creating tension.",rev:true},{q:"I build trusting relationships with coaches and teammates fairly quickly.",rev:false},{q:"In leadership situations, I can guide my teammates without either withdrawing or becoming authoritarian.",rev:false}]},
+  {id:"C4",c:"Commitment",items:[{q:"When I commit to a goal, I see it through even when conditions become difficult.",rev:false},{q:"I maintain my training discipline even during periods when motivation drops.",rev:false},{q:"The sacrifices my sport requires do not call into question my long-term commitment.",rev:false},{q:"I finish what I start, even difficult or tedious tasks.",rev:false},{q:"When I go through a difficult period, I tend to reduce my investment in my sport.",rev:true},{q:"I sometimes abandon goals I set for myself when obstacles become too significant.",rev:true},{q:"I honour my commitments to my team even when it is uncomfortable for me personally.",rev:false},{q:"My level of commitment to my sport is stable over time; it does not fluctuate with results.",rev:false}]}
+];
+const SCALE_MTQ=["Strongly disagree","Somewhat disagree","Neutral","Somewhat agree","Strongly agree"];
+const DIM_INTERP={C1:{h:"High challenge orientation — actively seeks difficult situations as growth opportunities. Key predictor in demanding training environments.",m:"Developing challenge orientation — some comfort-zone avoidance. Build progressive difficulty protocols.",l:"Challenge avoidance. Introduce graduated exposure with structured debrief and safety framework."},C2a:{h:"Strong life control — believes actions impact outcomes. No fatalistic thinking. Drives consistent training investment.",m:"Developing locus of control — some external attribution. Reinforce agency-based feedback.",l:"External locus dominant. Risk of learned helplessness. Priority: attribution retraining with coach support."},C2b:{h:"Strong emotional control — regulates emotional states effectively. Stability is an asset for team dynamics.",m:"Developing — inconsistencies under extreme stress. Introduce reset strategies (breathing, cue words, routines).",l:"Emotional control requires targeted support. Refer to PATHWAY mental skills specialist."},C3a:{h:"High confidence in ability — stable self-belief independent of results or social comparison.",m:"Developing ability confidence — some social comparison dependency. Shift to mastery-based confidence building.",l:"Low ability confidence. Mastery-based intervention recommended before next evaluation."},C3b:{h:"High interpersonal confidence — asserts herself in group contexts, builds trust with coaches and teammates.",m:"Developing — some passivity or avoidance in group assertion. Group role exercises recommended.",l:"Interpersonal confidence requires support. Structured group integration activities recommended."},C4:{h:"High commitment — honours commitments and maintains discipline through adversity. Most directly linked to elite longevity.",m:"Developing — some goal abandonment under obstacles. Reinforce through public goal-setting and accountability.",l:"Commitment instability. Sustainability risk for long-term pathway. Explore underlying motivational drivers."}};
+
+const PSYJ_DIMS=[
+  {id:"ENG",name:"Engagement Level",desc:"Does she initiate, persist, or withdraw when the activity becomes challenging?",indicators:["Stops when it gets difficult","Needs encouragement to continue","Continues with minimal encouragement","Persists independently","Seeks additional challenge actively"]},
+  {id:"COM",name:"Competitive Response",desc:"How does she respond when compared to peers or when her performance is visible?",indicators:["Withdraws from comparison","Avoids competitive situations","Neutral — neither energised nor distressed","Slightly energised by competition","Highly energised — competition brings out best"]},
+  {id:"ERR",name:"Error Response",desc:"Does she seek to retry or avoid repetition after a mistake?",indicators:["Gives up after error","Shows distress — reluctant to retry","Retries after encouragement","Retries independently","Immediately seeks to correct — treats errors as information"]},
+  {id:"COA",name:"Coaching Receptivity",desc:"Does she apply corrections immediately or resist / partially comply?",indicators:["Ignores correction","Acknowledges but does not apply","Applies partially after delay","Applies immediately on next attempt","Applies and asks for further detail"]},
+  {id:"ENJ",name:"Enjoyment Signal",desc:"Are there visible signs of intrinsic pleasure — independent of results?",indicators:["No enjoyment signals visible","Occasional smile or positive reaction","Moderate enjoyment — participates willingly","Clear enjoyment — smiles, enthusiasm, positive body language","Exceptional — joy is the dominant signal throughout"]}
+];
+const PSYJ_INTERP={ENG:{h:"High engagement — initiates independently, seeks challenge.",m:"Moderate — participates willingly but needs some encouragement.",l:"Low engagement — stops when challenged. Needs motivational approach."},COM:{h:"Highly energised by competition — brings out best performance.",m:"Neutral to mild competitive response.",l:"Competition withdrawal or avoidance signals."},ERR:{h:"Error as information — immediately seeks to correct, self-directed.",m:"Retries with or without encouragement.",l:"Error avoidance — gives up or shows distress."},COA:{h:"Active coaching receptivity — applies immediately, seeks detail.",m:"Applies with some delay or partial compliance.",l:"Low receptivity — ignores or struggles to apply corrections."},ENJ:{h:"Exceptional enjoyment — joy is the dominant signal.",m:"Clear enjoyment signals — participates willingly.",l:"No or minimal enjoyment signals visible."}};
+
+const MSQ_INTERP={B:{h:"Effective emotional regulation — recovers quickly, manages competitive stress well.",m:"Partial regulation — some inconsistency under high pressure. Recommend reset routines.",l:"Emotional regulation requires targeted support. Not eliminatory. Refer to mental skills track."},C:{h:"Stable self-confidence — not destabilised by opposition or results. Strong predictive profile.",m:"Developing — context-dependent. Highly malleable at this age through targeted training.",l:"Low confidence. Not eliminatory. Responds strongly to structured intervention."},E:{h:"Strong intrinsic motivation — best predictor of long-term persistence in elite sport.",m:"Mixed — some external dependency. Reinforce autonomy and self-directed goal setting.",l:"External motivation dominance. Sustainability risk if external conditions change."}};
+const ATH_INTERP={"ATH-A":{h:"Strong volume motivation — embraces load increase. Key predictor of training adherence.",m:"Moderate tolerance — some resistance to long sessions. Gradual progression recommended.",l:"Low volume motivation. Progressive load introduction required."},"ATH-B":{h:"Excellent competitive response to time/distance — uses results as fuel.",m:"Developing — some sensitivity to disappointing performances.",l:"Result sensitivity. Attribution retraining priority."},"ATH-C":{h:"Strong effort attribution under fatigue — internal locus in final race stages.",m:"Partial effort regulation — some external attribution. Race pacing protocols.",l:"Effort attribution under fatigue requires attention."}};
+
+// ═══════════ STATE ═══════════
+const SK="pathway_hub_v2";
+let athletes=[],curId=null,curIdx=0;
+function load(){try{const r=localStorage.getItem(SK);if(r)athletes=JSON.parse(r);}catch(e){athletes=[];}}
+function save(){try{localStorage.setItem(SK,JSON.stringify(athletes));}catch(e){toast("Storage error — export JSON now!");}}
+function getA(id){return athletes.find(a=>a.id===id);}
+function cur(){return getA(curId);}
+
+// ═══════════ ROUTING ═══════════
+function calcAge(dob,ref){if(!dob)return null;const r=ref?new Date(ref):new Date(),b=new Date(dob);let a=r.getFullYear()-b.getFullYear();if(r.getMonth()<b.getMonth()||(r.getMonth()===b.getMonth()&&r.getDate()<b.getDate()))a--;return a;}
+function routeTool(age){if(age===null)return null;if(age<=12)return"PSYJ";if(age<=13)return"MSQ";if(age<=15)return"ACSI";return"MTQ";}
+
+function updateRouter(){
+  const dob=document.getElementById("f-dob").value,sport=document.getElementById("f-sport").value,ref=document.getElementById("f-date").value;
+  const age=calcAge(dob,ref||null),tool=routeTool(age);
+  const el=document.getElementById("router-display"),btn=document.getElementById("start-btn");
+  if(!dob||age===null){el.innerHTML="";btn.textContent="Start assessment";return;}
+  const colors={MSQ:"var(--navy)",ACSI:"var(--blue)",MTQ:"var(--amber)",PSYJ:"var(--gold)"};
+  const labels={MSQ:`MAS-MSQ-U13 · ${sport==="Athletics"?"36":"18"} items · 3 dimensions · Scale 0–2 (Not me → That's me)${sport==="Athletics"?" + Athletics module (18 items)":""}`,ACSI:"MAS-ACSI28 · 28 items · 7 sub-scales · Scale 0–3 (Never → Almost Always)",MTQ:"MAS-MTQ48 · 48 items · 6 dimensions · 4C model · Scale 1–5 · Reverse scoring applied",PSYJ:"MAS-PSY-J · 5 dimensions · Evaluator observation grid — NOT self-report"};
+  const who={MSQ:"Athlete self-completes",ACSI:"Athlete self-completes",MTQ:"Athlete self-completes",PSYJ:"Evaluator completes — athlete does NOT touch the device"};
+  el.innerHTML=`<div class="router-box"><div class="router-hdr" style="background:${colors[tool]}">Age ${age} years → ${tool} selected</div><div class="router-body">${labels[tool]}<br><strong>Completed by:</strong> ${who[tool]}</div></div>`;
+  const n=tool==="MSQ"&&sport==="Athletics"?"36":tool==="MSQ"?"18":tool==="ACSI"?"28":tool==="MTQ"?"48":"5 dimensions";
+  btn.textContent=`Start assessment · ${n} item${n!=="5 dimensions"?"s":""}`;
+}
+
+// ═══════════ TABS ═══════════
+const VIEWS=["list","intake","questionnaire","report"];
+function showTab(name){VIEWS.forEach(v=>{document.getElementById("view-"+v).style.display=v===name?"block":"none";const t=document.getElementById("tab-"+(v==="questionnaire"?"q":v==="report"?"rep":v));if(t)t.classList.toggle("active",v===name);});if(name==="list")renderList();if(name==="questionnaire")renderQ();if(name==="report")renderReport();}
+
+// ═══════════ ITEMS ═══════════
+function totalFor(a){if(a.tool==="MSQ")return a.hasAthletics?36:18;if(a.tool==="ACSI")return 28;if(a.tool==="MTQ")return 48;return 5;}
+function itemsFor(a){
+  if(a.tool==="MSQ"){let it=[];MSQ_DIMS.forEach(d=>d.items.forEach(q=>it.push({q,dim:d.id,name:d.name,module:"msq",rev:false})));if(a.hasAthletics)ATH_DIMS.forEach(d=>d.items.forEach(q=>it.push({q,dim:d.id,name:d.name,module:"ath",rev:false})));return it;}
+  if(a.tool==="ACSI"){let it=[];SUBS.forEach(s=>s.items.forEach(q=>it.push({q,dim:s.id,name:s.name,module:"acsi",rev:false})));return it;}
+  if(a.tool==="MTQ"){let it=[];DIMS.forEach(d=>d.items.forEach(i=>it.push({q:i.q,dim:d.id,name:d.c,module:"mtq",rev:i.rev})));return it;}
+  return PSYJ_DIMS.map(d=>({q:d.desc,dim:d.id,name:d.name,module:"psyj",rev:false}));
+}
+
+// ═══════════ LIST ═══════════
+function renderList(){
+  const q=(document.getElementById("search-input")?.value||"").toLowerCase();
+  const filt=athletes.filter(a=>a.name.toLowerCase().includes(q)||a.sport.toLowerCase().includes(q));
+  document.getElementById("count-badge").textContent=athletes.length;
+  const body=document.getElementById("list-body");
+  if(!athletes.length){body.innerHTML=`<div class="empty-s">📋<br><br>No athletes yet. Click <strong>+ New athlete</strong> to begin.</div>`;return;}
+  if(!filt.length){body.innerHTML=`<div class="empty-s">No athletes match your search.</div>`;return;}
+  let html=`<table class="ath-tbl"><thead><tr><th>Name</th><th>Age / Sport</th><th>Tool</th><th>Progress</th><th>Status</th><th>Actions</th></tr></thead><tbody>`;
+  filt.forEach(a=>{
+    const total=totalFor(a);
+    const ans=a.tool==="PSYJ"?Object.keys(a.psyjScores||{}).length:Object.keys(a.answers||{}).length;
+    const pct=Math.round(ans/total*100),st=ans===total?"done":ans>0?"part":"none";
+    html+=`<tr><td><strong>${a.name}</strong></td><td style="font-size:11px">${a.age}y · ${a.sport}</td>
+      <td><span class="tool-pill ${a.tool}">${a.tool}</span></td>
+      <td><div style="display:flex;align-items:center;gap:7px"><div style="flex:1;height:4px;background:#e0ddd6;border-radius:2px;overflow:hidden"><div style="width:${pct}%;height:100%;background:${st==="done"?"#1D9E75":st==="part"?"#B8902A":"#e0ddd6"};border-radius:2px"></div></div><span style="font-size:10px;color:#6b6b67">${ans}/${total}</span></div></td>
+      <td><span class="spill ${st}">${ans===total?"Complete":ans>0?`${pct}%`:"Not started"}</span></td>
+      <td><div class="acts"><button class="btn sm" onclick="resume('${a.id}')">${ans===total?"View":"Continue"}</button><button class="btn sm" onclick="viewRep('${a.id}')">Report</button><button class="btn sm" onclick="exportOne('${a.id}')">JSON</button><button class="btn sm danger" onclick="delAth('${a.id}')">Delete</button></div></td></tr>`;
+  });
+  html+=`</tbody></table>`;body.innerHTML=html;
+}
+function resume(id){curId=id;curIdx=findFirst();document.getElementById("tab-q").style.display="";showTab("questionnaire");}
+function viewRep(id){curId=id;document.getElementById("tab-rep").style.display="";showTab("report");}
+function delAth(id){const a=getA(id);if(!confirm(`Delete ${a.name}?`))return;athletes=athletes.filter(x=>x.id!==id);save();renderList();toast("Deleted");}
+function findFirst(){const a=cur(),items=itemsFor(a);for(let i=0;i<items.length;i++)if(a.answers[i]===undefined)return i;return items.length-1;}
+
+// ═══════════ INTAKE ═══════════
+function startAssessment(){
+  const name=document.getElementById("f-name").value.trim(),dob=document.getElementById("f-dob").value,sport=document.getElementById("f-sport").value,ref=document.getElementById("f-date").value;
+  if(!name||!dob||!sport){alert("Name, date of birth and sport are required.");return;}
+  const age=calcAge(dob,ref||null),tool=routeTool(age);
+  if(!tool){alert("Age is outside the assessment range (8–18).");return;}
+  const today=new Date().toISOString().slice(0,10),id="a_"+Date.now();
+  athletes.push({id,name,dob,age,sport,tool,hasAthletics:(tool==="MSQ"&&sport==="Athletics"),date:ref||today,evaluator:document.getElementById("f-eval").value.trim(),location:document.getElementById("f-loc").value.trim(),notes:document.getElementById("f-notes").value.trim(),answers:{},psyjScores:{},createdAt:new Date().toISOString()});
+  save();curId=id;curIdx=0;
+  ["f-name","f-dob","f-eval","f-loc","f-notes"].forEach(i=>document.getElementById(i).value="");
+  document.getElementById("f-sport").value="";document.getElementById("router-display").innerHTML="";
+  document.getElementById("tab-q").style.display="";showTab("questionnaire");
+  toast(`Started · ${name} · ${tool} · Age ${age}`);
+}
+
+// ═══════════ QUESTIONNAIRE ═══════════
+function renderQ(){
+  const a=cur();if(!a){showTab("list");return;}
+  if(a.tool==="PSYJ"){renderPSYJ();return;}
+  const items=itemsFor(a),total=items.length,item=items[curIdx];
+  const answered=Object.keys(a.answers).length,pct=Math.round(answered/total*100);
+  const curAns=a.answers[curIdx],isLast=curIdx===total-1;
+
+  let banner="";
+  if(a.tool==="MSQ"&&curIdx===18&&a.hasAthletics)
+    banner=`<div style="padding:9px 18px;background:var(--teal-l);border-bottom:1px solid #9FE1CB;font-size:11px;color:#0F6E56;font-weight:600">✓ MAS-MSQ-U13 complete — Athletics module (MAS-PSY-ATH-U13) now starting · 18 additional items</div>`;
+
+  let scaleHtml="";
+  if(a.tool==="MSQ")
+    scaleHtml=`<div class="scale-3">${SCALE3.map(s=>`<button class="lb3${curAns===s.val?" sel sel-"+s.val:""}" onclick="answer(${s.val})"><span class="lb3-icon">${s.icon}</span><span class="lb3-label">${s.label}</span><span class="lb3-sub">${s.sub}</span></button>`).join("")}</div>`;
+  else if(a.tool==="ACSI")
+    scaleHtml=`<div class="scale-4">${[0,1,2,3].map(v=>`<button class="lb4${curAns===v?" sel":""}" onclick="answer(${v})"><span class="lb4-n">${v}</span><span class="lb4-w">${SCALE_ACSI[v]}</span></button>`).join("")}</div>`;
+  else if(a.tool==="MTQ")
+    scaleHtml=`<div class="scale-5">${[1,2,3,4,5].map(v=>`<button class="lb5${curAns===v?" sel":""}" onclick="answer(${v})"><span class="lb5-n">${v}</span><span class="lb5-w">${SCALE_MTQ[v-1]}</span></button>`).join("")}</div>`;
+
+  document.getElementById("q-content").innerHTML=`${banner}
+  <div class="prog-bar">
+    <div class="prog-top"><span class="prog-lbl">Item ${curIdx+1} of ${total} · ${a.name}</span><span class="prog-pct">${answered} answered · ${pct}%</span></div>
+    <div class="prog-track"><div class="prog-fill ${item.module==="ath"?"ath":a.tool}" style="width:${pct}%"></div></div>
+    <span class="dim-chip">${item.dim} — ${item.name}</span>
+    <span class="tool-pill ${a.tool}">${a.tool}</span>
+    ${item.rev?`<span class="rev-badge">[Reverse scored]</span>`:""}
+  </div>
+  <div class="q-body">
+    <div class="q-num">Item ${curIdx+1} of ${total}</div>
+    <div class="q-text">${item.q}</div>
+    ${scaleHtml}
+  </div>
+  <div class="q-nav">
+    <button class="btn" onclick="goQ(-1)" ${curIdx===0?"disabled":""}>← Back</button>
+    ${curAns!==undefined?`<span class="nav-hint ok">✓ Saved</span>`:`<span class="nav-hint req">Select a response to continue</span>`}
+    <div class="spc"></div>
+    <button class="btn" onclick="skipRep()" style="font-size:11px;color:var(--muted)">Skip to report</button>
+    ${isLast?`<button class="btn primary" onclick="finishQ()" ${curAns===undefined?"disabled":""}>Generate report</button>`:`<button class="btn primary" onclick="goQ(1)" ${curAns===undefined?"disabled":""}>Next →</button>`}
+  </div>`;
+}
+function answer(v){const a=cur();a.answers[curIdx]=v;save();renderQ();}
+function goQ(dir){const a=cur();curIdx=Math.max(0,Math.min(itemsFor(a).length-1,curIdx+dir));renderQ();}
+function skipRep(){if(Object.keys(cur().answers).length===0){alert("Answer at least one item first.");return;}if(confirm("Generate report with partial data?"))finishQ();}
+function finishQ(){document.getElementById("tab-rep").style.display="";showTab("report");}
+
+function renderPSYJ(){
+  const a=cur();if(!a){showTab("list");return;}
+  const total=PSYJ_DIMS.length,answered=Object.keys(a.psyjScores||{}).length;
+  let html=`<div class="prog-bar"><div class="prog-top"><span class="prog-lbl">Evaluator observation · ${a.name} · Age ${a.age}</span><span class="prog-pct">${answered}/${total} scored</span></div><div class="prog-track"><div class="prog-fill PSYJ" style="width:${Math.round(answered/total*100)}%"></div></div><span class="tool-pill PSYJ">MAS-PSY-J · Evaluator completed · Age 8–12</span></div>
+  <div style="padding:10px 18px;background:var(--gold-l);border-bottom:1px solid var(--border);font-size:11px;color:var(--gold-d)"><strong>Evaluator form:</strong> Score each dimension based on your direct observation. 1 = lowest · 5 = highest. The athlete does NOT complete this form.</div>
+  <div class="psyj-grid">`;
+  PSYJ_DIMS.forEach(d=>{
+    const sc=a.psyjScores?.[d.id];
+    html+=`<div class="psyj-item"><div class="psyj-item-hdr"><span>${d.name}</span>${sc!==undefined?`<span style="font-size:10px;background:var(--gold);color:#fff;padding:2px 8px;border-radius:8px">${sc+1}/5</span>`:`<span style="font-size:10px;color:var(--muted)">Not scored</span>`}</div>
+    <div class="psyj-desc">${d.desc}</div>
+    <div class="psyj-scale">${d.indicators.map((ind,i)=>`<button class="psyj-btn${sc===i?" sel":""}" onclick="psyjScore('${d.id}',${i})" title="${ind}">${i+1}</button>`).join("")}</div>
+    <div class="psyj-inds">${d.indicators.map((ind,i)=>`<strong>${i+1}:</strong> ${ind}`).join(" &nbsp;·&nbsp; ")}</div>
+    <div class="psyj-notes"><textarea placeholder="Notes for ${d.name}…" onchange="psyjNote('${d.id}',this.value)">${a.psyjNotes?.[d.id]||""}</textarea></div></div>`;
+  });
+  html+=`</div><div class="q-nav"><div class="spc"></div>${answered===total?`<button class="btn primary" onclick="finishQ()">Generate report ✓</button>`:`<span class="nav-hint req">${total-answered} dimension(s) remaining</span><button class="btn" onclick="finishQ()" style="margin-left:8px">Generate partial report</button>`}</div>`;
+  document.getElementById("q-content").innerHTML=html;
+}
+function psyjScore(dimId,val){const a=cur();if(!a.psyjScores)a.psyjScores={};a.psyjScores[dimId]=val;save();renderPSYJ();}
+function psyjNote(dimId,val){const a=cur();if(!a.psyjNotes)a.psyjNotes={};a.psyjNotes[dimId]=val;save();}
+
+// ═══════════ SCORING (exact from original files) ═══════════
+function scoreItem(raw,rev){return rev?(6-raw):raw;}
+function calcMSQ(a){
+  const ds={};let idx=0;
+  MSQ_DIMS.forEach(d=>{const v=d.items.map((_,li)=>a.answers[idx+li]).filter(v=>v!==undefined);const s=v.reduce((x,y)=>x+y,0);ds[d.id]={sum:s,count:v.length,avg:v.length?s/v.length:null};idx+=d.items.length;});
+  const ath={};if(a.hasAthletics){ATH_DIMS.forEach(d=>{const v=d.items.map((_,li)=>a.answers[idx+li]).filter(v=>v!==undefined);const s=v.reduce((x,y)=>x+y,0);ath[d.id]={sum:s,count:v.length,avg:v.length?s/v.length:null};idx+=d.items.length;});}
+  const mv=Object.entries(a.answers).filter(([k])=>parseInt(k)<18).map(([,v])=>v);
+  const av=Object.entries(a.answers).filter(([k])=>parseInt(k)>=18).map(([,v])=>v);
+  return{ds,ath,global:mv.length?mv.reduce((x,y)=>x+y,0)/mv.length:0,athGlobal:av.length?av.reduce((x,y)=>x+y,0)/av.length:0};
+}
+function calcACSI(a){
+  const sub={};SUBS.forEach((s,si)=>{const v=s.items.map((_,li)=>a.answers[si*4+li]).filter(v=>v!==undefined);const sum=v.reduce((x,y)=>x+y,0);sub[s.id]={sum,count:v.length,avg:v.length?sum/v.length:null};});
+  const all=Object.values(a.answers),total=all.reduce((x,y)=>x+y,0);
+  return{sub,total,answered:all.length};
+}
+function calcMTQ(a){
+  const ds={};DIMS.forEach((d,di)=>{const v=d.items.map((it,li)=>{const val=a.answers[di*8+li];return val!==undefined?scoreItem(val,it.rev):undefined;}).filter(v=>v!==undefined);const sum=v.reduce((x,y)=>x+y,0);ds[d.id]={sum,count:v.length,avg:v.length?sum/v.length:null};});
+  const total=Object.values(ds).reduce((x,s)=>x+s.sum,0);
+  return{ds,total,c1:ds["C1"].sum,c2:ds["C2a"].sum+ds["C2b"].sum,c3:ds["C3a"].sum+ds["C3b"].sum,c4:ds["C4"].sum,answered:Object.keys(a.answers).length};
+}
+function calcPSYJ(a){const s=a.psyjScores||{},v=Object.values(s);return{s,global:v.length?v.reduce((x,y)=>x+y,0)/v.length:0};}
+
+// Tier functions — exact logic from originals
+function tACSI(score,max){if(score===null)return"m";const r=score/max;return r>=0.75?"h":r>=0.5?"m":"l";}
+function tMTQ(score,max){if(score===null||score===undefined)return"m";const r=score/max;return r>=0.8?"h":r>=0.6?"m":"l";}
+function tMSQ(avg){if(avg===null)return"m";return avg>=1.5?"h":avg>=0.8?"m":"l";}
+function tPSYJ(sc){if(sc===undefined)return"m";return sc>=3?"h":sc>=1?"m":"l";}
+function tGlobACSI(v){return v>=63?"h":v>=42?"m":"l";}
+function tGlobMTQ(v){return v>=192?"h":v>=144?"m":"l";}
+
+// ═══════════ REPORT ═══════════
+function renderReport(){
+  const a=cur();if(!a){showTab("list");return;}
+  const dobStr=a.dob?new Date(a.dob).toLocaleDateString("en-GB"):"—";
+  const dateStr=a.date?new Date(a.date).toLocaleDateString("en-GB"):"—";
+  const hdr=`<div class="rep-hdr"><div class="rep-logo-row"><div class="rep-logo">MAS</div><div><div class="rep-org">MAS Foundation · PATHWAY Programme</div><div class="rep-sub">Qatar Foundation · Female Athlete Talent Detection</div></div></div><div class="rep-meta">Assessment: ${dateStr}<br>Generated: ${new Date().toLocaleDateString("en-GB")}<br><strong>Confidential</strong></div></div>`;
+  const grid=`<div class="ath-grid"><div class="ag-c"><div class="ag-l">Athlete</div><div class="ag-v">${a.name}</div></div><div class="ag-c"><div class="ag-l">Date of birth</div><div class="ag-v">${dobStr}</div></div><div class="ag-c"><div class="ag-l">Discipline</div><div class="ag-v">${a.sport}</div></div><div class="ag-c"><div class="ag-l">Age</div><div class="ag-v">${a.age} years</div></div><div class="ag-c"><div class="ag-l">Evaluator</div><div class="ag-v">${a.evaluator||"—"}</div></div><div class="ag-c"><div class="ag-l">Location</div><div class="ag-v">${a.location||"—"}</div></div></div>`;
+  const disc_end=`${a.notes?`<div class="rec-block"><div class="rec-title">Session notes</div><div class="rec-text">${a.notes}</div></div>`:""}<div class="rep-actions no-print"><button class="btn" onclick="resume('${a.id}')">← Edit</button><button class="btn" onclick="exportOne('${a.id}')">Export JSON</button><button class="btn primary" onclick="window.print()">Print / PDF</button><button class="btn" onclick="showTab('list')">← Back</button></div>`;
+
+  let body="";
+  if(a.tool==="MSQ"){
+    const s=calcMSQ(a);
+    const mv=Object.entries(a.answers).filter(([k])=>parseInt(k)<18).length;
+    const av=Object.entries(a.answers).filter(([k])=>parseInt(k)>=18).length;
+    body=`<div class="rep-title">MAS-MSQ-U13 · Psychological Assessment</div><div class="rep-subtitle">Mental Skills Questionnaire · 3 dimensions × 6 items · Scale 0–2 (Not me → That's me)${a.hasAthletics?" + MAS-PSY-ATH-U13 Athletics Module":""}</div>${grid}
+    <div class="global-card MSQ"><div><div class="gc-score-label">MSQ Global</div><div class="gc-score-val">${s.global.toFixed(2)} / 2.00</div><div class="gc-score-sub">${mv} of 18 items</div></div><div class="gc-interp">${s.global>=1.5?"Strong foundations — favourable profile.":s.global>=0.8?"Standard — targeted work on flagged dimensions.":"Priority support recommended."}<div class="gc-band">${s.global>=1.5?"≥ 1.50 Favourable":s.global>=0.8?"0.80–1.49 Standard":"< 0.80 Priority"}</div></div></div>
+    <div class="sec-label">MSQ-U13 Dimensions</div>
+    ${MSQ_DIMS.map(d=>{const ds=s.ds[d.id];const t=tMSQ(ds.avg);const pct=ds.avg!==null?Math.round((ds.avg/2)*100):0;return`<div class="dim-card"><div class="dc-row1"><span class="dc-name">Dim. ${d.id} — ${d.name}</span><span class="dc-badge ${t}">${ds.avg!==null?ds.avg.toFixed(2)+" / 2.00":"No data"} · ${t==="h"?"Favourable":t==="m"?"Standard":"Priority"}</span></div><div class="bar-labels-row"><span>0.00</span><span>0.50</span><span>1.00</span><span>1.50</span><span>2.00</span></div><div class="bar-track"><div class="bar-fill ${t}" style="width:${pct}%"></div></div><div class="dc-count">${ds.count} of 6 items · Favourable ≥ 1.50 · Priority < 0.80</div><div class="dc-interp ${t}">${MSQ_INTERP[d.id][t]}</div></div>`;}).join("")}
+    ${a.hasAthletics?`<div class="global-card ATH" style="margin-top:14px"><div><div class="gc-score-label">Athletics Module</div><div class="gc-score-val">${s.athGlobal.toFixed(2)} / 2.00</div><div class="gc-score-sub">${av} of 18 items</div></div><div class="gc-interp">${s.athGlobal>=1.5?"Strong athletics-specific profile.":s.athGlobal>=0.8?"Standard — targeted work on constructs.":"Priority support on athletics-specific dimensions."}</div></div>
+    <div class="sec-label">MAS-PSY-ATH-U13 Constructs</div>${ATH_DIMS.map(d=>{const ds=s.ath[d.id];const t=tMSQ(ds?.avg);const pct=ds?.avg!==null?Math.round(((ds?.avg??0)/2)*100):0;return`<div class="dim-card"><div class="dc-row1"><span class="dc-name">${d.id} — ${d.name}</span><span class="dc-badge ${t}">${ds?.avg!==null?ds.avg.toFixed(2)+" / 2.00":"No data"}</span></div><div class="bar-track"><div class="bar-fill ${t}" style="width:${pct}%"></div></div><div class="dc-count">${ds?.count||0} of 6 items</div><div class="dc-interp ${t}">${ATH_INTERP[d.id]?.[t]||""}</div></div>`;}).join("")}`:""}
+    <div class="disclaimer">No score justifies exclusion before age 14. Intrinsic Motivation (E) is the strongest long-term predictor of elite persistence. Confidential — MAS Foundation / Qatar Foundation internal use only.</div>`;
+  }
+
+  else if(a.tool==="ACSI"){
+    const{sub,total,answered}=calcACSI(a);
+    const gt=tGlobACSI(total);
+    body=`<div class="rep-title">MAS-ACSI28 · Psychological Assessment</div><div class="rep-subtitle">Athletic Coping Skills Inventory · 7 sub-scales · 28 items · Scale 0–3 (Never → Almost Always)</div>${grid}
+    <div class="global-card ACSI"><div><div class="gc-score-label">Total score</div><div class="gc-score-val">${total} / 84</div><div class="gc-score-sub">${answered} of 28 items</div></div><div class="gc-interp">${total>=63?"Elite coping profile — strong skills across all dimensions.":total>=42?"Standard profile — targeted development on weak sub-scales.":"Targeted support recommended."}<div class="gc-band">${total>=63?"Elite coping (≥ 63)":total>=42?"Standard (42–63)":"Support (< 42)"}</div></div></div>
+    <div class="score-overview"><div class="so-cell"><div class="so-label">Total</div><div class="so-val ${gt}">${total}/84</div></div><div class="so-cell"><div class="so-label">Attention</div><div class="so-val">≥ 42</div></div><div class="so-cell"><div class="so-label">Strong</div><div class="so-val">≥ 63</div></div><div class="so-cell"><div class="so-label">Per sub-scale max</div><div class="so-val">12</div></div></div>
+    <div class="sec-label">Sub-scale breakdown (score /12 each · 4 items × scale 0–3)</div>
+    ${SUBS.map(s=>{const sc=sub[s.id];const t=tACSI(sc.sum,12);const pct=Math.round((sc.sum/12)*100);return`<div class="dim-card"><div class="dc-row1"><span class="dc-name">Sub-scale ${s.id} — ${s.name}</span><span class="dc-badge ${t}">${sc.sum} / 12 · ${t==="h"?"Strong":t==="m"?"Standard":"Attention"}</span></div><div class="bar-labels-row"><span>0</span><span>3</span><span>6</span><span>9</span><span>12</span></div><div class="bar-track"><div class="bar-fill ${t}" style="width:${pct}%"></div></div><div class="dc-count">${sc.count} of 4 items · Attention < 6 · Strong ≥ 9</div><div class="dc-interp ${t}">${SUB_INTERP[s.id][t]}</div></div>`;}).join("")}
+    <div class="rec-block"><div class="rec-title">Evaluator recommendations</div><div class="rec-text">${(()=>{const w=SUBS.filter(s=>sub[s.id].sum<6).map(s=>s.name),st=SUBS.filter(s=>sub[s.id].sum>=9).map(s=>s.name);let r="";if(st.length)r+=`<strong>Strengths:</strong> ${st.join(", ")}. `;if(w.length)r+=`<strong>Priority sub-scales (< 6/12):</strong> ${w.join(", ")}. Coordinate with PATHWAY mental skills specialist. `;r+=`<strong>Note:</strong> Freedom from Worry (Sub-scale 5) must be contextualised for the Qatari multicultural population. No individual score justifies exclusion.`;return r;})()}</div></div>
+    <div class="disclaimer">Coachability (Sub-scale 1) is the most predictive sub-scale for technical progression speed. Freedom from Worry (Sub-scale 5) is strongly linked to cultural and family context. Confidential — MAS Foundation / Qatar Foundation internal use only.</div>`;
+  }
+
+  else if(a.tool==="MTQ"){
+    const{ds,total,c1,c2,c3,c4,answered}=calcMTQ(a);
+    const gt=tGlobMTQ(total);
+    body=`<div class="rep-title">MAS-MTQ48 · Psychological Assessment</div><div class="rep-subtitle">Mental Toughness Questionnaire · 4C Model · 6 sub-dimensions · 48 items · Scale 1–5 · Reverse scoring applied</div>${grid}
+    <div class="global-card MTQ"><div><div class="gc-score-label">4C Total score</div><div class="gc-score-val">${total} / 240</div><div class="gc-score-sub">${answered} of 48 items</div></div><div class="gc-interp">${total>=192?"High mental toughness — strong 4C profile. Highly favourable.":total>=144?"Development zone — targeted intervention recommended.":"Priority support — all 4C dimensions remain malleable at 15–16."}<div class="gc-band">${total>=192?"High toughness (≥ 192)":total>=144?"Development zone (144–192)":"Priority support (< 144)"}</div></div></div>
+    <div class="sec-label">4C group scores</div>
+    <div class="four-c-grid"><div class="fc-cell"><div class="fc-label">C1 Challenge</div><div class="fc-val ${tMTQ(c1,40)}">${c1}</div><div class="fc-max">/ 40</div></div><div class="fc-cell"><div class="fc-label">C2 Control</div><div class="fc-val ${tMTQ(c2,80)}">${c2}</div><div class="fc-max">/ 80</div></div><div class="fc-cell"><div class="fc-label">C3 Confidence</div><div class="fc-val ${tMTQ(c3,80)}">${c3}</div><div class="fc-max">/ 80</div></div><div class="fc-cell"><div class="fc-label">C4 Commitment</div><div class="fc-val ${tMTQ(c4,40)}">${c4}</div><div class="fc-max">/ 40</div></div></div>
+    <div class="sec-label">Sub-dimension breakdown (score /40 each · 8 items × scale 1–5)</div>
+    ${DIMS.map(d=>{const s=ds[d.id];const t=tMTQ(s.sum,40);const pct=Math.round((s.sum/40)*100);const rn=d.items.filter(i=>i.rev).length;return`<div class="dim-card"><div class="dc-row1"><span class="dc-name">${d.id} — ${d.c}</span><span class="dc-badge ${t}">${s.sum} / 40 · ${t==="h"?"High toughness":t==="m"?"Development zone":"Priority support"}</span></div><div class="bar-labels-row"><span>8</span><span>16</span><span>24</span><span>32</span><span>40</span></div><div class="bar-track"><div class="bar-fill ${t}" style="width:${pct}%"></div></div><div class="dc-count">${s.count} of 8 items answered · ${rn} reverse-scored items applied · Development zone: < 24 · Strong: ≥ 32</div><div class="dc-interp ${t}">${DIM_INTERP[d.id][t]}</div></div>`;}).join("")}
+    <div class="rec-block"><div class="rec-title">Evaluator recommendations</div><div class="rec-text">${(()=>{const w=DIMS.filter(d=>tMTQ(ds[d.id].sum,40)==="l").map(d=>d.c),st=DIMS.filter(d=>tMTQ(ds[d.id].sum,40)==="h").map(d=>d.c);let r="";if(st.length)r+=`<strong>High toughness:</strong> ${st.join(", ")}. `;if(w.length)r+=`<strong>Priority dimensions:</strong> ${w.join(", ")}. Coordinate with PATHWAY mental skills specialist. `;r+=`<strong>Commitment (C4)</strong> is most directly linked to elite longevity — monitor across evaluation cycles. At 15–16, all dimensions remain malleable. No score justifies exclusion.`;return r;})()}</div></div>
+    <div class="disclaimer"><strong>Reverse scoring applied:</strong> scoreItem = rev ? (6 − raw) : raw. Commitment (C4) is most directly linked to long-term elite persistence. Confidential — MAS Foundation / Qatar Foundation internal use only.</div>`;
+  }
+
+  else if(a.tool==="PSYJ"){
+    const{s,global}=calcPSYJ(a);
+    body=`<div class="rep-title">MAS-PSY-J · Evaluator Observation Report</div><div class="rep-subtitle">Evaluator observation grid · 5 dimensions · Age 8–12 · Completed by evaluator — NOT self-report</div>${grid}
+    <div class="global-card PSYJ"><div><div class="gc-score-label">PSY-J Global (evaluator)</div><div class="gc-score-val">${(global+1).toFixed(2)} / 5.00</div><div class="gc-score-sub">${Object.keys(s).length} of 5 dimensions scored</div></div><div class="gc-interp">${global>=3?"Highly favourable behavioural profile.":global>=1?"Developing — encourage across flagged dimensions.":"Priority — low engagement and enjoyment signals."}</div></div>
+    <div class="sec-label">Observation dimensions</div>
+    ${PSYJ_DIMS.map(d=>{const sc=s[d.id];const t=tPSYJ(sc);const pct=sc!==undefined?Math.round((sc/4)*100):0;return`<div class="dim-card"><div class="dc-row1"><span class="dc-name">${d.id} — ${d.name}</span><span class="dc-badge ${t}">${sc!==undefined?(sc+1)+" / 5":"Not scored"} · ${t==="h"?"Favourable":t==="m"?"Standard":"Priority"}</span></div><div class="bar-labels-row"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div><div class="bar-track"><div class="bar-fill ${t}" style="width:${pct}%"></div></div><div class="dc-interp ${t}">${PSYJ_INTERP[d.id][t]}</div>${a.psyjNotes?.[d.id]?`<div style="font-size:10px;color:var(--muted);margin-top:5px;font-style:italic">Note: ${a.psyjNotes[d.id]}</div>`:""}</div>`;}).join("")}
+    <div class="disclaimer">This is an evaluator observation report — not self-reported data. Scores reflect observed behaviour during the session only. No score justifies exclusion before age 14. Confidential — MAS Foundation internal use only.</div>`;
+  }
+
+  document.getElementById("rep-content").innerHTML=`<div class="rep-body" id="printable">${hdr}${body}${disc_end}</div>`;
+}
+
+// ═══════════ EXPORT ═══════════
+function buildPayload(a){
+  let scores={};
+  if(a.tool==="MSQ"){const s=calcMSQ(a);scores={tool:"PATHWAY-U13-MSQ18",msq:{global:+s.global.toFixed(4),dims:Object.fromEntries(Object.entries(s.ds).map(([k,v])=>[k,{avg:v.avg!==null?+v.avg.toFixed(4):null,count:v.count}]))},athletics:a.hasAthletics?{global:+s.athGlobal.toFixed(4),dims:Object.fromEntries(Object.entries(s.ath).map(([k,v])=>[k,{avg:v.avg!==null?+v.avg.toFixed(4):null,count:v.count}]))}:null};}
+  else if(a.tool==="ACSI"){const{sub,total,answered}=calcACSI(a);scores={tool:"PATHWAY-U14-ACSI28",total,totalMax:84,answered,subs:Object.fromEntries(Object.entries(sub).map(([k,v])=>[k,{name:SUBS.find(s=>s.id===parseInt(k))?.name,sum:v.sum,max:12,count:v.count}]))};}
+  else if(a.tool==="MTQ"){const{ds,total,c1,c2,c3,c4,answered}=calcMTQ(a);scores={tool:"PATHWAY-U15-MTQ48",total4C:total,totalMax:240,answered,c1,c2,c3,c4,dims:Object.fromEntries(Object.entries(ds).map(([k,v])=>[k,{label:DIMS.find(d=>d.id===k)?.c,sum:v.sum,max:40,count:v.count}]))};}
+  else if(a.tool==="PSYJ"){const{s,global}=calcPSYJ(a);scores={tool:"PATHWAY-PSY-J",global:+(global+1).toFixed(4),globalMax:5,dims:s,notes:a.psyjNotes||{}};}
+  return{meta:{hub:"PATHWAY-ASSESSMENT-HUB-V2",version:"2.0",exportedAt:new Date().toISOString()},athlete:{id:a.id,name:a.name,dob:a.dob,age:a.age,sport:a.sport,tool:a.tool,date:a.date,evaluator:a.evaluator,location:a.location,notes:a.notes},scores,rawAnswers:a.tool==="PSYJ"?a.psyjScores:a.answers};
+}
+function exportOne(id){const a=getA(id),p=buildPayload(a);const b=new Blob([JSON.stringify(p,null,2)],{type:"application/json"});const u=URL.createObjectURL(b);const l=document.createElement("a");l.href=u;l.download=`PATHWAY_${a.tool}_${a.name.replace(/\s+/g,"_")}_${a.date||"nodate"}.json`;l.click();URL.revokeObjectURL(u);toast("JSON exported — "+a.name);}
+function exportAll(){if(!athletes.length){alert("No athletes.");return;}const p={meta:{hub:"PATHWAY-ASSESSMENT-HUB-V2",version:"2.0",exportedAt:new Date().toISOString(),total:athletes.length},athletes:athletes.map(buildPayload)};const b=new Blob([JSON.stringify(p,null,2)],{type:"application/json"});const u=URL.createObjectURL(b);const l=document.createElement("a");l.href=u;l.download=`PATHWAY_HUB_ALL_${new Date().toISOString().slice(0,10)}.json`;l.click();URL.revokeObjectURL(u);toast(`Exported ${athletes.length} athletes`);}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800);}
+
+load();
+document.getElementById("f-date").value=new Date().toISOString().slice(0,10);
+renderList();
+// ═══════════════════════════════════════
+// UI OVERRIDES — new design functions
+// ═══════════════════════════════════════
+
+// Override: toast
+function toast(msg){
+  document.getElementById("toast-msg").textContent=msg;
+  const t=document.getElementById("toast");
+  t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2800);
+}
+
+// Override: showTab
+function showTab(name){
+  ["list","intake","questionnaire","report"].forEach(v=>{
+    document.getElementById("view-"+v).style.display=v===name?"block":"none";
+    const tid=v==="questionnaire"?"q":v==="report"?"rep":v;
+    const t=document.getElementById("tab-"+tid);
+    if(t){t.classList.toggle("active",v===name);}
+  });
+  if(name==="list")renderList();
+  if(name==="questionnaire")renderQ();
+  if(name==="report")renderReport();
+}
+
+// Override: updateRouter
+function updateRouter(){
+  const dob=document.getElementById("f-dob").value;
+  const sport=document.getElementById("f-sport").value;
+  const ref=document.getElementById("f-date").value;
+  const age=calcAge(dob,ref||null);
+  const tool=routeTool(age);
+  const el=document.getElementById("router-display");
+  const btn=document.getElementById("start-btn");
+  if(!dob||age===null){el.innerHTML="";btn.textContent="Start assessment";return;}
+
+  const colors={MSQ:"var(--navy)",ACSI:"var(--blue)",MTQ:"var(--amber)",PSYJ:"var(--gold)"};
+  const toolNames={MSQ:"MAS-MSQ-U13",ACSI:"MAS-ACSI28",MTQ:"MAS-MTQ48",PSYJ:"MAS-PSY-J"};
+  const detailMap={
+    MSQ:`18 items · 3 dimensions · Scale: Not me / A little me / That's me${sport==="Athletics"?" · <strong>+18 Athletics module items</strong>":""}`,
+    ACSI:"28 items · 7 sub-scales · Scale: Never → Almost Always (0–3)",
+    MTQ:"48 items · 6 dimensions · 4C model · Scale: Strongly disagree → Strongly agree (1–5) · Reverse scoring applied",
+    PSYJ:"5 dimensions · Evaluator observation grid — <strong>evaluator completes, not the athlete</strong>"
+  };
+  const who={MSQ:"Athlete self-completes on tablet",ACSI:"Athlete self-completes on tablet",MTQ:"Athlete self-completes on tablet",PSYJ:"Evaluator completes based on direct observation"};
+  const n=tool==="MSQ"&&sport==="Athletics"?"36 items":tool==="MSQ"?"18 items":tool==="ACSI"?"28 items":tool==="MTQ"?"48 items":"5 dimensions";
+
+  el.innerHTML=`<div class="router-reveal"><div class="router-card">
+    <div class="router-top" style="background:${colors[tool]}">
+      <div class="router-dot" style="background:rgba(255,255,255,.4)"></div>
+      <span class="router-label">Age ${age} → ${toolNames[tool]}</span>
+      <span class="router-items">${n}</span>
+    </div>
+    <div class="router-detail">${detailMap[tool]}<br><strong>Completed by:</strong> ${who[tool]}</div>
+  </div></div>`;
+  btn.textContent=`Start assessment · ${n}`;
+}
+
+// Override: renderList
+function renderList(){
+  const q=(document.getElementById("search-input")?.value||"").toLowerCase();
+  const filt=athletes.filter(a=>a.name.toLowerCase().includes(q)||(a.sport||"").toLowerCase().includes(q));
+  document.getElementById("count-badge").textContent=athletes.length;
+  const body=document.getElementById("list-body");
+
+  if(!athletes.length){
+    body.innerHTML=`<div class="empty-state">
+      <div class="empty-icon">🏃‍♀️</div>
+      <div class="empty-title">No athletes yet</div>
+      <div class="empty-sub">Start by adding a new athlete assessment.</div>
+      <button class="btn btn-gold" onclick="showTab('intake')">+ New athlete</button>
+    </div>`;
+    return;
+  }
+  if(!filt.length){
+    body.innerHTML=`<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No results</div><div class="empty-sub">No athletes match your search.</div></div>`;
+    return;
+  }
+
+  let html=`<table class="athlete-table"><thead><tr>
+    <th>Athlete</th><th>Tool</th><th>Progress</th><th>Status</th><th>Actions</th>
+  </tr></thead><tbody>`;
+
+  filt.forEach(a=>{
+    const total=totalFor(a);
+    const ans=a.tool==="PSYJ"?Object.keys(a.psyjScores||{}).length:Object.keys(a.answers||{}).length;
+    const pct=Math.round(ans/total*100);
+    const st=ans===total?"done":ans>0?"part":"none";
+    const stLabel=ans===total?"Complete":ans>0?`${pct}%`:"Not started";
+    const stEmoji=ans===total?"✓ ":"";
+    html+=`<tr>
+      <td>
+        <div class="athlete-name">${a.name}</div>
+        <div class="athlete-meta">${a.age} years · ${a.sport}${a.evaluator?" · "+a.evaluator:""}</div>
+      </td>
+      <td><span class="tool-badge ${a.tool}">${a.tool}</span></td>
+      <td>
+        <div class="prog-mini"><div class="prog-mini-fill ${st}" style="width:${pct}%"></div></div>
+        <span style="font-size:11px;color:var(--muted)">${ans}/${total}</span>
+      </td>
+      <td><span class="status-chip ${st}">${stEmoji}${stLabel}</span></td>
+      <td><div class="actions-row">
+        <button class="btn btn-sm" onclick="resume('${a.id}')">${ans===total?"View":"Continue"}</button>
+        <button class="btn btn-sm" onclick="viewRep('${a.id}')">Report</button>
+        <button class="btn btn-sm" onclick="exportOne('${a.id}')">JSON</button>
+        <button class="btn btn-sm btn-danger" onclick="delAth('${a.id}')">Delete</button>
+      </div></td>
+    </tr>`;
+  });
+  html+=`</tbody></table>`;
+  body.innerHTML=html;
+}
+
+// Override: renderQ
+function renderQ(){
+  const a=cur();if(!a){showTab("list");return;}
+  if(a.tool==="PSYJ"){renderPSYJ();return;}
+  const items=itemsFor(a),total=items.length,item=items[curIdx];
+  const answered=Object.keys(a.answers).length;
+  const pct=Math.round(answered/total*100);
+  const curAns=a.answers[curIdx],isLast=curIdx===total-1;
+
+  const chipColor=a.tool==="ACSI"?"blue":a.tool==="MTQ"?"amber":item.module==="ath"?"teal":"navy";
+
+  let banner="";
+  if(a.tool==="MSQ"&&curIdx===18&&a.hasAthletics){
+    banner=`<div class="module-transition">
+      <span>✓</span>
+      <span>MAS-MSQ-U13 complete — Athletics module (MAS-PSY-ATH-U13) starting now · 18 additional items</span>
+    </div>`;
+  }
+
+  let scaleHtml="";
+  if(a.tool==="MSQ"){
+    scaleHtml=`<div class="scale-3">${SCALE3.map(s=>`
+      <button class="lb3${curAns===s.val?" sel sel-"+s.val:""}" onclick="answer(${s.val})">
+        <span class="lb3-em">${s.icon}</span>
+        <span class="lb3-label">${s.label}</span>
+        <span class="lb3-sub">${s.sub}</span>
+      </button>`).join("")}</div>`;
+  } else if(a.tool==="ACSI"){
+    scaleHtml=`<div class="scale-4">${[0,1,2,3].map(v=>`
+      <button class="lb4${curAns===v?" sel":""}" onclick="answer(${v})">
+        <span class="lb4-n">${v}</span>
+        <span class="lb4-w">${SCALE_ACSI[v]}</span>
+      </button>`).join("")}</div>`;
+  } else if(a.tool==="MTQ"){
+    scaleHtml=`<div class="scale-5">${[1,2,3,4,5].map(v=>`
+      <button class="lb5${curAns===v?" sel":""}" onclick="answer(${v})">
+        <span class="lb5-n">${v}</span>
+        <span class="lb5-w">${SCALE_MTQ[v-1]}</span>
+      </button>`).join("")}</div>`;
+  }
+
+  document.getElementById("q-content").innerHTML=`
+  <div class="q-shell">
+    ${banner}
+    <div class="q-progress-hdr">
+      <div class="q-progress-meta">
+        <span class="q-athlete-name">${a.name}</span>
+        <span class="q-count">${answered} of ${total} answered · ${pct}%</span>
+      </div>
+      <div class="q-bar-outer">
+        <div class="q-bar-inner ${item.module==="ath"?"ath":a.tool}" style="width:${pct}%"></div>
+      </div>
+      <div class="q-chips">
+        <span class="q-dim-chip ${chipColor}">${item.dim} · ${item.name}</span>
+        <span class="tool-badge ${a.tool}" style="font-size:9px;padding:2px 8px">${a.tool}</span>
+        ${item.rev?`<span class="rev-tag">[Reverse scored]</span>`:""}
+      </div>
+    </div>
+
+    <div class="q-body">
+      <div class="q-number">Question ${curIdx+1} of ${total}</div>
+      <div class="q-text">${item.q}</div>
+      ${scaleHtml}
+    </div>
+
+    <div class="q-nav">
+      <button class="btn btn-sm" onclick="goQ(-1)" ${curIdx===0?"disabled":""}>← Back</button>
+      ${curAns!==undefined
+        ?`<span class="nav-hint ok">✓ Saved</span>`
+        :`<span class="nav-hint req">Please select a response to continue</span>`}
+      <div class="spc"></div>
+      <button class="skip-link" onclick="skipRep()">Skip to report</button>
+      ${isLast
+        ?`<button class="btn btn-primary" onclick="finishQ()" ${curAns===undefined?"disabled":""}>Generate report →</button>`
+        :`<button class="btn btn-primary" onclick="goQ(1)" ${curAns===undefined?"disabled":""}>Next →</button>`}
+    </div>
+  </div>`;
+}
+
+// Override: renderPSYJ
+function renderPSYJ(){
+  const a=cur();if(!a){showTab("list");return;}
+  const total=PSYJ_DIMS.length,answered=Object.keys(a.psyjScores||{}).length;
+  const pct=Math.round(answered/total*100);
+
+  const dimsHtml=PSYJ_DIMS.map(d=>{
+    const sc=a.psyjScores?.[d.id];
+    return `<div class="psyj-dim">
+      <div class="psyj-dim-hdr">
+        <span class="psyj-dim-title">${d.name}</span>
+        ${sc!==undefined?`<span class="psyj-score-pill">${sc+1} / 5</span>`:`<span style="font-size:10px;color:var(--muted)">Not scored yet</span>`}
+      </div>
+      <div class="psyj-dim-desc">${d.desc}</div>
+      <div class="psyj-scale">
+        ${d.indicators.map((ind,i)=>`<button class="psyj-btn${sc===i?" sel":""}" onclick="psyjScore('${d.id}',${i})" title="${ind}">${i+1}</button>`).join("")}
+      </div>
+      <div class="psyj-indicators">${d.indicators.map((ind,i)=>`<strong>${i+1}.</strong> ${ind}`).join("&nbsp; · &nbsp;")}</div>
+      <div class="psyj-note"><textarea placeholder="Observation notes for ${d.name}… (optional)" onchange="psyjNote('${d.id}',this.value)">${a.psyjNotes?.[d.id]||""}</textarea></div>
+    </div>`;
+  }).join("");
+
+  document.getElementById("q-content").innerHTML=`
+  <div class="q-progress-hdr">
+    <div class="q-progress-meta">
+      <span class="q-athlete-name">${a.name} · Age ${a.age}</span>
+      <span class="q-count">${answered}/${total} dimensions scored</span>
+    </div>
+    <div class="q-bar-outer"><div class="q-bar-inner PSYJ" style="width:${pct}%"></div></div>
+    <div class="q-chips"><span class="tool-badge PSYJ">MAS-PSY-J · Evaluator observation · Age 8–12</span></div>
+  </div>
+  <div class="psyj-intro">
+    <span class="psyj-intro-icon">📋</span>
+    <span>This form is completed by <strong>you, the evaluator</strong>, based on your direct observation during the session. The athlete does not self-report. Score 1 = lowest · 5 = highest.</span>
+  </div>
+  <div class="psyj-dims-list">${dimsHtml}</div>
+  <div class="q-nav">
+    <div class="spc"></div>
+    ${answered===total
+      ?`<button class="btn btn-primary" onclick="finishQ()">Generate report →</button>`
+      :`<span class="nav-hint req">${total-answered} dimension(s) not yet scored</span><button class="btn" onclick="finishQ()" style="margin-left:10px">Generate partial report</button>`}
+  </div>`;
+}
+
+// Override: renderReport
+function renderReport(){
+  const a=cur();if(!a){showTab("list");return;}
+  const dobStr=a.dob?new Date(a.dob).toLocaleDateString("en-GB"):"—";
+  const dateStr=a.date?new Date(a.date).toLocaleDateString("en-GB"):"—";
+
+  const masthead=`<div class="rep-masthead">
+    <div class="rep-brand">
+      <div class="rep-brand-logo"><span>MAS</span></div>
+      <div>
+        <div class="rep-brand-name">MAS Foundation · PATHWAY Programme</div>
+        <div class="rep-brand-sub">Qatar Foundation · Female Athlete Talent Detection</div>
+      </div>
+    </div>
+    <div class="rep-date-block">Assessment: ${dateStr}<br>Generated: ${new Date().toLocaleDateString("en-GB")}<br><strong>Confidential — Internal use only</strong></div>
+  </div>`;
+
+  const infoGrid=`<div class="athlete-info-grid">
+    <div class="info-cell"><div class="info-label">Athlete</div><div class="info-value">${a.name}</div></div>
+    <div class="info-cell"><div class="info-label">Date of birth</div><div class="info-value">${dobStr}</div></div>
+    <div class="info-cell"><div class="info-label">Discipline</div><div class="info-value">${a.sport}</div></div>
+    <div class="info-cell"><div class="info-label">Age at assessment</div><div class="info-value">${a.age} years</div></div>
+    <div class="info-cell"><div class="info-label">Evaluator</div><div class="info-value">${a.evaluator||"—"}</div></div>
+    <div class="info-cell"><div class="info-label">Location</div><div class="info-value">${a.location||"—"}</div></div>
+  </div>`;
+
+  const actions=`<div class="rep-actions no-print">
+    <button class="btn" onclick="resume('${a.id}')">← Edit answers</button>
+    <button class="btn" onclick="exportOne('${a.id}')">Export JSON</button>
+    <button class="btn btn-primary" onclick="window.print()">Print / Save PDF</button>
+    <button class="btn" onclick="showTab('list')">← Back to list</button>
+  </div>`;
+
+  let body="";
+
+  if(a.tool==="MSQ"){
+    const s=calcMSQ(a);
+    const mv=Object.entries(a.answers).filter(([k])=>parseInt(k)<18).length;
+    const av=Object.entries(a.answers).filter(([k])=>parseInt(k)>=18).length;
+    const gt=tMSQ(s.global);
+    body=`<div class="rep-title">MAS-MSQ-U13 · Psychological Assessment</div>
+    <div class="rep-subtitle">Mental Skills Questionnaire · 3 dimensions × 6 items · Scale 0–2 (Not me → That's me)${a.hasAthletics?" + MAS-PSY-ATH-U13 Athletics Module":""}</div>
+    ${infoGrid}
+    <div class="global-score-card MSQ">
+      <div class="gs-left"><div class="gs-label">MSQ Global Score</div><div class="gs-value">${s.global.toFixed(2)}<span class="gs-of"> / 2.00</span></div><div class="gs-sub">${mv} of 18 items answered</div></div>
+      <div class="gs-right"><div class="gs-interp">${s.global>=1.5?"Strong psychological foundations across all assessed dimensions.":s.global>=0.8?"Developing profile — targeted work on flagged dimensions recommended.":"Priority support recommended — coordinate with mental skills specialist."}</div><span class="gs-band">${s.global>=1.5?"≥ 1.50 · Favourable":s.global>=0.8?"0.80–1.49 · Standard":"< 0.80 · Priority attention"}</span></div>
+    </div>
+    <div class="section-label">MSQ-U13 — 3 Dimensions</div>
+    ${MSQ_DIMS.map(d=>{const ds=s.ds[d.id];const t=tMSQ(ds.avg);const pct=ds.avg!==null?Math.round((ds.avg/2)*100):0;return`<div class="dim-block"><div class="dim-top"><span class="dim-name">Dim. ${d.id} — ${d.name}</span><span class="dim-score-badge ${t}">${ds.avg!==null?ds.avg.toFixed(2)+" / 2.00":"No data"} · ${t==="h"?"Favourable":t==="m"?"Standard":"Priority"}</span></div><div class="bar-labels"><span>0.00</span><span>0.50</span><span>1.00</span><span>1.50</span><span>2.00</span></div><div class="bar-outer"><div class="bar-inner ${t}" style="width:${pct}%"></div></div><div class="dim-answered">${ds.count} of 6 items answered · Favourable ≥ 1.50 · Priority < 0.80</div><div class="dim-interp ${t}">${MSQ_INTERP[d.id][t]}</div></div>`;}).join("")}
+    ${a.hasAthletics?`<div class="global-score-card ATH" style="margin-top:14px"><div class="gs-left"><div class="gs-label">Athletics Module Global</div><div class="gs-value">${s.athGlobal.toFixed(2)}<span class="gs-of"> / 2.00</span></div><div class="gs-sub">${av} of 18 items answered</div></div><div class="gs-right"><div class="gs-interp">${s.athGlobal>=1.5?"Strong athletics-specific psychological profile.":s.athGlobal>=0.8?"Standard — targeted work on athletics constructs.":"Priority support on athletics-specific dimensions."}</div></div></div>
+    <div class="section-label">MAS-PSY-ATH-U13 — Athletics Constructs</div>
+    ${ATH_DIMS.map(d=>{const ds=s.ath[d.id];const t=tMSQ(ds?.avg);const pct=ds?.avg!==null?Math.round(((ds?.avg??0)/2)*100):0;return`<div class="dim-block"><div class="dim-top"><span class="dim-name">${d.id} — ${d.name}</span><span class="dim-score-badge ${t}">${ds?.avg!==null?ds.avg.toFixed(2)+" / 2.00":"No data"}</span></div><div class="bar-outer"><div class="bar-inner ${t}" style="width:${pct}%"></div></div><div class="dim-answered">${ds?.count||0} of 6 items</div><div class="dim-interp ${t}">${ATH_INTERP[d.id]?.[t]||""}</div></div>`;}).join("")}`:""}
+    <div class="disclaimer">No score on any dimension justifies exclusion before age 14. Intrinsic Motivation (Dim. E) is the strongest long-term predictor of elite persistence. Psychological data is contextual information for the RC narrative — never a standalone elimination criterion. Confidential — MAS Foundation / Qatar Foundation internal use only.</div>`;
+  }
+
+  else if(a.tool==="ACSI"){
+    const{sub,total,answered}=calcACSI(a);
+    const gt=tGlobACSI(total);
+    body=`<div class="rep-title">MAS-ACSI28 · Psychological Assessment</div>
+    <div class="rep-subtitle">Athletic Coping Skills Inventory · 7 sub-scales × 4 items · Scale 0–3 (Never → Almost Always)</div>
+    ${infoGrid}
+    <div class="global-score-card ACSI">
+      <div class="gs-left"><div class="gs-label">Total Score</div><div class="gs-value">${total}<span class="gs-of"> / 84</span></div><div class="gs-sub">${answered} of 28 items answered</div></div>
+      <div class="gs-right"><div class="gs-interp">${total>=63?"Elite coping profile — strong psychological skills across all competitive dimensions.":total>=42?"Standard competitive profile — targeted development on weak sub-scales recommended.":"Targeted support recommended — coordinate with the PATHWAY mental skills specialist."}</div><span class="gs-band">${total>=63?"Elite coping (≥ 63)":total>=42?"Standard (42–63)":"Support recommended (< 42)"}</span></div>
+    </div>
+    <div class="score-summary-row">
+      <div class="ss-card"><div class="ss-label">Total</div><div class="ss-val" style="color:${gt==="h"?"var(--teal)":gt==="m"?"var(--amber)":"var(--coral)"}">${total}/84</div></div>
+      <div class="ss-card"><div class="ss-label">Attention threshold</div><div class="ss-val">≥ 42</div></div>
+      <div class="ss-card"><div class="ss-label">Strong threshold</div><div class="ss-val">≥ 63</div></div>
+      <div class="ss-card"><div class="ss-label">Per sub-scale max</div><div class="ss-val">12</div></div>
+    </div>
+    <div class="section-label">Sub-scale breakdown</div>
+    ${SUBS.map(s=>{const sc=sub[s.id];const t=tACSI(sc.sum,12);const pct=Math.round((sc.sum/12)*100);return`<div class="dim-block"><div class="dim-top"><span class="dim-name">Sub-scale ${s.id} — ${s.name}</span><span class="dim-score-badge ${t}">${sc.sum} / 12 · ${t==="h"?"Strong":t==="m"?"Standard":"Attention"}</span></div><div class="bar-labels"><span>0</span><span>3</span><span>6</span><span>9</span><span>12</span></div><div class="bar-outer"><div class="bar-inner ${t}" style="width:${pct}%"></div></div><div class="dim-answered">${sc.count} of 4 items · Attention < 6 · Strong ≥ 9</div><div class="dim-interp ${t}">${SUB_INTERP[s.id][t]}</div></div>`;}).join("")}
+    <div class="rec-card"><div class="rec-title">Evaluator recommendations</div><div class="rec-text">${(()=>{const w=SUBS.filter(s=>sub[s.id].sum<6).map(s=>s.name),st=SUBS.filter(s=>sub[s.id].sum>=9).map(s=>s.name);let r="";if(st.length)r+=`<strong>Strengths:</strong> ${st.join(", ")}. `;if(w.length)r+=`<strong>Priority sub-scales (score < 6/12):</strong> ${w.join(", ")}. Coordinate with the PATHWAY mental skills specialist. `;r+=`<strong>Note:</strong> Freedom from Worry (Sub-scale 5) is strongly linked to cultural and family context — always contextualise for the Qatari multicultural population. No individual score justifies exclusion.`;return r;})()}</div></div>
+    <div class="disclaimer">Coachability (Sub-scale 1) is the most predictive sub-scale for technical progression speed. No individual score justifies exclusion. Confidential — MAS Foundation / Qatar Foundation internal use only.</div>`;
+  }
+
+  else if(a.tool==="MTQ"){
+    const{ds,total,c1,c2,c3,c4,answered}=calcMTQ(a);
+    const gt=tGlobMTQ(total);
+    body=`<div class="rep-title">MAS-MTQ48 · Psychological Assessment</div>
+    <div class="rep-subtitle">Mental Toughness Questionnaire · 4C Model · 6 sub-dimensions · 48 items · Scale 1–5 · Reverse scoring applied</div>
+    ${infoGrid}
+    <div class="global-score-card MTQ">
+      <div class="gs-left"><div class="gs-label">4C Total Score</div><div class="gs-value">${total}<span class="gs-of"> / 240</span></div><div class="gs-sub">${answered} of 48 items answered</div></div>
+      <div class="gs-right"><div class="gs-interp">${total>=192?"High mental toughness — strong 4C profile. Highly favourable for long-term elite pathway.":total>=144?"Development zone — targeted intervention on specific 4C dimensions recommended.":"Priority support — coordinate with PATHWAY mental skills specialist. All dimensions remain malleable at 15–16."}</div><span class="gs-band">${total>=192?"High toughness (≥ 192)":total>=144?"Development zone (144–192)":"Priority support (< 144)"}</span></div>
+    </div>
+    <div class="section-label">4C Group Scores</div>
+    <div class="four-c-grid">
+      <div class="fc-card"><div class="fc-name">C1 Challenge</div><div class="fc-score ${tMTQ(c1,40)}">${c1}</div><div class="fc-max">/ 40</div></div>
+      <div class="fc-card"><div class="fc-name">C2 Control</div><div class="fc-score ${tMTQ(c2,80)}">${c2}</div><div class="fc-max">/ 80</div></div>
+      <div class="fc-card"><div class="fc-name">C3 Confidence</div><div class="fc-score ${tMTQ(c3,80)}">${c3}</div><div class="fc-max">/ 80</div></div>
+      <div class="fc-card"><div class="fc-name">C4 Commitment</div><div class="fc-score ${tMTQ(c4,40)}">${c4}</div><div class="fc-max">/ 40</div></div>
+    </div>
+    <div class="section-label">Sub-dimension breakdown</div>
+    ${DIMS.map(d=>{const s=ds[d.id];const t=tMTQ(s.sum,40);const pct=Math.round((s.sum/40)*100);const rn=d.items.filter(i=>i.rev).length;return`<div class="dim-block"><div class="dim-top"><span class="dim-name">${d.id} — ${d.c}</span><span class="dim-score-badge ${t}">${s.sum} / 40 · ${t==="h"?"High toughness":t==="m"?"Development zone":"Priority support"}</span></div><div class="bar-labels"><span>8</span><span>16</span><span>24</span><span>32</span><span>40</span></div><div class="bar-outer"><div class="bar-inner ${t}" style="width:${pct}%"></div></div><div class="dim-answered">${s.count} of 8 items · ${rn} reverse-scored items applied · Development zone < 24 · Strong ≥ 32</div><div class="dim-interp ${t}">${DIM_INTERP[d.id][t]}</div></div>`;}).join("")}
+    <div class="rec-card"><div class="rec-title">Evaluator recommendations</div><div class="rec-text">${(()=>{const w=DIMS.filter(d=>tMTQ(ds[d.id].sum,40)==="l").map(d=>d.c),st=DIMS.filter(d=>tMTQ(ds[d.id].sum,40)==="h").map(d=>d.c);let r="";if(st.length)r+=`<strong>High toughness dimensions:</strong> ${st.join(", ")}. `;if(w.length)r+=`<strong>Priority development:</strong> ${w.join(", ")}. Coordinate with the PATHWAY mental skills specialist. `;r+=`<strong>Commitment (C4)</strong> is most directly linked to elite longevity. At 15–16, all 4C dimensions remain malleable. No score justifies exclusion.`;return r;})()}</div></div>
+    <div class="disclaimer"><strong>Reverse scoring applied:</strong> scoreItem = rev ? (6 − raw) : raw. Commitment (C4) is most directly linked to long-term elite persistence. Confidential — MAS Foundation / Qatar Foundation internal use only.</div>`;
+  }
+
+  else if(a.tool==="PSYJ"){
+    const{s,global}=calcPSYJ(a);
+    const PSYJ_INTERP={ENG:{h:"High engagement — initiates independently, seeks additional challenge.",m:"Moderate engagement — participates willingly but needs some encouragement.",l:"Low engagement — stops when challenged. Needs motivational approach."},COM:{h:"Highly energised by competition — brings out best performance.",m:"Neutral to mild competitive response.",l:"Competition withdrawal or avoidance signals."},ERR:{h:"Error as information — immediately seeks to correct, self-directed.",m:"Retries with or without encouragement.",l:"Error avoidance — gives up or shows distress."},COA:{h:"Active coaching receptivity — applies immediately, seeks detail.",m:"Applies with some delay or partial compliance.",l:"Low receptivity — ignores or struggles to apply corrections."},ENJ:{h:"Exceptional enjoyment — joy is the dominant signal.",m:"Clear enjoyment signals — participates willingly.",l:"No or minimal enjoyment signals visible."}};
+    body=`<div class="rep-title">MAS-PSY-J · Evaluator Observation Report</div>
+    <div class="rep-subtitle">Evaluator observation grid · 5 dimensions · Age 8–12 · Completed by evaluator — NOT self-report</div>
+    ${infoGrid}
+    <div class="global-score-card PSYJ">
+      <div class="gs-left"><div class="gs-label">PSY-J Global (evaluator)</div><div class="gs-value">${(global+1).toFixed(2)}<span class="gs-of"> / 5.00</span></div><div class="gs-sub">${Object.keys(s).length} of 5 dimensions scored</div></div>
+      <div class="gs-right"><div class="gs-interp">${global>=3?"Highly favourable behavioural profile across all observed dimensions.":global>=1?"Developing profile — encourage across flagged dimensions.":"Priority — low engagement and enjoyment signals across multiple dimensions."}</div></div>
+    </div>
+    <div class="section-label">Observation dimensions</div>
+    ${PSYJ_DIMS.map(d=>{const sc=s[d.id];const t=tPSYJ(sc);const pct=sc!==undefined?Math.round((sc/4)*100):0;return`<div class="dim-block"><div class="dim-top"><span class="dim-name">${d.id} — ${d.name}</span><span class="dim-score-badge ${t}">${sc!==undefined?(sc+1)+" / 5":"Not scored"} · ${t==="h"?"Favourable":t==="m"?"Standard":"Priority"}</span></div><div class="bar-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div><div class="bar-outer"><div class="bar-inner ${t}" style="width:${pct}%"></div></div><div class="dim-interp ${t}">${PSYJ_INTERP[d.id]?.[t]||""}</div>${a.psyjNotes?.[d.id]?`<div style="font-size:10px;color:var(--muted);margin-top:6px;font-style:italic">Note: ${a.psyjNotes[d.id]}</div>`:""}</div>`;}).join("")}
+    <div class="disclaimer">This is an evaluator observation report — not self-reported data. Scores reflect observed behaviour during the session only. No score justifies exclusion before age 14. Confidential — MAS Foundation internal use only.</div>`;
+  }
+
+  const notes=a.notes?`<div class="rec-card"><div class="rec-title">Session notes</div><div class="rec-text">${a.notes}</div></div>`:"";
+  document.getElementById("rep-content").innerHTML=`<div class="rep-wrapper" id="printable">${masthead}${body}${notes}${actions}</div>`;
+}
+
+// INIT
+load();
+document.getElementById("f-date").value=new Date().toISOString().slice(0,10);
+renderList();
+</script>
+</body>
+</html>
